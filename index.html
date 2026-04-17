@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getmeds Meditation App - Premium Experience</title>
+    <meta name="description" content="A premium meditation experience designed for mindfulness and peace.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen">
+                <!-- Status Bar -->
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- App Content Start -->
+
+                <!-- Onboarding View -->
+                <div id="onboarding-view" class="view-container active">
+                    <div class="onboarding-screens">
+                        <div class="onboarding-screen active">
+                            <div class="skip-btn" onclick="window.location.href='login.html'">Skip</div>
+                            <div class="ob-image-wrap">
+                                <img src="assets/illus1.jpg" class="ob-img" alt="Meditation">
+                            </div>
+                            <div class="ob-content">
+                                <h2>Find Inner Peace</h2>
+                                <p>Discover guided meditations tailored to your personal goals and begin your journey to
+                                    a clearer mind.</p>
+                                <div class="ob-dots"><span class="dot active"></span><span class="dot"></span><span
+                                        class="dot"></span></div>
+                                <button class="primary-btn" onclick="nextOnboarding(1)">Continue</button>
+                                <a href="#" class="login-link" onclick="window.location.href='login.html'">Already have an account? Sign
+                                    In</a>
+                            </div>
+                        </div>
+                        <div class="onboarding-screen">
+                            <div class="skip-btn" onclick="window.location.href='login.html'">Skip</div>
+                            <div class="ob-image-wrap">
+                                <img src="assets/illus2.jpg" class="ob-img" alt="Nature Relax">
+                            </div>
+                            <div class="ob-content">
+                                <h2>Breathe and Relax</h2>
+                                <p>Learn simple breathing exercises that lower stress and help you find calm in your
+                                    everyday life.</p>
+                                <div class="ob-dots"><span class="dot"></span><span class="dot active"></span><span
+                                        class="dot"></span></div>
+                                <button class="primary-btn" onclick="nextOnboarding(2)">Continue</button>
+                                <a href="#" class="login-link" onclick="window.location.href='login.html'">Already have an account? Sign
+                                    In</a>
+                            </div>
+                        </div>
+                        <div class="onboarding-screen">
+                            <div class="skip-btn" onclick="window.location.href='login.html'">Skip</div>
+                            <div class="ob-image-wrap">
+                                <img src="assets/illus3.png" class="ob-img" alt="Welcome to Getmeds">
+                            </div>
+                            <div class="ob-content">
+                                <h2>Welcome to Getmeds</h2>
+                                <p>Your personal sanctuary to focus, sleep better, and live a more mindful and balanced
+                                    life.</p>
+                                <div class="ob-dots"><span class="dot"></span><span class="dot"></span><span
+                                        class="dot active"></span></div>
+                                <button class="primary-btn" onclick="window.location.href='login.html'">Get Started</button>
+                                <a href="#" class="login-link" onclick="window.location.href='login.html'">Already have an account? Sign
+                                    In</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Everything else moved to separate files -->
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

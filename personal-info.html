@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getmeds Meditation App - Personal Information</title>
+    <meta name="description" content="Update your personal details.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light);">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Subpage View -->
+                <div class="view-container active" style="padding-top: 50px;">
+                    <div class="app-container" style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column;">
+                        
+                        <!-- Subpage Header -->
+                        <div class="subpage-header" style="display: flex; align-items: center; padding: 0 24px 20px;">
+                            <i class="fas fa-arrow-left" style="font-size: 20px; color: var(--text-main); cursor: pointer;" onclick="window.history.back()"></i>
+                            <h2 style="flex: 1; text-align: center; font-size: 18px; font-weight: 600; color: var(--text-main); margin-right: 20px;">Personal Information</h2>
+                        </div>
+
+                        <div class="subpage-content" style="padding: 0 24px 40px; flex: 1; overflow-y: auto;">
+                            
+                            <!-- Profile Image Edit -->
+                            <div style="display: flex; flex-direction: column; align-items: center; margin-top: 24px; margin-bottom: 32px;">
+                                <div style="position: relative;">
+                                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Avatar" id="edit-profile-preview" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <label for="avatar-input" style="position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: var(--primary-purple); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid var(--white);">
+                                        <i class="fas fa-camera" style="font-size: 14px;"></i>
+                                    </label>
+                                    <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px;">Change Profile Photo</p>
+                            </div>
+
+                            <form class="profile-form" style="display: flex; flex-direction: column; gap: 16px;">
+                                <div>
+                                    <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">First Name</label>
+                                    <div class="input-group" style="margin-bottom: 0;">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="edit-first-name" value="Elena">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">Last Name</label>
+                                    <div class="input-group" style="margin-bottom: 0;">
+                                        <i class="far fa-user"></i>
+                                        <input type="text" id="edit-last-name" value="Rodriguez">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">Email Address</label>
+                                    <div class="input-group" style="margin-bottom: 0;">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="edit-email" value="elena.r@example.com">
+                                    </div>
+                                </div>
+
+                                <button type="button" class="primary-btn" onclick="saveProfileChanges()" style="background: var(--primary-purple); color: white; width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 15px; font-weight: 600; cursor: pointer; outline: none; margin-top: 32px;">Save Changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div> <!-- End of subpage-view -->
+                
+                <!-- Navigation -->
+                <nav class="bottom-nav">
+                    <div class="nav-item" onclick="window.location.href='home.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='insights.html'">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Insights</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='library.html'">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Library</span>
+                    </div>
+                    <div class="nav-item active" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                </nav>
+
+                <!-- Home Indicator -->
+                <div class="home-indicator"></div>
+
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

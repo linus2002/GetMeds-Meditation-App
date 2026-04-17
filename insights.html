@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Progress - Getmeds Meditation App</title>
+    <link rel="stylesheet" href="style.css?v=34">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .insights-hero {
+            background: linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 100%);
+            padding: 50px 24px 30px;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            margin-bottom: 24px;
+        }
+
+        .growth-card {
+            background: white;
+            border-radius: 15px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-bottom: 16px;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .stat-ring-container {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-ring-svg {
+            width: 80px;
+            height: 80px;
+            transform: rotate(-90deg);
+        }
+
+        .stat-ring-bg {
+            fill: none;
+            stroke: #F3F4F6;
+            stroke-width: 6;
+        }
+
+        .stat-ring-progress {
+            fill: none;
+            stroke: var(--primary-purple);
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 226;
+            stroke-dashoffset: 60;
+            transition: stroke-dashoffset 1s ease-out;
+        }
+
+        .weekly-dot-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .day-dot-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .day-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #F9FAFB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .day-dot.completed {
+            background: var(--primary-purple);
+            color: white;
+            box-shadow: 0 4px 12px rgba(29, 159, 218, 0.2);
+        }
+
+        .achievement-slider {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 4px 0 20px;
+            scrollbar-width: none;
+        }
+
+        .achievement-badge {
+            flex: 0 0 140px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .achievement-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: center;
+            color: var(--primary-purple);
+        }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: #F9FAFB;">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937; position: absolute; z-index: 100;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Main Top Navbar (Corrected height and title) -->
+                <div class="main-top-navbar" style="background: transparent; border: none; padding-top: 50px;">
+                    <div class="top-nav-left">
+                        <h2 style="font-size: 20px; font-weight: 800; color: var(--text-main); margin: 0;">Insights</h2>
+                    </div>
+                    <div class="top-nav-right">
+                        <i class="fas fa-calendar-check" style="font-size: 18px; color: var(--text-main); cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <div class="app-container-scroller" style="padding: 0;">
+                    <!-- Hero Section -->
+                    <div class="insights-hero" style="padding-top: 10px;">
+                        <p style="font-size: 12px; font-weight: 700; color: var(--primary-purple); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Activity Score</p>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <h1 style="font-size: 36px; font-weight: 800; color: var(--text-main); margin: 0;">82<span style="font-size: 18px; color: var(--text-muted);">/100</span></h1>
+                                <p style="font-size: 13px; color: #10B981; font-weight: 700; margin-top: 4px;">
+                                    <i class="fas fa-arrow-trend-up"></i> 12% increase
+                                </p>
+                            </div>
+                            <div class="stat-ring-container">
+                                <svg class="stat-ring-svg">
+                                    <circle class="stat-ring-bg" cx="40" cy="40" r="36"></circle>
+                                    <circle class="stat-ring-progress" cx="40" cy="40" r="36"></circle>
+                                </svg>
+                                <div style="position: absolute; font-size: 11px; font-weight: 800; color: var(--text-main); text-align: center; line-height: 1;">Lv. 14<br><span style="font-size: 8px; font-weight: 600; color: var(--text-muted);">Zen</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 0 24px 120px;">
+                        <!-- Main Stats Cards -->
+                        <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+                            <div class="growth-card" style="flex: 1; margin-bottom: 0; padding: 16px; border-radius: 15px;">
+                                <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <span style="font-size: 18px; font-weight: 800; display: block;">12 Days</span>
+                                <span style="font-size: 11px; color: var(--text-muted);">Daily Streak</span>
+                            </div>
+                            <div class="growth-card" style="flex: 1; margin-bottom: 0; padding: 16px; border-radius: 15px;">
+                                <div style="width: 32px; height: 32px; border-radius: 8px; background: #E0E7FF; color: #4338CA; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <span style="font-size: 18px; font-weight: 800; display: block;">14.5<span style="font-size: 12px;">h</span></span>
+                                <span style="font-size: 11px; color: var(--text-muted);">Mindful Time</span>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Consistency -->
+                        <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 16px;">Weekly Consistency</h3>
+                        <div class="growth-card" style="border-radius: 15px;">
+                            <div class="weekly-dot-row">
+                                <div class="day-dot-group"><div class="day-dot completed"><i class="fas fa-check"></i></div><span style="font-size: 10px; color: var(--text-muted);">M</span></div>
+                                <div class="day-dot-group"><div class="day-dot completed"><i class="fas fa-check"></i></div><span style="font-size: 10px; color: var(--text-muted);">T</span></div>
+                                <div class="day-dot-group"><div class="day-dot completed"><i class="fas fa-check"></i></div><span style="font-size: 10px; color: var(--text-muted);">W</span></div>
+                                <div class="day-dot-group"><div class="day-dot completed"><i class="fas fa-check"></i></div><span style="font-size: 10px; color: var(--text-muted);">T</span></div>
+                                <div class="day-dot-group"><div class="day-dot">F</div><span style="font-size: 10px; color: var(--text-muted);">F</span></div>
+                                <div class="day-dot-group"><div class="day-dot">S</div><span style="font-size: 10px; color: var(--text-muted);">S</span></div>
+                                <div class="day-dot-group"><div class="day-dot">S</div><span style="font-size: 10px; color: var(--text-muted);">S</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Sleep Tracker -->
+                        <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin: 24px 0 16px;">Sleep Insights</h3>
+                        <div class="growth-card" style="display: flex; gap: 20px; align-items: center; background: linear-gradient(135deg, #FFF 0%, #FAFAFF 100%); border-radius: 15px;">
+                            <div style="flex: 1;">
+                                <span style="font-size: 22px; font-weight: 800; color: var(--text-main); display: block;">7h 45m</span>
+                                <span style="font-size: 12px; color: var(--text-muted);">Average Rest</span>
+                                <div style="display: flex; gap: 4px; margin-top: 8px;">
+                                    <div style="height: 4px; flex: 1; background: var(--primary-purple); border-radius: 2px;"></div>
+                                    <div style="height: 4px; flex: 1; background: var(--primary-purple); border-radius: 2px;"></div>
+                                    <div style="height: 4px; flex: 1; background: var(--primary-purple); border-radius: 2px; opacity: 0.2;"></div>
+                                </div>
+                            </div>
+                            <div style="width: 50px; height: 50px; border-radius: 12px; background: #F5F3FF; display: flex; align-items: center; justify-content: center; color: #8B5CF6; font-size: 20px;">
+                                <i class="fas fa-moon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Achievements -->
+                        <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin: 24px 0 16px;">Your Journey</h3>
+                        <div class="achievement-slider">
+                            <div class="achievement-badge" style="border-radius: 15px;">
+                                <div class="achievement-icon"><i class="fas fa-spa"></i></div>
+                                <p style="font-size: 13px; font-weight: 700; margin: 0;">Early Bird</p>
+                                <p style="font-size: 10px; color: var(--text-muted);">10 Sessions</p>
+                            </div>
+                            <div class="achievement-badge" style="border-radius: 15px;">
+                                <div class="achievement-icon" style="color: #F87171;"><i class="fas fa-bolt"></i></div>
+                                <p style="font-size: 13px; font-weight: 700; margin: 0;">7d Streak</p>
+                                <p style="font-size: 10px; color: var(--text-muted);">Master</p>
+                            </div>
+                            <div class="achievement-badge" style="border-radius: 15px;">
+                                <div class="achievement-icon" style="color: #60A5FA;"><i class="fas fa-droplet"></i></div>
+                                <p style="font-size: 13px; font-weight: 700; margin: 0;">Deep Calm</p>
+                                <p style="font-size: 10px; color: var(--text-muted);">Target Met</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Corrected Bottom Navigation -->
+                <nav class="bottom-nav">
+                    <div class="nav-item" onclick="window.location.href='home.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item onclick="window.location.href='library.html'">
+                        <i class="fas fa-th-large"></i>
+                        <span>Library</span>
+                    </div>
+                    <div class="nav-item active">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Insights</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                </nav>
+
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getmeds Meditation App - Library</title>
+    <meta name="description" content="Library of meditation and audio content.">
+    <link rel="stylesheet" href="style.css?v=39">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .lib-cat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .lib-cat-card {
+            background: var(--card-bg, #fff);
+            border-radius: 15px;
+            padding: 20px 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--border-color, rgba(0,0,0,0.03));
+        }
+
+        .lib-cat-card:active {
+            transform: scale(0.98);
+        }
+
+        .stories-scroll {
+            scroll-behavior: smooth;
+        }
+
+        .story-card-item:hover {
+            transform: translateY(-4px);
+            transition: transform 0.3s;
+        }
+
+        .slide-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--card-bg, #fff);
+            border: 1px solid var(--border-color, rgba(0,0,0,0.05));
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .slide-btn:hover {
+            background: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+
+        .slide-btn:active {
+            transform: scale(0.9);
+        }
+
+        .lib-cat-icon-wrap {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            position: relative;
+        }
+
+        .lib-cat-icon-bg {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            opacity: 0.15;
+            z-index: 0;
+            transform: translate(6px, -6px);
+        }
+
+        .lib-cat-card i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .lib-cat-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .lib-cat-card p {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+
+        .lib-list-item { display: flex; align-items: center; gap: 16px; background: var(--white); padding: 12px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 12px; }
+        .lib-list-img { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; }
+        .lib-list-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .lib-list-title { font-size: 14px; font-weight: 700; color: var(--text-main); }
+        .lib-list-desc { font-size: 11px; color: var(--text-muted); }
+        .lib-list-time { font-size: 10px; font-weight: 700; color: var(--primary-purple); background: var(--bg-light); padding: 4px 8px; border-radius: 8px; width: max-content; }
+        .lib-play-btn { width: 40px; height: 40px; border-radius: 50%; background: #EAF6FC; color: var(--primary-purple); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s; cursor: pointer; }
+        .lib-play-btn:hover { background: var(--primary-purple); color: white; }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light);">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Main Top Navbar -->
+                <div class="main-top-navbar border">
+                    <div class="top-nav-left" style="display: flex; align-items: center;">
+                        <img src="assets/getmedslogo.png" alt="Logo" class="app-logo-img" style="height: 28px; width: auto; object-fit: contain;">
+                    </div>
+                    <div class="top-nav-right" style="display: flex; align-items: center; gap: 16px;">
+                        <i class="fas fa-moon theme-icon" onclick="toggleDarkMode(this)" style="font-size: 20px; color: var(--text-main); cursor: pointer;"></i>
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80" alt="Avatar" class="small-avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="window.location.href='profile.html'">
+                    </div>
+                </div>
+
+                <!-- Main Library View -->
+                <div class="view-container active">
+                    <div class="app-container-scroller" style="padding: 24px 24px 100px;">
+                        
+                        <!-- Search Bar -->
+                        <div class="search-bar-wrap">
+                            <div class="input-group">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Search meditations..." style="outline: none;">
+                            </div>
+                        </div>
+                        
+                        <!-- Categories Row -->
+                        <h3 class="settings-header" style="margin-bottom: 16px; margin-left: 0;">Browse categories</h3>
+                        <div class="lib-cat-grid">
+                            <div class="lib-cat-card" onclick="window.location.href='category.html?type=inhale'">
+                                <div class="lib-cat-icon-wrap">
+                                    <div class="lib-cat-icon-bg" style="background: #37B9F1;"></div>
+                                    <i class="fas fa-wind" style="color: #37B9F1;"></i>
+                                </div>
+                                <h4>Inhale & Exhale</h4>
+                                <p>Simple guided breathing sessions for instant calm.</p>
+                            </div>
+                            <div class="lib-cat-card" onclick="window.location.href='category.html?type=sounds'">
+                                <div class="lib-cat-icon-wrap">
+                                    <div class="lib-cat-icon-bg" style="background: #8B5CF6;"></div>
+                                    <i class="fas fa-volume-up" style="color: #8B5CF6;"></i>
+                                </div>
+                                <h4>Sounds</h4>
+                                <p>Immersive nature and ambient background noises.</p>
+                            </div>
+                            <div class="lib-cat-card" onclick="window.location.href='category.html?type=music'">
+                                <div class="lib-cat-icon-wrap">
+                                    <div class="lib-cat-icon-bg" style="background: #10B981;"></div>
+                                    <i class="fas fa-music" style="color: #10B981;"></i>
+                                </div>
+                                <h4>Music</h4>
+                                <p>Relaxing melodies and lo-fi beats for focus.</p>
+                            </div>
+                            <div class="lib-cat-card" onclick="window.location.href='category.html?type=reading'">
+                                <div class="lib-cat-icon-wrap">
+                                    <div class="lib-cat-icon-bg" style="background: #F59E0B;"></div>
+                                    <i class="fas fa-book-open" style="color: #F59E0B;"></i>
+                                </div>
+                                <h4>Reading</h4>
+                                <p>Calming stories and narrated sleep literature.</p>
+                            </div>
+                            <div class="lib-cat-card" style="grid-column: span 2;" onclick="window.location.href='category.html?type=relaxation'">
+                                <div class="lib-cat-icon-wrap">
+                                    <div class="lib-cat-icon-bg" style="background: #EF4444;"></div>
+                                    <i class="fas fa-spa" style="color: #EF4444;"></i>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <h4>Relaxation</h4>
+                                        <p>Comprehensive techniques for total body relaxation.</p>
+                                    </div>
+                                    <i class="fas fa-chevron-right" style="color: var(--text-muted); font-size: 12px;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sleep Stories Section -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; margin-bottom: 20px;">
+                            <h3 class="settings-header" style="margin: 0; padding: 0;">Sleep Stories</h3>
+                            <button onclick="window.location.href='sleep-stories.html'" style="background: transparent; border: none; padding: 6px 0; border-radius: 20px; font-size: 13px; font-weight: 700; color: var(--primary-purple); cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">View All</button>
+                        </div>
+
+                        <div class="stories-scroll" id="sleepStoriesScroll" style="display: flex; gap: 20px; overflow-x: scroll; padding: 10px 0 20px; scrollbar-width: none; min-height: 280px; scroll-snap-type: x mandatory; cursor: grab; user-select: none;">
+                            <!-- Story Card 1 -->
+                            <div class="story-card-item" onclick="window.location.href='story-detail.html?title=Ocean'" style="flex: 0 0 300px; cursor: pointer; transition: transform 0.3s; scroll-snap-align: center;">
+                                <div style="position: relative; width: 100%; height: 170px; border-radius: 20px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                                    <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=500&q=80" draggable="false" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 12px; display: flex; align-items: center; gap: 6px; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                                        <i class="fas fa-user-friends" style="font-size: 10px;"></i>
+                                        <span style="font-size: 11px; font-weight: 600;">45k</span>
+                                    </div>
+                                </div>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 6px 0;">The Ocean's Whisper</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0; line-height: 1.5;">Join 45k listeners in this immersive journey through deep blue mysteries tonight.</p>
+                            </div>
+
+                            <!-- Story Card 2 -->
+                            <div class="story-card-item" onclick="window.location.href='story-detail.html?title=Ocean'" style="flex: 0 0 300px; cursor: pointer; transition: transform 0.3s; scroll-snap-align: center;">
+                                <div style="position: relative; width: 100%; height: 170px; border-radius: 20px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                                    <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=500&q=80" draggable="false" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 12px; display: flex; align-items: center; gap: 6px; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                                        <i class="fas fa-user-friends" style="font-size: 10px;"></i>
+                                        <span style="font-size: 11px; font-weight: 600;">12k</span>
+                                    </div>
+                                </div>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 6px 0;">Night in Paris</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0; line-height: 1.5;">Rainy streets and ambient bistro sounds. Tips and tricks for sweet dreams.</p>
+                            </div>
+
+                            <!-- Story Card 3 -->
+                            <div class="story-card-item" onclick="window.location.href='story-detail.html?title=Ocean'" style="flex: 0 0 300px; cursor: pointer; transition: transform 0.3s; scroll-snap-align: center;">
+                                <div style="position: relative; width: 100%; height: 170px; border-radius: 20px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                                    <img src="https://images.unsplash.com/photo-1531366930477-4f1f27f3c30f?auto=format&fit=crop&w=500&q=80" draggable="false" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 12px; display: flex; align-items: center; gap: 6px; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                                        <i class="fas fa-user-friends" style="font-size: 10px;"></i>
+                                        <span style="font-size: 11px; font-weight: 600;">8k</span>
+                                    </div>
+                                </div>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 6px 0;">Arctic Dreams</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0; line-height: 1.5;">Snowfall and northern lights ambience. Bonding with new friends in sleep.</p>
+                            </div>
+
+                            <!-- Story Card 4 -->
+                            <div class="story-card-item" onclick="window.location.href='story-detail.html?title=Ocean'" style="flex: 0 0 300px; cursor: pointer; transition: transform 0.3s; scroll-snap-align: center;">
+                                <div style="position: relative; width: 100%; height: 170px; border-radius: 20px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                                    <img src="https://images.unsplash.com/photo-1536431311719-398b6704d4cc?auto=format&fit=crop&w=500&q=80" draggable="false" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 12px; display: flex; align-items: center; gap: 6px; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                                        <i class="fas fa-user-friends" style="font-size: 10px;"></i>
+                                        <span style="font-size: 11px; font-weight: 600;">15k</span>
+                                    </div>
+                                </div>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 6px 0;">Mountain Cabin</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0; line-height: 1.5;">Cozy up by the fire as the rain drum on the roof of a remote mountain lodge.</p>
+                            </div>
+
+                            <!-- Story Card 5 -->
+                            <div class="story-card-item" onclick="window.location.href='story-detail.html?title=Ocean'" style="flex: 0 0 300px; cursor: pointer; transition: transform 0.3s; scroll-snap-align: center;">
+                                <div style="position: relative; width: 100%; height: 170px; border-radius: 20px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                                    <img src="https://images.unsplash.com/photo-1532983330958-4b32bc9bb07d?auto=format&fit=crop&w=500&q=80" draggable="false" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 12px; display: flex; align-items: center; gap: 6px; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                                        <i class="fas fa-user-friends" style="font-size: 10px;"></i>
+                                        <span style="font-size: 11px; font-weight: 600;">22k</span>
+                                    </div>
+                                </div>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 6px 0;">Starry Night Canopy</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0; line-height: 1.5;">Float through the celestial wonders of the universe under a crystal clear sky.</p>
+                            </div>
+                        </div>
+
+                        <script>
+                            const slider = document.getElementById('sleepStoriesScroll');
+                            let isDown = false;
+                            let startX;
+                            let scrollLeft;
+
+                            slider.addEventListener('mousedown', (e) => {
+                                isDown = true;
+                                slider.style.cursor = 'grabbing';
+                                startX = e.pageX - slider.offsetLeft;
+                                scrollLeft = slider.scrollLeft;
+                            });
+                            slider.addEventListener('mouseleave', () => {
+                                isDown = false;
+                                slider.style.cursor = 'grab';
+                            });
+                            slider.addEventListener('mouseup', () => {
+                                isDown = false;
+                                slider.style.cursor = 'grab';
+                            });
+                            slider.addEventListener('mousemove', (e) => {
+                                if (!isDown) return;
+                                e.preventDefault();
+                                const x = e.pageX - slider.offsetLeft;
+                                const walk = (x - startX) * 2;
+                                slider.scrollLeft = scrollLeft - walk;
+                            });
+                        </script>
+
+                        <!-- Quick Calm Section -->
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 32px; margin-bottom: 16px;">
+                            <h3 class="settings-header" style="margin: 0; padding: 0;">Quick Calm</h3>
+                            <span style="font-size: 11px; color: var(--text-muted); text-transform: lowercase;">5-10 min sessions</span>
+                        </div>
+                        
+                        <div class="lib-list-item">
+                            <div style="width: 52px; height: 52px; background: #FFF1F2; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #F43F5E; font-size: 20px;">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="lib-list-info">
+                                <span class="lib-list-title">Deep Release</span>
+                                <span class="lib-list-desc">Release physical tension quickly.</span>
+                                <span class="lib-list-time">5 min</span>
+                            </div>
+                            <div class="lib-play-btn"><i class="fas fa-play"></i></div>
+                        </div>
+
+                        <div class="lib-list-item">
+                            <div style="width: 52px; height: 52px; background: #ECFDF5; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #10B981; font-size: 20px;">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <div class="lib-list-info">
+                                <span class="lib-list-title">Present Moment</span>
+                                <span class="lib-list-desc">Grounding session for anxiousness.</span>
+                                <span class="lib-list-time">8 min</span>
+                            </div>
+                            <div class="lib-play-btn"><i class="fas fa-play"></i></div>
+                        </div>
+
+                        <!-- Soundscapes Section -->
+                        <h3 class="settings-header" style="margin-top: 32px; margin-bottom: 16px; margin-left: 0;">Atmospheric Soundscapes</h3>
+                        <div class="stories-scroll" id="soundscapesScroll" style="display: flex; gap: 20px; overflow-x: scroll; padding: 10px 0 20px; scrollbar-width: none; min-height: 280px; scroll-snap-type: x mandatory; cursor: grab; user-select: none; margin-bottom: 40px;">
+                            <!-- Soundscape 1 -->
+                            <div class="story-card-item" style="flex: 0 0 300px; cursor: pointer; transition: transform 0.3s; scroll-snap-align: center;">
+                                <div style="position: relative; width: 100%; height: 170px; border-radius: 20px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=500&q=80" draggable="false" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 12px; display: flex; align-items: center; gap: 6px; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                                        <i class="fas fa-volume-up" style="font-size: 10px;"></i>
+                                        <span style="font-size: 11px; font-weight: 600;">Ambient</span>
+                                    </div>
+                                </div>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 4px 0;">Forest Echoes</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 12px 0;">Deep woodland sounds with birds and gentle wind.</p>
+                                <div style="display: flex; gap: 8px;">
+                                    <button onclick="window.location.href='audio-player.html?title=Forest%20Echoes'" style="flex: 1; background: var(--primary-purple); color: white; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <i class="fas fa-play" style="font-size: 10px;"></i> Play
+                                    </button>
+                                    <button onclick="window.location.href='audio-player.html?title=Forest%20Echoes'" style="flex: 1; background: #F3F4F6; color: #4B5563; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Details</button>
+                                </div>
+                            </div>
+
+                            <!-- Soundscape 2 -->
+                            <div class="story-card-item" style="flex: 0 0 300px; cursor: pointer; transition: transform 0.3s; scroll-snap-align: center;">
+                                <div style="position: relative; width: 100%; height: 170px; border-radius: 20px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                                    <img src="https://images.unsplash.com/photo-1530508777964-5c929ec5aa3e?auto=format&fit=crop&w=500&q=80" draggable="false" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 12px; display: flex; align-items: center; gap: 6px; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                                        <i class="fas fa-bolt" style="font-size: 10px;"></i>
+                                        <span style="font-size: 11px; font-weight: 600;">Dynamic</span>
+                                    </div>
+                                </div>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 4px 0;">Thunder Ridge</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 12px 0;">Powerful storm ambience with rolling thunder.</p>
+                                <div style="display: flex; gap: 8px;">
+                                    <button onclick="window.location.href='audio-player.html?title=Thunder%20Ridge'" style="flex: 1; background: var(--primary-purple); color: white; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <i class="fas fa-play" style="font-size: 10px;"></i> Play
+                                    </button>
+                                    <button onclick="window.location.href='audio-player.html?title=Thunder%20Ridge'" style="flex: 1; background: #F3F4F6; color: #4B5563; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Details</button>
+                                </div>
+                            </div>
+
+                            <!-- Soundscape 3 -->
+                            <div class="story-card-item" style="flex: 0 0 300px; cursor: pointer; transition: transform 0.3s; scroll-snap-align: center;">
+                                <div style="position: relative; width: 100%; height: 170px; border-radius: 20px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                                    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=500&q=80" draggable="false" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 12px; display: flex; align-items: center; gap: 6px; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                                        <i class="fas fa-feather" style="font-size: 10px;"></i>
+                                        <span style="font-size: 11px; font-weight: 600;">Calm</span>
+                                    </div>
+                                </div>
+                                <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 4px 0;">Zen Garden</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 12px 0;">Soothing bamboo water features and light chimes.</p>
+                                <div style="display: flex; gap: 8px;">
+                                    <button onclick="window.location.href='audio-player.html?title=Zen%20Garden'" style="flex: 1; background: var(--primary-purple); color: white; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <i class="fas fa-play" style="font-size: 10px;"></i> Play
+                                    </button>
+                                    <button onclick="window.location.href='audio-player.html?title=Zen%20Garden'" style="flex: 1; background: #F3F4F6; color: #4B5563; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Details</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            // Reuse dragging logic for soundscapes
+                            const sSlider = document.getElementById('soundscapesScroll');
+                            let sIsDown = false;
+                            let sStartX;
+                            let sScrollLeft;
+
+                            sSlider.addEventListener('mousedown', (e) => {
+                                sIsDown = true;
+                                sSlider.style.cursor = 'grabbing';
+                                sStartX = e.pageX - sSlider.offsetLeft;
+                                sScrollLeft = sSlider.scrollLeft;
+                            });
+                            sSlider.addEventListener('mouseleave', () => {
+                                sIsDown = false;
+                                sSlider.style.cursor = 'grab';
+                            });
+                            sSlider.addEventListener('mouseup', () => {
+                                sIsDown = false;
+                                sSlider.style.cursor = 'grab';
+                            });
+                            sSlider.addEventListener('mousemove', (e) => {
+                                if (!sIsDown) return;
+                                e.preventDefault();
+                                const x = e.pageX - sSlider.offsetLeft;
+                                const walk = (x - sStartX) * 2;
+                                sSlider.scrollLeft = sScrollLeft - walk;
+                            });
+                        </script>
+                    </div>
+                </div> <!-- End of view -->
+                
+                <!-- Navigation -->
+                <nav class="bottom-nav">
+                    <div class="nav-item" onclick="window.location.href='home.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='insights.html'">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Insights</span>
+                    </div>
+                    <div class="nav-item active" onclick="window.location.href='library.html'">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Library</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                </nav>
+
+                <!-- Home Indicator -->
+                <div class="home-indicator"></div>
+
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        // Horizontal scroll for categories to support mousewheel natively if on destktop
+        document.querySelector('.lib-categories').addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            document.querySelector('.lib-categories').scrollLeft += evt.deltaY;
+        });
+    </script>
+</body>
+
+</html>

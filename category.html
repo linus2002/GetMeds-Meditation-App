@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - Getmeds Meditation App</title>
+    <link rel="stylesheet" href="style.css?v=29">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .category-hero {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 24px;
+            color: white;
+            overflow: hidden;
+        }
+
+        .category-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            z-index: 1;
+        }
+
+        .track-card {
+            background: white;
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .track-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-color: var(--primary-purple);
+        }
+
+        .track-card:active {
+            transform: scale(0.98);
+        }
+
+        .track-thumb {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            background: #F3F4F6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .track-info {
+            flex: 1;
+        }
+
+        .track-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .track-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .track-meta {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary-purple);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .play-ring {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #F3F4F6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            transition: all 0.2s;
+        }
+
+        .track-card:hover .play-ring {
+            background: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: #F9FAFB;">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937; position: absolute; z-index: 100;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Main Top Navbar -->
+                <div class="main-top-navbar border" style="background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 99; padding-top: 44px; padding-bottom: 12px;">
+                    <div class="top-nav-left" style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-chevron-left" onclick="history.back()" style="font-size: 18px; color: var(--text-main); cursor: pointer;"></i>
+                        <h2 id="categoryTitle" style="font-size: 18px; font-weight: 700; color: var(--text-main); margin: 0;">Category</h2>
+                    </div>
+                </div>
+
+                <div class="app-container-scroller" style="padding: 0;">
+                    <!-- Hero Section -->
+                    <div id="heroBg" class="category-hero" style="background: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80') center/cover; height: 160px; justify-content: flex-end;">
+                        <div style="position: relative; z-index: 2;">
+                            <p id="categoryCount" style="font-size: 13px; font-weight: 600; opacity: 0.9; margin: 0; text-transform: uppercase; letter-spacing: 1px;">12 Premium Sessions</p>
+                        </div>
+                    </div>
+
+                    <!-- List Content -->
+                    <div id="categoryList" style="padding: 14px 24px 100px;">
+                        <!-- Items will be injected here -->
+                    </div>
+                </div>
+
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const type = params.get('type') || 'inhale';
+        const titleEl = document.getElementById('categoryTitle');
+        const heroEl = document.getElementById('heroBg');
+        const listEl = document.getElementById('categoryList');
+
+        const content = {
+            inhale: {
+                title: 'Inhale & Exhale',
+                img: 'https://images.unsplash.com/photo-1444464666168-49d633b867ad?auto=format&fit=crop&w=600&q=80',
+                items: [
+                    { title: 'Box Breathing', desc: 'Find your center with 4-4-4 rhythm.', time: '3 min', color: '#37B9F1', icon: 'wind' },
+                    { title: '4-7-8 Technique', desc: 'The natural tranquilizer for the nervous system.', time: '5 min', color: '#37B9F1', icon: 'wind' },
+                    { title: 'Vagus Nerve Stim', desc: 'Quick physical reset for instant calm.', time: '8 min', color: '#37B9F1', icon: 'wind' },
+                    { title: 'Equal Breath', desc: 'Balance your daily energy flow.', time: '4 min', color: '#37B9F1', icon: 'wind' }
+                ]
+            },
+            sounds: {
+                title: 'Nature Sounds',
+                img: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80',
+                items: [
+                    { title: 'Tropical Rain', desc: 'Immersive downpour in the deep Amazon.', time: '30 min', color: '#8B5CF6', icon: 'volume-up' },
+                    { title: 'Ocean Waves', desc: 'Soft rhythmic tides of the Pacific Coast.', time: '60 min', color: '#8B5CF6', icon: 'volume-up' },
+                    { title: 'Campfire', desc: 'The soothing crackle of pine wood at dusk.', time: '45 min', color: '#8B5CF6', icon: 'volume-up' },
+                    { title: 'Morning birds', desc: 'A peaceful start with forest choir.', time: '20 min', color: '#8B5CF6', icon: 'volume-up' }
+                ]
+            },
+            music: {
+                title: 'Calm Music',
+                img: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=600&q=80',
+                items: [
+                    { title: 'Lo-fi Study', desc: 'Gentle beats for deep cognitive focus.', time: '2 hrs', color: '#10B981', icon: 'music' },
+                    { title: 'Piano Bliss', desc: 'Soft minimal keys for evening wind-down.', time: '1 hr', color: '#10B981', icon: 'music' },
+                    { title: 'Ambient Space', desc: 'Ethereal soundscapes for astral journey.', time: '90 min', color: '#10B981', icon: 'music' }
+                ]
+            },
+            reading: {
+                title: 'Bedtime Stories',
+                img: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80',
+                items: [
+                    { title: 'The Old Library', desc: 'Explore the dusty shelves of history.', time: '20 min', color: '#F59E0B', icon: 'book-open' },
+                    { title: 'Secret Garden', desc: 'A lost classic rediscovered for your rest.', time: '35 min', color: '#F59E0B', icon: 'book-open' },
+                    { title: 'Mountain Hike', desc: 'Mental journey through the Alpine pass.', time: '15 min', color: '#F59E0B', icon: 'book-open' }
+                ]
+            },
+            relaxation: {
+                title: 'Relaxation',
+                img: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80',
+                items: [
+                    { title: 'Full Body Scan', desc: 'Progressive muscle release technique.', time: '12 min', color: '#EF4444', icon: 'spa' },
+                    { title: 'Stress Dissolve', desc: 'Guided visualization to clear your mind.', time: '10 min', color: '#EF4444', icon: 'spa' },
+                    { title: 'Mindful Walk', desc: 'Moving meditation for grounding.', time: '15 min', color: '#EF4444', icon: 'spa' }
+                ]
+            }
+        };
+
+        const current = content[type] || content.inhale;
+        titleEl.textContent = current.title;
+        heroEl.style.backgroundImage = `url('${current.img}')`;
+        document.getElementById('categoryCount').textContent = `${current.items.length} Premium Sessions`;
+
+        current.items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'track-card';
+            div.onclick = () => window.location.href = `audio-player.html?title=${encodeURIComponent(item.title)}`;
+            div.innerHTML = `
+                <div class="track-thumb" style="background: ${item.color}10; color: ${item.color};">
+                    <i class="fas fa-${item.icon}"></i>
+                </div>
+                <div class="track-info">
+                    <span class="track-title">${item.title}</span>
+                    <span class="track-desc">${item.desc}</span>
+                    <div class="track-meta">
+                        <i class="far fa-clock"></i>
+                        <span>${item.time}</span>
+                        <span style="margin-left: 8px; opacity: 0.5;">•</span>
+                        <span style="margin-left: 4px;">Premium</span>
+                    </div>
+                </div>
+                <div class="play-ring">
+                    <i class="fas fa-play" style="margin-left: 2px; font-size: 14px;"></i>
+                </div>
+            `;
+            listEl.appendChild(div);
+        });
+    </script>
+</body>
+
+</html>

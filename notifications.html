@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getmeds Meditation App - Notifications</title>
+    <meta name="description" content="Manage your notification preferences.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: #F7F9FC;">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Subpage View -->
+                <div class="view-container active" style="padding-top: 50px;">
+                    <div class="app-container" style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column;">
+                        
+                        <!-- Subpage Header -->
+                        <div class="subpage-header" style="display: flex; align-items: center; padding: 0 24px 20px;">
+                            <i class="fas fa-arrow-left" style="font-size: 20px; color: var(--text-main); cursor: pointer;" onclick="window.history.back()"></i>
+                            <h2 style="flex: 1; text-align: center; font-size: 18px; font-weight: 600; color: var(--text-main); margin-right: 20px;">Notifications</h2>
+                        </div>
+
+                        <div class="subpage-content" style="padding: 0 24px 40px; flex: 1; overflow-y: auto;">
+                            
+                            <div class="settings-group" style="margin-top: 20px;">
+                                <div class="settings-card">
+                                    <div class="setting-item" onclick="this.querySelector('.toggle-switch').classList.toggle('active')">
+                                        <div class="setting-icon-wrap" style="background: #FEF2F2; color: #DC2626;"><i class="fas fa-comment"></i></div>
+                                        <span class="setting-label">Push Notifications</span>
+                                        <div class="toggle-switch active">
+                                            <div class="toggle-knob"></div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-item" onclick="this.querySelector('.toggle-switch').classList.toggle('active')">
+                                        <div class="setting-icon-wrap" style="background: #FEF9C3; color: #D97706;"><i class="fas fa-envelope"></i></div>
+                                        <span class="setting-label">Email Reminders</span>
+                                        <div class="toggle-switch">
+                                            <div class="toggle-knob"></div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-item" onclick="this.querySelector('.toggle-switch').classList.toggle('active')">
+                                        <div class="setting-icon-wrap" style="background: #DCFCE7; color: #16A34A;"><i class="fas fa-spa"></i></div>
+                                        <span class="setting-label">New Classes</span>
+                                        <div class="toggle-switch active">
+                                            <div class="toggle-knob"></div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-item" onclick="this.querySelector('.toggle-switch').classList.toggle('active')">
+                                        <div class="setting-icon-wrap" style="background: #EAF6FC; color: var(--primary-purple);"><i class="fas fa-chart-line"></i></div>
+                                        <span class="setting-label">Weekly Progress</span>
+                                        <div class="toggle-switch active">
+                                            <div class="toggle-knob"></div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-item" style="border-bottom: none;" onclick="this.querySelector('.toggle-switch').classList.toggle('active')">
+                                        <div class="setting-icon-wrap" style="background: #F3E8FF; color: #9333EA;"><i class="fas fa-gift"></i></div>
+                                        <span class="setting-label">Special Offers</span>
+                                        <div class="toggle-switch">
+                                            <div class="toggle-knob"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- End of subpage-view -->
+                
+                <!-- Navigation -->
+                <nav class="bottom-nav">
+                    <div class="nav-item" onclick="window.location.href='home.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='insights.html'">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Insights</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='library.html'">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Library</span>
+                    </div>
+                    <div class="nav-item active" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                </nav>
+
+                <!-- Home Indicator -->
+                <div class="home-indicator"></div>
+
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

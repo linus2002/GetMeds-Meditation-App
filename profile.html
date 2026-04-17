@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getmeds Meditation App - Profile</title>
+    <meta name="description" content="Manage your profile and settings.">
+    <link rel="stylesheet" href="style.css?v=8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body data-page="profile">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light);">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Main Top Navbar -->
+                <div class="main-top-navbar border">
+                    <div class="top-nav-left" style="display: flex; align-items: center;">
+                        <img src="assets/getmedslogo.png" alt="Logo" class="app-logo-img" style="height: 28px; width: auto; object-fit: contain;">
+                    </div>
+                    <div class="top-nav-right" style="display: flex; align-items: center; gap: 16px;">
+                        <i class="fas fa-moon theme-icon" onclick="toggleDarkMode(this)" style="font-size: 20px; color: var(--text-main); cursor: pointer;"></i>
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80" alt="Avatar" class="small-avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="window.location.href='profile.html'">
+                    </div>
+                </div>
+
+                <!-- Main Profile View -->
+                <div id="profile-view" class="view-container active">
+                    <div class="app-container-scroller" style="padding: 16px 0 100px;">
+                        
+                        <div class="profile-content" style="padding: 16px 24px;">
+                            
+                            <!-- User Card Horizontal -->
+                            <div class="user-card-horizontal">
+                                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Elena Rodriguez" class="profile-card-img" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover;">
+                                <div class="user-card-details">
+                                    <h2>Elena Rodriguez</h2>
+                                    <p>elenarodriguez@gmail.com</p>
+                                </div>
+                            </div>
+
+                            <!-- Group: Account -->
+                            <div class="settings-group">
+                                <h3 class="settings-header">Account</h3>
+                                <div class="settings-card">
+                                    <div class="setting-item" onclick="window.location.href='personal-info.html'">
+                                        <div class="setting-icon-wrap"><i class="far fa-user-circle"></i></div>
+                                        <span class="setting-label">Manage Profile</span>
+                                        <i class="fas fa-chevron-right chevron"></i>
+                                    </div>
+                                    <div class="setting-item" onclick="window.location.href='privacy-security.html'">
+                                        <div class="setting-icon-wrap"><i class="fas fa-lock text-sm"></i></div>
+                                        <span class="setting-label">Password & Security</span>
+                                        <i class="fas fa-chevron-right chevron"></i>
+                                    </div>
+                                    <div class="setting-item" onclick="window.location.href='notifications.html'">
+                                        <div class="setting-icon-wrap"><i class="far fa-bell"></i></div>
+                                        <span class="setting-label">Notifications</span>
+                                        <i class="fas fa-chevron-right chevron"></i>
+                                    </div>
+                                    <div class="setting-item">
+                                        <div class="setting-icon-wrap"><i class="fas fa-globe"></i></div>
+                                        <span class="setting-label">Language</span>
+                                        <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 13px; color: var(--text-muted);">English</span>
+                                            <i class="fas fa-chevron-right chevron"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Group: Preferences -->
+                            <div class="settings-group" style="margin-top: 24px;">
+                                <h3 class="settings-header">Preferences</h3>
+                                <div class="settings-card">
+                                    <div class="setting-item">
+                                        <div class="setting-icon-wrap"><i class="far fa-list-alt"></i></div>
+                                        <span class="setting-label">About Us</span>
+                                        <i class="fas fa-chevron-right chevron"></i>
+                                    </div>
+                                    <div class="setting-item">
+                                        <div class="setting-icon-wrap"><i class="far fa-moon" style="color: #FF9F1C;"></i></div>
+                                        <span class="setting-label">Dark Mode</span>
+                                        <div class="toggle-switch" id="dark-mode-toggle-secondary" onclick="toggleDarkMode(this)" style="margin-left: auto;">
+                                            <div class="toggle-knob"></div>
+                                        </div>
+                                    </div>
+                                    <div class="setting-item">
+                                        <div class="setting-icon-wrap"><i class="far fa-calendar-alt"></i></div>
+                                        <span class="setting-label">Appointments</span>
+                                        <i class="fas fa-chevron-right chevron"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Group: Support -->
+                            <div class="settings-group" style="margin-top: 24px;">
+                                <h3 class="settings-header">Support</h3>
+                                <div class="settings-card">
+                                    <div class="setting-item">
+                                        <div class="setting-icon-wrap"><i class="far fa-question-circle"></i></div>
+                                        <span class="setting-label">Help Center</span>
+                                        <i class="fas fa-chevron-right chevron"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Logout Card -->
+                            <div class="logout-card" onclick="window.location.href='login.html'">
+                                <span>Logout</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+
+                            <div style="margin-top: 16px; padding-bottom: 20px;">
+                                <div class="version-text">Version 2.4.1</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> <!-- End of profile-view -->
+                
+                <!-- Navigation -->
+                <nav class="bottom-nav">
+                    <div class="nav-item" onclick="window.location.href='home.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='insights.html'">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Insights</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='library.html'">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Library</span>
+                    </div>
+                    <div class="nav-item active" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                </nav>
+
+                <!-- Home Indicator -->
+                <div class="home-indicator"></div>
+
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+    <script>
+        function updateAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Update main avatar on profile page
+                    const mainImg = document.getElementById('profile-main-img');
+                    if (mainImg) mainImg.src = e.target.result;
+                    
+                    // Update top right small avatar
+                    const smallAvatars = document.querySelectorAll('.small-avatar');
+                    smallAvatars.forEach(av => av.src = e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+
+</html>

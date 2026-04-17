@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player - Getmeds Meditation App</title>
+    <link rel="stylesheet" href="style.css?v=29">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .player-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #1D9FDA, #8B5CF6);
+            filter: blur(50px);
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .disc-container {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: white;
+            margin: 60px auto;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .disc-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .controls-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .play-pause-btn {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--primary-purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(29,159,218,0.3);
+        }
+
+        .nav-player-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0.6;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: #E5E7EB;
+            border-radius: 10px;
+            margin: 40px 0 10px;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 35%;
+            height: 100%;
+            background: var(--primary-purple);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body data-page="player">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light); overflow: hidden;">
+                <div class="player-bg"></div>
+
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Main Top Navbar -->
+                <div class="main-top-navbar border" style="position: relative; z-index: 10;">
+                    <div class="top-nav-left" style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-chevron-left" onclick="history.back()" style="font-size: 18px; color: var(--text-main); cursor: pointer;"></i>
+                        <h2 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin: 0;">Now Playing</h2>
+                    </div>
+                </div>
+
+                <div style="padding: 0 24px; text-align: center; position: relative;">
+                    <div class="disc-container">
+                        <img id="playerImg" class="disc-img" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80">
+                    </div>
+
+                    <h2 id="playerTitle" style="font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">The Ocean's Whisper</h2>
+                    <p id="playerSubtitle" style="font-size: 14px; color: var(--text-muted);">Calm & Relaxation</p>
+
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted);">
+                        <span>12:45</span>
+                        <span>45:00</span>
+                    </div>
+
+                    <div class="controls-row">
+                        <button class="nav-player-btn"><i class="fas fa-backward-step"></i></button>
+                        <button class="play-pause-btn" onclick="togglePlay(this)">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                        <button class="nav-player-btn"><i class="fas fa-forward-step"></i></button>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; margin-top: 60px; padding: 0 20px;">
+                        <i class="fas fa-heart" style="color: #F43F5E; font-size: 20px;"></i>
+                        <i class="fas fa-shuffle" style="color: var(--text-muted); font-size: 20px;"></i>
+                        <i class="fas fa-repeat" style="color: var(--text-muted); font-size: 20px;"></i>
+                        <i class="fas fa-list" style="color: var(--text-muted); font-size: 20px;"></i>
+                    </div>
+                </div>
+
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const title = params.get('title') || 'The Ocean\'s Whisper';
+        document.getElementById('playerTitle').textContent = title;
+        
+        function togglePlay(btn) {
+            const icon = btn.querySelector('i');
+            if(icon.classList.contains('fa-pause')) {
+                icon.classList.replace('fa-pause', 'fa-play');
+                document.querySelector('.disc-img').style.animationPlayState = 'paused';
+            } else {
+                icon.classList.replace('fa-play', 'fa-pause');
+                document.querySelector('.disc-img').style.animationPlayState = 'running';
+            }
+        }
+    </script>
+</body>
+
+</html>
