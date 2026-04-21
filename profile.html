@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Getmeds Meditation App - Profile</title>
     <meta name="description" content="Manage your profile and settings.">
-    <link rel="stylesheet" href="style.css?v=8">
+    <link rel="stylesheet" href="style.css?v=100">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -74,13 +74,38 @@
                                         <span class="setting-label">Notifications</span>
                                         <i class="fas fa-chevron-right chevron"></i>
                                     </div>
-                                    <div class="setting-item">
+                                    <div class="setting-item" onclick="toggleLanguage()">
                                         <div class="setting-icon-wrap"><i class="fas fa-globe"></i></div>
-                                        <span class="setting-label">Language</span>
+                                        <span class="setting-label">Language / Wika</span>
                                         <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
-                                            <span style="font-size: 13px; color: var(--text-muted);">English</span>
+                                            <span style="font-size: 13px; color: var(--text-muted);" id="current-lang">English</span>
                                             <i class="fas fa-chevron-right chevron"></i>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- New Section: My Collection -->
+                            <div class="settings-group" style="margin-top: 24px;">
+                                <h3 class="settings-header">My Collection</h3>
+                                <div class="settings-card">
+                                    <div class="setting-item" onclick="window.location.href='my-likes.html'">
+                                        <div class="setting-icon-wrap"><i class="fas fa-heart" style="color: #F43F5E;"></i></div>
+                                        <span class="setting-label">My Likes</span>
+                                        <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+                                            <span id="likes-count-badge" style="font-size: 13px; color: var(--text-muted);">0 Items</span>
+                                            <i class="fas fa-chevron-right chevron"></i>
+                                        </div>
+                                    </div>
+                                    <div class="setting-item">
+                                        <div class="setting-icon-wrap"><i class="fas fa-bookmark" style="color: #37B9F1;"></i></div>
+                                        <span class="setting-label">Saved Stories</span>
+                                        <i class="fas fa-chevron-right chevron"></i>
+                                    </div>
+                                    <div class="setting-item">
+                                        <div class="setting-icon-wrap"><i class="fas fa-download" style="color: #10B981;"></i></div>
+                                        <span class="setting-label">Offline Content</span>
+                                        <i class="fas fa-chevron-right chevron"></i>
                                     </div>
                                 </div>
                             </div>
@@ -90,9 +115,11 @@
                                 <h3 class="settings-header">Preferences</h3>
                                 <div class="settings-card">
                                     <div class="setting-item">
-                                        <div class="setting-icon-wrap"><i class="far fa-list-alt"></i></div>
-                                        <span class="setting-label">About Us</span>
-                                        <i class="fas fa-chevron-right chevron"></i>
+                                        <div class="setting-icon-wrap"><i class="far fa-bell" style="color: #8B5CF6;"></i></div>
+                                        <span class="setting-label">Daily Reminders</span>
+                                        <div class="toggle-switch active" style="margin-left: auto;" onclick="this.classList.toggle('active'); alert('Daily reminder set for 8:00 AM')">
+                                            <div class="toggle-knob"></div>
+                                        </div>
                                     </div>
                                     <div class="setting-item">
                                         <div class="setting-icon-wrap"><i class="far fa-moon" style="color: #FF9F1C;"></i></div>
@@ -102,8 +129,8 @@
                                         </div>
                                     </div>
                                     <div class="setting-item">
-                                        <div class="setting-icon-wrap"><i class="far fa-calendar-alt"></i></div>
-                                        <span class="setting-label">Appointments</span>
+                                        <div class="setting-icon-wrap"><i class="far fa-list-alt"></i></div>
+                                        <span class="setting-label">About Us</span>
                                         <i class="fas fa-chevron-right chevron"></i>
                                     </div>
                                 </div>
@@ -113,9 +140,9 @@
                             <div class="settings-group" style="margin-top: 24px;">
                                 <h3 class="settings-header">Support</h3>
                                 <div class="settings-card">
-                                    <div class="setting-item">
+                                    <div class="setting-item" onclick="window.location.href='directory.html'">
                                         <div class="setting-icon-wrap"><i class="far fa-question-circle"></i></div>
-                                        <span class="setting-label">Help Center</span>
+                                        <span class="setting-label">Find Help / Directory</span>
                                         <i class="fas fa-chevron-right chevron"></i>
                                     </div>
                                 </div>
@@ -144,6 +171,10 @@
                     <div class="nav-item" onclick="window.location.href='insights.html'">
                         <i class="fa-solid fa-chart-pie"></i>
                         <span>Insights</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='workbook.html'">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <span>Workbook</span>
                     </div>
                     <div class="nav-item" onclick="window.location.href='library.html'">
                         <i class="fa-solid fa-book"></i>
@@ -179,7 +210,17 @@
                 reader.readAsDataURL(file);
             }
         }
+        function toggleLanguage() {
+            const langSpan = document.getElementById('current-lang');
+            if (langSpan.innerText === 'English') {
+                langSpan.innerText = 'Tagalog (PH)';
+                alert("Wika ay nabago sa Tagalog. Nilalaman ay naka-localize na.");
+            } else {
+                langSpan.innerText = 'English';
+            }
+        }
     </script>
+    <script src="app.js"></script>
 </body>
 
 </html>

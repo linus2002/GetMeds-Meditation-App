@@ -14,9 +14,7 @@
         .player-bg {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, #1D9FDA, #8B5CF6);
-            filter: blur(50px);
-            opacity: 0.15;
+            background: #FFFFFF;
             z-index: 0;
         }
 
@@ -100,7 +98,7 @@
     <div class="device-frame">
         <div class="device-bezel">
             <div class="dynamic-island"></div>
-            <div class="device-screen" style="background-color: var(--bg-light); overflow: hidden;">
+            <div class="device-screen" style="background-color: #FFFFFF; overflow: hidden; position: relative;">
                 <div class="player-bg"></div>
 
                 <div class="status-bar" style="--status-color: #1F2937;">
@@ -136,7 +134,7 @@
                         <span>45:00</span>
                     </div>
 
-                    <div class="controls-row">
+                    <div class="controls-row" style="margin-top: 30px;">
                         <button class="nav-player-btn"><i class="fas fa-backward-step"></i></button>
                         <button class="play-pause-btn" onclick="togglePlay(this)">
                             <i class="fas fa-pause"></i>
@@ -144,11 +142,19 @@
                         <button class="nav-player-btn"><i class="fas fa-forward-step"></i></button>
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; margin-top: 60px; padding: 0 20px;">
-                        <i class="fas fa-heart" style="color: #F43F5E; font-size: 20px;"></i>
-                        <i class="fas fa-shuffle" style="color: var(--text-muted); font-size: 20px;"></i>
-                        <i class="fas fa-repeat" style="color: var(--text-muted); font-size: 20px;"></i>
-                        <i class="fas fa-list" style="color: var(--text-muted); font-size: 20px;"></i>
+                    <div id="playerActionRow" style="display: flex; justify-content: space-between; margin: 20px 20px 100px; position: relative; z-index: 999;">
+                        <button class="nav-player-btn" onclick="handlePlayerLike()" style="opacity: 1; padding: 10px;">
+                            <i id="playerHeart" class="far fa-heart" style="color: var(--text-muted); font-size: 20px;"></i>
+                        </button>
+                        <button class="nav-player-btn" id="shuffleBtn" onclick="toggleOption(this)" style="opacity: 0.6; padding: 10px;">
+                            <i class="fas fa-shuffle" style="font-size: 18px;"></i>
+                        </button>
+                        <button class="nav-player-btn" id="repeatBtn" onclick="toggleOption(this)" style="opacity: 0.6; padding: 10px;">
+                            <i class="fas fa-repeat" style="font-size: 18px;"></i>
+                        </button>
+                        <button class="nav-player-btn" onclick="alert('Session Playlist: \n1. Morning Focus \n2. Arctic Dreams')" style="opacity: 0.6; padding: 10px;">
+                            <i class="fas fa-list" style="font-size: 18px;"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -157,10 +163,48 @@
         </div>
     </div>
 
+    <script src="app.js"></script>
     <script>
         const params = new URLSearchParams(window.location.search);
         const title = params.get('title') || 'The Ocean\'s Whisper';
+        const type = params.get('type') || 'Focus';
+        const img = params.get('img') || 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80';
+        const currentStep = params.get('step') || '1';
+        const totalSteps = params.get('totalSteps') || '3';
+        
         document.getElementById('playerTitle').textContent = title;
+        document.getElementById('playerImg').src = img;
+        document.getElementById('playerSubtitle').innerHTML = `<span style="color: var(--primary-purple); font-weight: 700;">${type} Session</span> • Step ${currentStep} of ${totalSteps}`;
+        
+        // Initialize Heart State
+        function initHeart() {
+            const likes = JSON.parse(localStorage.getItem('liked_items')) || [];
+            const isLiked = likes.some(item => item.title === title);
+            const heart = document.getElementById('playerHeart');
+            if (isLiked) {
+                heart.classList.replace('far', 'fas');
+                heart.style.color = '#F43F5E';
+            }
+        }
+
+        function handlePlayerLike() {
+            const heart = document.getElementById('playerHeart');
+            // Using title as unique ID for this prototype
+            toggleLike(title, title, img, '45:00', type, heart);
+        }
+
+        initHeart();
+
+        function toggleOption(btn) {
+            const isActive = btn.style.opacity === "1";
+            if (isActive) {
+                btn.style.opacity = "0.6";
+                btn.style.color = "var(--text-muted)";
+            } else {
+                btn.style.opacity = "1";
+                btn.style.color = "var(--primary-purple)";
+            }
+        }
         
         function togglePlay(btn) {
             const icon = btn.querySelector('i');
@@ -172,7 +216,51 @@
                 document.querySelector('.disc-img').style.animationPlayState = 'running';
             }
         }
+
+        // Auto-Progression: Session Completion
+        function completeSession() {
+            const xpEarned = 150;
+            const currentTotal = parseInt(localStorage.getItem('total_xp')) || 7420;
+            localStorage.setItem('total_xp', currentTotal + xpEarned);
+
+            // Path Progression Logic
+            const currentStepInt = parseInt(currentStep);
+            const savedProgress = parseInt(localStorage.getItem('mindfulness_path_progress')) || 1;
+            
+            // If user completes the latest unlocked step, unlock the next one
+            if (currentStepInt >= savedProgress) {
+                localStorage.setItem('mindfulness_path_progress', currentStepInt + 1);
+            }
+            
+            document.getElementById('rewardModal').style.display = 'flex';
+            document.getElementById('xpValue').innerText = `+${xpEarned} XP`;
+        }
+        
+        // Auto-complete simulation after 10 seconds for demonstration
+        setTimeout(completeSession, 10000);
     </script>
+
+    <!-- Reward Modal -->
+    <div id="rewardModal" style="position: absolute; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); padding: 20px;">
+        <div style="background: var(--card-bg); width: 100%; max-width: 280px; border-radius: 20px; padding: 32px 20px; text-align: center; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+            <h2 style="font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 8px;">Session Complete!</h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">You've taken another step toward inner peace.</p>
+            
+            <div style="display: inline-block; padding: 10px 20px; background: #EEF2FF; border-radius: 100px; color: var(--primary-purple); font-weight: 800; font-size: 18px; margin-bottom: 28px;" id="xpValue">
+                +150 XP
+            </div>
+            
+            <button class="btn-confirm" style="width: 100%; background: #1D9FDA; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-family: 'Outfit'; cursor: pointer; transition: all 0.2s;" onclick="window.location.href='insights.html'">View Progress</button>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes popIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .btn-confirm:active { transform: scale(0.96); }
+    </style>
 </body>
 
 </html>

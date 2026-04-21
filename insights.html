@@ -5,27 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Progress - Getmeds Meditation App</title>
-    <link rel="stylesheet" href="style.css?v=34">
+    <link rel="stylesheet" href="style.css?v=100">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .insights-hero {
-            background: linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 100%);
+            background: var(--card-bg);
             padding: 50px 24px 30px;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
+            border-bottom: 1px solid var(--border-color);
             margin-bottom: 24px;
         }
 
         .growth-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 24px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
             margin-bottom: 16px;
-            border: 1px solid rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
         }
 
         .stat-ring-container {
@@ -100,22 +99,142 @@
             scrollbar-width: none;
         }
 
-        .achievement-badge {
-            flex: 0 0 140px;
-            background: white;
-            padding: 20px;
+
+
+/* Full Calendar Styles */
+        .calendar-card {
+            background: var(--card-bg);
             border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            border: 1px solid rgba(0,0,0,0.02);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
         }
 
-        .achievement-icon {
-            font-size: 28px;
-            margin-bottom: 12px;
+        .calendar-header {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .cal-day-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .cal-date {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            color: var(--primary-purple);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .cal-date.completed {
+            background: #ECFDF5;
+            color: #10B981;
+        }
+
+        .cal-date.today {
+            background: var(--primary-purple);
+            color: white;
+            box-shadow: 0 4px 10px rgba(29, 159, 218, 0.3);
+        }
+
+        .cal-date.selected {
+            border: 2px solid var(--primary-purple);
+        }
+
+        .cal-date.other-month {
+            opacity: 0.2;
+        }
+
+        /* Session Log Styles */
+        .session-log-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-top: 12px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .log-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .log-item:last-child {
+            border-bottom: none;
+        }
+
+
+
+        /* Sparkline Graph Styles */
+        .sparkline-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .sparkline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 60px;
+            overflow: visible;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke: var(--primary-purple);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 4px 8px rgba(29, 159, 218, 0.2));
+            transition: all 1s ease;
+        }
+
+        .chart-area {
+            fill: url(#chartGradient);
+            opacity: 0.1;
+        }
+
+        .chart-dot {
+            fill: var(--primary-purple);
+            stroke: var(--card-bg);
+            stroke-width: 2;
         }
     </style>
 </head>
@@ -124,7 +243,7 @@
     <div class="device-frame">
         <div class="device-bezel">
             <div class="dynamic-island"></div>
-            <div class="device-screen" style="background-color: #F9FAFB;">
+            <div class="device-screen" style="background-color: var(--bg-light);">
                 <!-- Status Bar -->
                 <div class="status-bar" style="--status-color: #1F2937; position: absolute; z-index: 100;">
                     <div class="time">9:41</div>
@@ -146,22 +265,99 @@
                 </div>
 
                 <div class="app-container-scroller" style="padding: 0;">
-                    <!-- Hero Section -->
-                    <div class="insights-hero" style="padding-top: 10px;">
-                        <p style="font-size: 12px; font-weight: 700; color: var(--primary-purple); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Activity Score</p>
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <!-- User Level & XP System -->
+                    <div class="level-card" style="padding: 24px 24px 10px; text-align: left;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
                             <div>
-                                <h1 style="font-size: 36px; font-weight: 800; color: var(--text-main); margin: 0;">82<span style="font-size: 18px; color: var(--text-muted);">/100</span></h1>
-                                <p style="font-size: 13px; color: #10B981; font-weight: 700; margin-top: 4px;">
-                                    <i class="fas fa-arrow-trend-up"></i> 12% increase
-                                </p>
+                                <span id="user-level-tag" style="font-size: 11px; font-weight: 800; color: var(--primary-purple); letter-spacing: 0.5px;">Level 15 • Zen Lord</span>
+                                <h1 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin: 2px 0 0;"><span id="total-points">7,420</span> <span style="font-size: 14px; color: var(--text-muted); font-weight: 600;">XP</span></h1>
                             </div>
-                            <div class="stat-ring-container">
-                                <svg class="stat-ring-svg">
-                                    <circle class="stat-ring-bg" cx="40" cy="40" r="36"></circle>
-                                    <circle class="stat-ring-progress" cx="40" cy="40" r="36"></circle>
-                                </svg>
-                                <div style="position: absolute; font-size: 11px; font-weight: 800; color: var(--text-main); text-align: center; line-height: 1;">Lv. 14<br><span style="font-size: 8px; font-weight: 600; color: var(--text-muted);">Zen</span></div>
+                            <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
+                                <span id="current-xp-range">420</span> / 1000 XP
+                            </div>
+                        </div>
+                        <div style="height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                            <div id="xp-progress-bar" style="width: 42%; height: 100%; background: linear-gradient(90deg, #1D9FDA, #8B5CF6); border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                        </div>
+                    </div>
+
+                    <!-- Getmeds Mind-Body Wellness Score -->
+                    <div class="insights-hero" style="padding-top: 10px; position: relative; text-align: center;">
+                        <p style="font-size: 11px; font-weight: 800; color: var(--primary-purple); letter-spacing: 0.5px; margin-bottom: 20px;">Mind-Body Wellness Score</p>
+                        
+                        <div class="score-gauge-wrap" style="position: relative; width: 180px; height: 180px; margin: 0 auto 24px;">
+                            <svg viewBox="0 0 100 100" style="transform: rotate(-90deg); width: 100%; height: 100%;">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#E5E7EB" stroke-width="8" />
+                                <circle id="score-circle" cx="50" cy="50" r="45" fill="none" stroke="var(--primary-purple)" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="70" stroke-linecap="round" style="transition: stroke-dashoffset 1.5s ease-out;" />
+                            </svg>
+                            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <h1 id="total-score" style="font-size: 48px; font-weight: 900; color: var(--text-main); margin: 0; line-height: 1;">78</h1>
+                                <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Overall</span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; padding: 0 10px; margin-bottom: 24px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 16px; font-weight: 800; color: var(--text-main);" id="mood-stat">70%</div>
+                                <div style="font-size: 9px; color: var(--text-muted); font-weight: 700;">Mood</div>
+                            </div>
+                            <div style="text-align: center; border-left: 1px solid #E5E7EB; border-right: 1px solid #E5E7EB; padding: 0 24px;">
+                                <div style="font-size: 16px; font-weight: 800; color: var(--text-main);" id="sleep-stat">7.5h</div>
+                                <div style="font-size: 9px; color: var(--text-muted); font-weight: 700;">Sleep</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 16px; font-weight: 800; color: var(--text-main);" id="mind-stat">22m</div>
+                                <div style="font-size: 9px; color: var(--text-muted); font-weight: 700;">Mindful</div>
+                            </div>
+                        </div>
+
+                        <!-- Contextual Consultation CTA (mWell Unified Booking Style) -->
+                        <div id="low-score-cta" style="background: var(--card-bg); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.03); cursor: pointer;" onclick="window.location.href='teletherapy.html'">
+                            <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: #FFF1F2; color: #F43F5E; display: flex; align-items: center; justify-content: center; font-size: 14px;">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <div>
+                                    <p style="font-size: 13px; font-weight: 700; color: var(--text-main); margin: 0;">Talk to a Specialist</p>
+                                    <p style="font-size: 10px; color: var(--text-muted); margin: 0;">Improve your score with expert help</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right" style="font-size: 12px; color: #F43F5E;"></i>
+                        </div>
+                    </div>
+
+                    <!-- Wellness Trends Graph -->
+                    <div style="padding: 0 24px;">
+                        <div class="sparkline-card">
+                            <div class="sparkline-header">
+                                <div>
+                                    <h3 style="font-size: 15px; font-weight: 800; color: var(--text-main); margin: 0;">Weekly Mood Trend</h3>
+                                    <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Your mental clarity improved by 12%</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="font-size: 14px; font-weight: 800; color: #10B981;">+12%</span>
+                                    <i class="fas fa-arrow-up" style="font-size: 10px; color: #10B981; margin-left: 4px;"></i>
+                                </div>
+                            </div>
+                            <svg class="chart-svg" viewBox="0 0 300 60">
+                                <defs>
+                                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="var(--primary-purple)" />
+                                        <stop offset="100%" stop-color="transparent" />
+                                    </linearGradient>
+                                </defs>
+                                <path class="chart-area" d="M0,60 L0,40 L50,45 L100,25 L150,35 L200,15 L250,20 L300,5 L300,60 Z" />
+                                <path class="chart-line" d="M0,40 L50,45 L100,25 L150,35 L200,15 L250,20 L300,5" />
+                                <circle class="chart-dot" cx="300" cy="5" r="4" />
+                            </svg>
+                            <div style="display: flex; justify-content: space-between; margin-top: 12px;">
+                                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);">MON</span>
+                                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);">TUE</span>
+                                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);">WED</span>
+                                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);">THU</span>
+                                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);">FRI</span>
+                                <span style="font-size: 9px; font-weight: 700; color: var(--text-muted);">SAT</span>
+                                <span style="font-size: 9px; font-weight: 700; color: var(--text-main);">TODAY</span>
                             </div>
                         </div>
                     </div>
@@ -185,34 +381,94 @@
                             </div>
                         </div>
 
-                        <!-- Weekly Consistency -->
-                        <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 16px;">Weekly Consistency</h3>
-                        <div class="growth-card" style="border-radius: 15px;">
-                            <div class="weekly-dot-row">
-                                <div class="day-dot-group"><div class="day-dot completed"><i class="fas fa-check"></i></div><span style="font-size: 10px; color: var(--text-muted);">M</span></div>
-                                <div class="day-dot-group"><div class="day-dot completed"><i class="fas fa-check"></i></div><span style="font-size: 10px; color: var(--text-muted);">T</span></div>
-                                <div class="day-dot-group"><div class="day-dot completed"><i class="fas fa-check"></i></div><span style="font-size: 10px; color: var(--text-muted);">W</span></div>
-                                <div class="day-dot-group"><div class="day-dot completed"><i class="fas fa-check"></i></div><span style="font-size: 10px; color: var(--text-muted);">T</span></div>
-                                <div class="day-dot-group"><div class="day-dot">F</div><span style="font-size: 10px; color: var(--text-muted);">F</span></div>
-                                <div class="day-dot-group"><div class="day-dot">S</div><span style="font-size: 10px; color: var(--text-muted);">S</span></div>
-                                <div class="day-dot-group"><div class="day-dot">S</div><span style="font-size: 10px; color: var(--text-muted);">S</span></div>
+                        <!-- Monthly Progress Calendar -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin: 0;">Monthly Progress</h3>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-chevron-left" onclick="changeMonth(-1)" style="font-size: 12px; color: var(--text-muted); cursor: pointer; padding: 4px;"></i>
+                                <span id="current-month-year" style="font-size: 13px; font-weight: 800; color: var(--primary-purple); min-width: 100px; text-align: center;">April 2026</span>
+                                <i class="fas fa-chevron-right" onclick="changeMonth(1)" style="font-size: 12px; color: var(--text-muted); cursor: pointer; padding: 4px;"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-card">
+                            <div class="calendar-grid" id="calendarGrid">
+                                <!-- Labels -->
+                                <div class="cal-day-label">Mo</div>
+                                <div class="cal-day-label">Tu</div>
+                                <div class="cal-day-label">We</div>
+                                <div class="cal-day-label">Th</div>
+                                <div class="cal-day-label">Fr</div>
+                                <div class="cal-day-label">Sa</div>
+                                <div class="cal-day-label">Su</div>
+                                <!-- Dates injected by JS -->
                             </div>
                         </div>
 
-                        <!-- Sleep Tracker -->
-                        <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin: 24px 0 16px;">Sleep Insights</h3>
-                        <div class="growth-card" style="display: flex; gap: 20px; align-items: center; background: linear-gradient(135deg, #FFF 0%, #FAFAFF 100%); border-radius: 15px;">
-                            <div style="flex: 1;">
-                                <span style="font-size: 22px; font-weight: 800; color: var(--text-main); display: block;">7h 45m</span>
-                                <span style="font-size: 12px; color: var(--text-muted);">Average Rest</span>
-                                <div style="display: flex; gap: 4px; margin-top: 8px;">
-                                    <div style="height: 4px; flex: 1; background: var(--primary-purple); border-radius: 2px;"></div>
-                                    <div style="height: 4px; flex: 1; background: var(--primary-purple); border-radius: 2px;"></div>
-                                    <div style="height: 4px; flex: 1; background: var(--primary-purple); border-radius: 2px; opacity: 0.2;"></div>
+                        <!-- Daily Session Log Breakdown -->
+                        <div id="sessionLog" class="session-log-card">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px;">
+                                <h4 style="font-size: 14px; font-weight: 800; color: var(--text-main); margin: 0;">Activity: <span id="selected-date-str"></span></h4>
+                                <span id="session-count" style="font-size: 11px; font-weight: 700; color: var(--primary-purple);">2 Sessions</span>
+                            </div>
+                            <div id="logItemsContainer">
+                                <!-- Log items injected by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Daily Activity Widgets (Super App Utility) -->
+                        <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin: 24px 0 16px;">Daily Activity</h3>
+                        <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+                            <!-- Sleep Quality Widget -->
+                            <div class="growth-card" style="flex: 1; margin-bottom: 0; padding: 20px; border-radius: 15px; position: relative; overflow: hidden;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #EEF2FF; color: #4F46E5; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-moon"></i>
+                                    </div>
+                                    <span style="font-size: 10px; font-weight: 700; color: #10B981;">Good</span>
+                                </div>
+                                <span style="font-size: 20px; font-weight: 850; display: block; color: var(--text-main);">7h 45m</span>
+                                <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 12px;">Sleep Duration</span>
+                                <div style="height: 6px; background: var(--border-color); border-radius: 3px; overflow: hidden;">
+                                    <div style="width: 85%; height: 100%; background: #4F46E5; border-radius: 3px;"></div>
                                 </div>
                             </div>
-                            <div style="width: 50px; height: 50px; border-radius: 12px; background: #F5F3FF; display: flex; align-items: center; justify-content: center; color: #8B5CF6; font-size: 20px;">
-                                <i class="fas fa-moon"></i>
+
+                            <!-- Mindful Steps Widget -->
+                            <div class="growth-card" style="flex: 1; margin-bottom: 0; padding: 20px; border-radius: 15px; position: relative;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #ECFDF5; color: #10B981; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-person-walking"></i>
+                                    </div>
+                                    <span style="font-size: 10px; font-weight: 700; color: var(--primary-purple);">82%</span>
+                                </div>
+                                <span style="font-size: 20px; font-weight: 850; display: block; color: var(--text-main);">4,120</span>
+                                <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 12px;">Mindful Steps</span>
+                                <div style="height: 6px; background: var(--border-color); border-radius: 3px; overflow: hidden;">
+                                    <div style="width: 82%; height: 100%; background: #10B981; border-radius: 3px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Health Row -->
+                        <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+                            <div class="growth-card" style="flex: 1; margin-bottom: 0; padding: 16px; border-radius: 18px; display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 32px; height: 32px; border-radius: 8px; background: #FFF1F2; color: #F43F5E; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <div>
+                                    <span style="font-size: 15px; font-weight: 850; display: block;">72 <span style="font-size: 10px; font-weight: 600;">BPM</span></span>
+                                    <span style="font-size: 9px; color: var(--text-muted); font-weight: 700;">Heart Rate</span>
+                                </div>
+                            </div>
+                            <div class="growth-card" style="flex: 1; margin-bottom: 0; padding: 16px; border-radius: 15px; display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF2F2; color: #EF4444; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div>
+                                    <span style="font-size: 15px; font-weight: 850; display: block;">94%</span>
+                                    <span style="font-size: 9px; color: var(--text-muted); font-weight: 700;">Focus Score</span>
+                                </div>
                             </div>
                         </div>
 
@@ -245,13 +501,17 @@
                         <i class="fas fa-home"></i>
                         <span>Home</span>
                     </div>
-                    <div class="nav-item onclick="window.location.href='library.html'">
-                        <i class="fas fa-th-large"></i>
-                        <span>Library</span>
-                    </div>
                     <div class="nav-item active">
-                        <i class="fas fa-chart-bar"></i>
+                        <i class="fa-solid fa-chart-pie"></i>
                         <span>Insights</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='workbook.html'">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <span>Workbook</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='library.html'">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Library</span>
                     </div>
                     <div class="nav-item" onclick="window.location.href='profile.html'">
                         <i class="fas fa-user"></i>
@@ -263,6 +523,156 @@
             </div>
         </div>
     </div>
+    <script>
+        function calculateWellnessScore() {
+            // Simulated / LocalStorage metrics
+            const dailyMood = localStorage.getItem('daily_mood') || 'Good';
+            const moodScores = { 'Amazing': 100, 'Good': 85, 'Neutral': 70, 'Sad': 50, 'Stressed': 40 };
+            
+            const moodScore = moodScores[dailyMood];
+            const sleepScore = 90; // Simulated (7.5h / 8h)
+            const mindScore = 75; // Simulated (22m / 30m goal)
+            
+            const total = Math.round((moodScore + sleepScore + mindScore) / 3);
+            
+            // Update UI
+            document.getElementById('total-score').innerText = total;
+            document.getElementById('mood-stat').innerText = moodScore + "%";
+            
+            // Update Gauge Circle
+            // Circumference is ~283. Offset = 283 - (283 * total / 100)
+            const offset = 283 - (283 * total / 100);
+            document.getElementById('score-circle').style.strokeDashoffset = offset;
+
+            // Change color based on score
+            const circle = document.getElementById('score-circle');
+            if (total < 60) circle.style.stroke = "#EF4444";
+            else if (total < 80) circle.style.stroke = "#F59E0B";
+            else circle.style.stroke = "#10B981";
+        }
+
+        function updateLevels() {
+            const totalXP = parseInt(localStorage.getItem('total_xp')) || 7420;
+            const level = Math.floor(totalXP / 500);
+            const xpInLevel = totalXP % 500;
+            const xpPercent = (xpInLevel / 500) * 100;
+            
+            const levelTitles = ["Novice", "Seeker", "Calm Apprentice", "Mindful Walker", "Zen Initiate", "Serenity Scout", "Inner Peacekeeper", "Soul Navigator", "Focus Guard", "Clarity Sage", "Balance Weaver", "Spirit Hunter", "Ethereal Guide", "Wisdom Keeper", "Mindfulness Master", "Zen Lord"];
+            const currentTitle = levelTitles[Math.min(level, levelTitles.length - 1)];
+            
+            document.getElementById('total-points').innerText = totalXP.toLocaleString();
+            document.getElementById('user-level-tag').innerText = `Level ${level} • ${currentTitle}`;
+            document.getElementById('current-xp-range').innerText = xpInLevel;
+            document.getElementById('xp-progress-bar').style.width = xpPercent + "%";
+        }
+
+        let viewDate = new Date(); // Start with current month
+
+        function changeMonth(dir) {
+            viewDate.setMonth(viewDate.getMonth() + dir);
+            renderCalendar();
+            document.getElementById('sessionLog').style.display = 'none'; // Hide log on month change
+        }
+
+        function renderCalendar() {
+            const year = viewDate.getFullYear();
+            const month = viewDate.getMonth();
+            const today = new Date();
+            
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.getElementById('current-month-year').innerText = `${monthNames[month]} ${year}`;
+
+            const calendarGrid = document.getElementById('calendarGrid');
+            const firstDay = new Date(year, month, 1).getDay(); // 0 (Sun) to 6 (Sat)
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Clear previous dates (keep labels)
+            const labels = calendarGrid.querySelectorAll('.cal-day-label');
+            calendarGrid.innerHTML = '';
+            labels.forEach(l => calendarGrid.appendChild(l));
+
+            // Adjust firstDay for Monday start (Monday=0, Sunday=6)
+            let startOffset = firstDay === 0 ? 6 : firstDay - 1;
+
+            for (let i = 0; i < startOffset; i++) {
+                calendarGrid.appendChild(document.createElement('div'));
+            }
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateEl = document.createElement('div');
+                dateEl.className = 'cal-date';
+                dateEl.innerText = d;
+
+                // Check for Today
+                if (d === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dateEl.classList.add('today');
+                }
+
+                // Completed Simulation (Only for PAST or PRESENT dates)
+                const isPastOrToday = (year < today.getFullYear()) || 
+                                     (year === today.getFullYear() && month < today.getMonth()) || 
+                                     (year === today.getFullYear() && month === today.getMonth() && d <= today.getDate());
+
+                if (isPastOrToday && (d % 3 === 0 || d % 7 === 0)) {
+                    dateEl.classList.add('completed');
+                }
+
+                dateEl.onclick = () => showDayDetails(d, month, year, dateEl);
+                calendarGrid.appendChild(dateEl);
+            }
+        }
+
+        function showDayDetails(day, month, year, element) {
+            // UI Feedback: Highlight selected date
+            document.querySelectorAll('.cal-date').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            document.getElementById('selected-date-str').innerText = `${monthNames[month]} ${day}, ${year}`;
+            
+            const logCard = document.getElementById('sessionLog');
+            logCard.style.display = 'block';
+
+            const container = document.getElementById('logItemsContainer');
+            container.innerHTML = '';
+
+            // Mocked session data for the selected day
+            const mockSessions = [
+                { time: '08:30 AM', title: 'Morning Focus', dur: '10m', type: 'Meditation', icon: 'fa-sun', color: '#F59E0B' },
+                { time: '09:45 PM', title: 'Deep Sleep', dur: '25m', type: 'Audio Story', icon: 'fa-moon', color: '#6366F1' }
+            ];
+
+            // If day is not "completed", show empty state or single mock item
+            const displaySessions = (day % 3 === 0 || day % 7 === 0) ? mockSessions : [{ time: '---', title: 'No Sessions Logged', dur: '--', type: 'Rest Day', icon: 'fa-bed', color: '#94A3B8' }];
+
+            document.getElementById('session-count').innerText = displaySessions.length + (displaySessions[0].title === 'No Sessions Logged' ? '' : ' Sessions');
+
+            displaySessions.forEach(session => {
+                const item = document.createElement('div');
+                item.className = 'log-item';
+                item.innerHTML = `
+                    <div style="width: 38px; height: 38px; border-radius: 10px; background: ${session.color}15; color: ${session.color}; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        <i class="fas ${session.icon}"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <p style="font-size: 13px; font-weight: 700; color: var(--text-main); margin: 0;">${session.title}</p>
+                        <p style="font-size: 10px; color: var(--text-muted); margin: 0;">${session.type} • ${session.dur}</p>
+                    </div>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">${session.time}</span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        window.onload = () => {
+            setTimeout(() => {
+                calculateWellnessScore();
+                updateLevels();
+                renderCalendar();
+            }, 300);
+        };
+    </script>
+    <script src="app.js"></script>
 </body>
 
 </html>

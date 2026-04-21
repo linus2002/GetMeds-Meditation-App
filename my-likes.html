@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Likes - Getmeds Meditation App</title>
+    <link rel="stylesheet" href="style.css?v=100">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .likes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 20px 24px 100px;
+        }
+
+        .like-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s;
+        }
+
+        .like-card:active { transform: scale(0.98); }
+
+        .like-thumb {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            background: #F3F4F6;
+        }
+
+        .like-info {
+            padding: 12px;
+        }
+
+        .like-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .like-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 100px 40px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            color: var(--border-color);
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light);">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: var(--text-main); position: absolute; z-index: 100;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Navbar -->
+                <div class="main-top-navbar" style="background: transparent; border: none; padding-top: 50px;">
+                    <div class="top-nav-left" onclick="history.back()" style="cursor: pointer;">
+                        <i class="fas fa-chevron-left" style="font-size: 18px; color: var(--text-main);"></i>
+                    </div>
+                    <div class="top-nav-center">
+                        <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0;">My Likes</h2>
+                    </div>
+                    <div class="top-nav-right">
+                        <i class="fas fa-search" style="font-size: 18px; color: var(--text-main); cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <div class="app-container-scroller" style="padding: 0;">
+                    <div id="likesContainer" class="likes-grid">
+                        <!-- Liked items will be injected here -->
+                    </div>
+                    <div id="noLikes" class="empty-state" style="display: none;">
+                        <div class="empty-icon"><i class="fas fa-heart-broken"></i></div>
+                        <h3 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">No likes yet</h3>
+                        <p style="font-size: 14px; color: var(--text-muted);">Content you heart will appear here.</p>
+                        <button onclick="window.location.href='library.html'" style="margin-top: 24px; padding: 12px 24px; background: var(--primary-purple); color: white; border: none; border-radius: 12px; font-weight: 700;">Explore Library</button>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <nav class="bottom-nav">
+                    <div class="nav-item" onclick="window.location.href='home.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='insights.html'">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Insights</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='workbook.html'">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <span>Workbook</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='library.html'">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Library</span>
+                    </div>
+                    <div class="nav-item active" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                </nav>
+
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        function renderLikes() {
+            const likes = JSON.parse(localStorage.getItem('liked_items')) || [];
+            const container = document.getElementById('likesContainer');
+            const emptyState = document.getElementById('noLikes');
+
+            if (likes.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            container.style.display = 'grid';
+            emptyState.style.display = 'none';
+            container.innerHTML = '';
+
+            likes.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'like-card';
+                card.onclick = () => window.location.href = `audio-player.html?title=${encodeURIComponent(item.title)}`;
+                card.innerHTML = `
+                    <img src="${item.img || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=400'}" alt="${item.title}" class="like-thumb">
+                    <div class="like-info">
+                        <h4 class="like-title">${item.title}</h4>
+                        <div class="like-meta">
+                            <span>${item.dur}</span>
+                            <span style="color: var(--primary-purple);">${item.cat}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderLikes);
+    </script>
+</body>
+</html>

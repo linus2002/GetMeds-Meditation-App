@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Well-being Assessment - Getmeds Meditation App</title>
+    <meta name="description" content="Initial well-being assessment to recommend personalized meditations.">
+    <link rel="stylesheet" href="style.css?v=44">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .assessment-container {
+            padding: 60px 24px 32px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-between;
+        }
+
+        .progress-bar-wrap {
+            width: 100%;
+            height: 6px;
+            background: #E5E7EB;
+            border-radius: 3px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary-purple);
+            width: 25%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .question-card {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .question-card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .q-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .q-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .option-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            background: white;
+            border: 2px solid #F3F4F6;
+            padding: 18px 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-item:hover {
+            border-color: var(--primary-purple);
+            background: #F5F3FF;
+        }
+
+        .option-item.selected {
+            border-color: var(--primary-purple);
+            background: #F5F3FF;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+        }
+
+        .option-icon {
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .btn-prev {
+            width: 56px;
+            height: 56px;
+            border-radius: 15px;
+            border: 2px solid #F3F4F6;
+            background: white;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-prev:hover {
+            background: #F9FAFB;
+            border-color: #E5E7EB;
+        }
+
+        .btn-next {
+            min-width: 200px;
+            height: 56px;
+            border-radius: 15px;
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            padding: 0 32px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-next:disabled {
+            background: #D1D5DB;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Result Section */
+        .result-screen {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .result-screen.active {
+            display: block;
+        }
+
+        .lottie-placeholder {
+            width: 120px;
+            height: 120px;
+            background: #F5F3FF;
+            border-radius: 50%;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--primary-purple);
+        }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light);">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <div class="assessment-container">
+                    <!-- Progress Bar -->
+                    <div id="quiz-ui">
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" id="progressBar" style="width: 16.6%;"></div>
+                        </div>
+
+                        <!-- Step 1: Mood -->
+                        <div class="question-card active" id="step1">
+                            <h1 class="q-title">Little interest or pleasure in doing things?</h1>
+                            <p class="q-subtitle">Over the last 2 weeks, how often have you been bothered by this?</p>
+                            <div class="option-list">
+                                <div class="option-item" onclick="selectScore(1, 0, 'Not at all')">
+                                    <div class="option-icon" style="background: #F3F4F6; color: #6B7280;"><i class="fas fa-circle"></i></div>
+                                    <span class="option-text">Not at all</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(1, 1, 'Several days')">
+                                    <div class="option-icon" style="background: #FDF2F8; color: #DB2777;"><i class="fas fa-adjust"></i></div>
+                                    <span class="option-text">Several days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(1, 2, 'More than half the days')">
+                                    <div class="option-icon" style="background: #F5F3FF; color: #8B5CF6;"><i class="fas fa-chart-pie"></i></div>
+                                    <span class="option-text">More than half the days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(1, 3, 'Nearly every day')">
+                                    <div class="option-icon" style="background: #FFF1F2; color: #F43F5E;"><i class="fas fa-clock"></i></div>
+                                    <span class="option-text">Nearly every day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Anxiety -->
+                        <div class="question-card" id="step2">
+                            <h1 class="q-title">Feeling nervous, anxious, or on edge?</h1>
+                            <p class="q-subtitle">Reflect on your mental state over the past 14 days.</p>
+                            <div class="option-list">
+                                <div class="option-item" onclick="selectScore(2, 0, 'Not at all')">
+                                    <span class="option-text">Not at all</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(2, 1, 'Several days')">
+                                    <span class="option-text">Several days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(2, 2, 'More than half the days')">
+                                    <span class="option-text">More than half the days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(2, 3, 'Nearly every day')">
+                                    <span class="option-text">Nearly every day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Worry -->
+                        <div class="question-card" id="step3">
+                            <h1 class="q-title">Not being able to stop or control worrying?</h1>
+                            <p class="q-subtitle">This helps us identify patterns of general anxiety.</p>
+                            <div class="option-list">
+                                <div class="option-item" onclick="selectScore(3, 0, 'Not at all')">
+                                    <span class="option-text">Not at all</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(3, 1, 'Several days')">
+                                    <span class="option-text">Several days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(3, 2, 'More than half the days')">
+                                    <span class="option-text">More than half the days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(3, 3, 'Nearly every day')">
+                                    <span class="option-text">Nearly every day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Sleep -->
+                        <div class="question-card" id="step4">
+                            <h1 class="q-title">Trouble falling or staying asleep?</h1>
+                            <p class="q-subtitle">Or sleeping too much? Select the most frequent occurrence.</p>
+                            <div class="option-list">
+                                <div class="option-item" onclick="selectScore(4, 0, 'Not at all')">
+                                    <span class="option-text">Not at all</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(4, 1, 'Several days')">
+                                    <span class="option-text">Several days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(4, 2, 'More than half the days')">
+                                    <span class="option-text">More than half the days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(4, 3, 'Nearly every day')">
+                                    <span class="option-text">Nearly every day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Energy -->
+                        <div class="question-card" id="step5">
+                            <h1 class="q-title">Feeling tired or having little energy?</h1>
+                            <p class="q-subtitle">Physical fatigue often relates to emotional wellbeing.</p>
+                            <div class="option-list">
+                                <div class="option-item" onclick="selectScore(5, 0, 'Not at all')">
+                                    <span class="option-text">Not at all</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(5, 1, 'Several days')">
+                                    <span class="option-text">Several days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(5, 2, 'More than half the days')">
+                                    <span class="option-text">More than half the days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(5, 3, 'Nearly every day')">
+                                    <span class="option-text">Nearly every day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 6: Focus -->
+                        <div class="question-card" id="step6">
+                            <h1 class="q-title">Trouble concentrating on things?</h1>
+                            <p class="q-subtitle">Like reading or watching television.</p>
+                            <div class="option-list">
+                                <div class="option-item" onclick="selectScore(6, 0, 'Not at all')">
+                                    <span class="option-text">Not at all</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(6, 1, 'Several days')">
+                                    <span class="option-text">Several days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(6, 2, 'More than half the days')">
+                                    <span class="option-text">More than half the days</span>
+                                </div>
+                                <div class="option-item" onclick="selectScore(6, 3, 'Nearly every day')">
+                                    <span class="option-text">Nearly every day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nav-buttons">
+                            <button class="btn-prev" onclick="prevStep()" id="prevBtn" style="display: none;"><i class="fas fa-arrow-left"></i></button>
+                            <button class="btn-next" onclick="nextStep()" id="nextBtn" disabled>Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Result Screen -->
+                    <div class="result-screen" id="resultCard">
+                        <div id="loadingResults" style="margin-bottom: 32px;">
+                            <div class="lottie-placeholder" style="animation: pulse 1.5s infinite;">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h2 style="font-size: 20px; font-weight: 700;">Processing Diagnosis...</h2>
+                        </div>
+                        
+                        <div id="finalResults" style="display: none;">
+                            <div class="lottie-placeholder" id="scoreIcon" style="background: #ECFDF5; color: #10B981;">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <h2 style="font-size: 22px; font-weight: 850; margin-bottom: 8px;" id="wellbeingTitle">Solid Well-being</h2>
+                            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 32px;" id="wellbeingDesc"></p>
+                            
+                            <div style="text-align: left; margin-bottom: 24px;">
+                                <p style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;">Recommended Modules</p>
+                                <div id="recContainer"></div>
+                            </div>
+
+                            <div id="directoryCTA" style="display: none; padding: 16px; background: #FFF1F2; border-radius: 15px; border: 1px solid #FFE4E6; margin-bottom: 24px; text-align: left;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <i class="fas fa-info-circle" style="color: #F43F5E;"></i>
+                                    <div>
+                                        <p style="font-size: 13px; font-weight: 700; color: #991B1B; margin: 0;">Support available</p>
+                                        <p style="font-size: 11px; color: #BE123C; margin: 2px 0 0;">We recommend visiting our professional help directory.</p>
+                                    </div>
+                                </div>
+                                <button onclick="window.location.href='directory.html'" style="margin-top: 12px; background: #F43F5E; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-size: 11px; font-weight: 700;">View Help Directory</button>
+                            </div>
+
+                            <button class="btn-next" style="width: 100%; justify-content: center;" onclick="window.location.href='home.html'">Complete Assessment</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 6;
+        const scores = {};
+
+        function selectScore(step, score, label) {
+            scores[step] = score;
+            
+            // UI Feedback
+            const stepDiv = document.getElementById(`step${step}`);
+            const options = stepDiv.querySelectorAll('.option-item');
+            options.forEach(opt => {
+                if (opt.querySelector('.option-text').innerText === label) opt.classList.add('selected');
+                else opt.classList.remove('selected');
+            });
+
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep++;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                
+                const fill = (currentStep / totalSteps) * 100;
+                document.getElementById('progressBar').style.width = `${fill}%`;
+                document.getElementById('prevBtn').style.display = 'flex';
+                
+                if (!scores[currentStep]) document.getElementById('nextBtn').disabled = true;
+            } else {
+                showDeepDiagnosis();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                
+                const fill = (currentStep / totalSteps) * 100;
+                document.getElementById('progressBar').style.width = `${fill}%`;
+                
+                if (currentStep === 1) document.getElementById('prevBtn').style.display = 'none';
+                document.getElementById('nextBtn').disabled = false;
+            }
+        }
+
+        function showDeepDiagnosis() {
+            document.getElementById('quiz-ui').style.display = 'none';
+            document.getElementById('resultCard').classList.add('active');
+            
+            // Calculate total score
+            let total = 0;
+            for (let s in scores) total += scores[s];
+
+            // Simulation of "Processing"
+            setTimeout(() => {
+                document.getElementById('loadingResults').style.display = 'none';
+                document.getElementById('finalResults').style.display = 'block';
+                
+                let title = "";
+                let desc = "";
+                let modules = [];
+                let color = "#10B981";
+                let icon = "fa-award";
+
+                if (total <= 5) {
+                    title = "Optimal Well-being";
+                    desc = "Your results suggest a healthy and stable psychological state. Maintaining daily focus and mindfulness will help keep this balance.";
+                    modules = [
+                        { name: "Focus Flow", sub: "12 min • Peak Performance", url: "home.html" },
+                        { name: "Morning Energy", sub: "5 min • Vitality", url: "home.html" }
+                    ];
+                } else if (total <= 10) {
+                    title = "Moderate Stress";
+                    desc = "You're experiencing some emotional weight. Our targeted modules for stress management and cognitive reframing can help you find balance.";
+                    modules = [
+                        { name: "Deep Release", sub: "8 min • Stress Relief", url: "home.html" },
+                        { name: "Balanced Mind", sub: "15 min • CBT Guided", url: "home.html" }
+                    ];
+                    color = "#F59E0B";
+                    icon = "fa-leaf";
+                } else {
+                    title = "Priority Care Needed";
+                    desc = "Your screening indicates high intensity in thoughts and feelings. We recommend focusing on deep calming exercises and seeking professional support.";
+                    modules = [
+                        { name: "Anxiety Shield", sub: "20 min • Protective Bloom", url: "home.html" },
+                        { name: "Breath for Panic", sub: "3 min • Emergency Calm", url: "home.html" }
+                    ];
+                    color = "#EF4444";
+                    icon = "fa-heartbeat";
+                    document.getElementById('directoryCTA').style.display = 'block';
+                }
+
+                document.getElementById('wellbeingTitle').innerText = title;
+                document.getElementById('wellbeingTitle').style.color = color;
+                document.getElementById('wellbeingDesc').innerText = desc;
+                document.getElementById('scoreIcon').style.background = `${color}15`;
+                document.getElementById('scoreIcon').style.color = color;
+                document.getElementById('scoreIcon').querySelector('i').className = `fas ${icon}`;
+
+                document.getElementById('recContainer').innerHTML = modules.map(m => `
+                    <div class="option-item" style="margin-bottom: 8px; border-color: #F1F5F9;" onclick="window.location.href='${m.url}'">
+                        <div class="option-icon" style="background: ${color}10; color: ${color};"><i class="fas fa-play"></i></div>
+                        <div style="flex: 1;">
+                            <span class="option-text">${m.name}</span>
+                            <p style="font-size: 11px; color: var(--text-muted); margin: 2px 0 0;">${m.sub}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>

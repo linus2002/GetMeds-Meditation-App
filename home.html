@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Getmeds Meditation App - Home</title>
     <meta name="description" content="Home for your meditation journey.">
-    <link rel="stylesheet" href="style.css?v=43">
+    <link rel="stylesheet" href="style.css?v=100">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -62,10 +62,8 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            background: white;
             padding: 14px;
             border-radius: 15px;
-            border: 1px solid #F3F4F6;
             margin-bottom: 12px;
             cursor: pointer;
             transition: all 0.2s;
@@ -73,13 +71,12 @@
 
         .category-list-item:active {
             transform: scale(0.98);
-            background: #F9FAFB;
         }
 
         .cat-icon-box {
             width: 52px;
             height: 52px;
-            border-radius: 12px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -92,7 +89,7 @@
     <div class="device-frame">
         <div class="device-bezel">
             <div class="dynamic-island"></div>
-            <div class="device-screen" style="background-color: #F9FAFB;">
+            <div class="device-screen" style="background-color: var(--bg-light);">
                 <!-- Status Bar -->
                 <div class="status-bar" style="--status-color: #1F2937; position: absolute; z-index: 100;">
                     <div class="time">9:41</div>
@@ -118,11 +115,63 @@
                 <div id="home-view" class="view-container active">
                     <div class="app-container-scroller" style="padding-bottom: 100px;">
                         
+                        <!-- Dynamic Greeting -->
+                        <div class="greeting-wrap" style="padding: 32px 24px 0;">
+                            <h1 style="font-size: 26px; font-weight: 800; color: var(--text-main); margin: 0; min-height: 34px;">
+                                <span id="typing-greeting"></span><span class="typing-cursor">|</span>
+                            </h1>
+                            <p style="font-size: 13px; color: var(--text-muted); margin: 6px 0 0; font-weight: 500;">Ready to find your inner calm today?</p>
+                        </div>
+
                         <!-- Search Bar -->
                         <div class="search-bar-wrap" style="padding: 24px 24px 0;">
                             <div class="input-group">
                                 <i class="fas fa-search"></i>
-                                <input type="text" placeholder="Search meditations..." style="outline: none;">
+                                <input type="text" id="home-search-input" placeholder="Search meditations..." style="outline: none;">
+                            </div>
+                        </div>
+
+                        <!-- Assessment CTA -->
+                        <div style="padding: 24px 24px 10px;">
+                            <div style="background: linear-gradient(135deg, var(--primary-purple) 0%, #6D28D9 100%); padding: 24px; border-radius: 15px; color: white; position: relative; overflow: hidden; box-shadow: 0 15px 30px rgba(139, 92, 246, 0.2);" onclick="window.location.href='assessment.html'">
+                                <div style="position: relative; z-index: 2;">
+                                    <h3 style="font-size: 18px; font-weight: 800; margin: 0 0 8px;">How are you today?</h3>
+                                    <p style="font-size: 12px; opacity: 0.9; margin: 0 0 20px; line-height: 1.5; max-width: 80%;">Discover your well-being score and receive personalized guidance.</p>
+                                    <button style="background: white; color: var(--primary-purple); border: none; padding: 10px 20px; border-radius: 15px; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                                        Start Assessment <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                                <div style="position: absolute; right: -20px; bottom: -20px; font-size: 100px; opacity: 0.1; color: white;">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Workbook CTA -->
+                        <div style="padding: 0 24px 10px;">
+                            <div class="exercise-card" style="padding: 20px; border-radius: 15px; display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.03);" onclick="window.location.href='workbook.html'">
+                                <div style="width: 48px; height: 48px; border-radius: 12px; background: #FFF1F2; color: #F43F5E; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                                    <i class="fas fa-pen-nib"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <span style="font-size: 10px; font-weight: 700; color: #F43F5E; text-transform: uppercase;">ACTIVE CARE</span>
+                                    <h4 style="font-size: 14px; font-weight: 800; color: var(--text-main); margin: 0;">Mindful Workbook</h4>
+                                </div>
+                                <i class="fas fa-chevron-right" style="color: #CBD5E1; font-size: 12px;"></i>
+                            </div>
+                        </div>
+
+                        <!-- Teletherapy CTA -->
+                        <div style="padding: 0 24px 10px;">
+                            <div style="background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); padding: 20px; border-radius: 15px; display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.15);" onclick="window.location.href='teletherapy.html'">
+                                <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.2); color: white; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <span style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase;">24/7 SUPPORT</span>
+                                    <h4 style="font-size: 14px; font-weight: 800; color: white; margin: 0;">Book a Licensed Coach</h4>
+                                </div>
+                                <i class="fas fa-chevron-right" style="color: rgba(255,255,255,0.5); font-size: 12px;"></i>
                             </div>
                         </div>
 
@@ -139,21 +188,39 @@
                             <div id="highlightSlider" class="stories-scroll">
                                 <div class="story-card-item" onclick="window.location.href='audio-player.html?title=Evening%20Gratitude'">
                                     <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80" style="width: 100%; height: 100%; object-fit: cover;">
-                                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 20px; display: flex; flex-direction: column; justify-content: flex-end;">
+                                    <div class="like-btn-circle" 
+                                         data-like-id="high1" 
+                                         data-title="Evening Gratitude" 
+                                         onclick="event.stopPropagation(); toggleLike('high1', 'Evening Gratitude', 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80', '15m', 'Highlights', this.querySelector('i'))">
+                                        <i class="far fa-heart"></i>
+                                    </div>
+                                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;">
                                         <h3 style="color: white; font-size: 20px; font-weight: 700; margin: 0;">Evening Gratitude</h3>
                                         <p style="color: rgba(255,255,255,0.8); font-size: 12px; margin: 4px 0 0;">Relieve stress before you sleep.</p>
                                     </div>
                                 </div>
                                 <div class="story-card-item" onclick="window.location.href='audio-player.html?title=Focus%20Flow'">
                                     <img src="https://images.unsplash.com/photo-1499209974431-9dac3adaf471?auto=format&fit=crop&w=600&q=80" style="width: 100%; height: 100%; object-fit: cover;">
-                                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 20px; display: flex; flex-direction: column; justify-content: flex-end;">
+                                    <div class="like-btn-circle" 
+                                         data-like-id="high2" 
+                                         data-title="Focus Flow" 
+                                         onclick="event.stopPropagation(); toggleLike('high2', 'Focus Flow', 'https://images.unsplash.com/photo-1499209974431-9dac3adaf471?auto=format&fit=crop&w=600&q=80', '20m', 'Highlights', this.querySelector('i'))">
+                                        <i class="far fa-heart"></i>
+                                    </div>
+                                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;">
                                         <h3 style="color: white; font-size: 20px; font-weight: 700; margin: 0;">Focus Flow</h3>
                                         <p style="color: rgba(255,255,255,0.8); font-size: 12px; margin: 4px 0 0;">Lo-fi beats for deep study.</p>
                                     </div>
                                 </div>
                                 <div class="story-card-item" onclick="window.location.href='audio-player.html?title=Deep%20Forest%20Walk'">
                                     <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80" style="width: 100%; height: 100%; object-fit: cover;">
-                                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 20px; display: flex; flex-direction: column; justify-content: flex-end;">
+                                    <div class="like-btn-circle" 
+                                         data-like-id="high3" 
+                                         data-title="Deep Forest Walk" 
+                                         onclick="event.stopPropagation(); toggleLike('high3', 'Deep Forest Walk', 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80', '30m', 'Highlights', this.querySelector('i'))">
+                                        <i class="far fa-heart"></i>
+                                    </div>
+                                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;">
                                         <h3 style="color: white; font-size: 20px; font-weight: 700; margin: 0;">Deep Forest Walk</h3>
                                         <p style="color: rgba(255,255,255,0.8); font-size: 12px; margin: 4px 0 0;">Immersive ASMR nature journey.</p>
                                     </div>
@@ -165,6 +232,7 @@
                         <div class="section" style="padding-top: 0;">
                             <div class="section-header">
                                 <h2>Categories</h2>
+                                <a href="library.html" style="font-size: 13px; color: var(--primary-purple); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 4px;">See All <i class="fas fa-chevron-right" style="font-size: 10px;"></i></a>
                             </div>
                             <div class="category-list">
                                 <div class="category-list-item" onclick="window.location.href='category.html?type=inhale'">
@@ -207,11 +275,17 @@
                             </div>
                             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
                                 <!-- Card 1 -->
-                                <div style="border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #F3F4F6;" onclick="window.location.href='audio-player.html?title=Ocean%20Rhythms'">
+                                <div class="meditation-card" onclick="window.location.href='audio-player.html?title=Ocean%20Rhythms'">
                                     <div style="position: relative;">
                                         <img src="https://images.unsplash.com/photo-1484291470158-b8f8d608850d?q=80&w=300&auto=format&fit=crop" style="width: 100%; height: 110px; object-fit: cover;">
-                                        <div style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: #F43F5E; font-size: 12px;">
-                                            <i class="fas fa-heart"></i>
+                                        <div class="like-btn-circle" 
+                                             data-like-id="rec1" 
+                                             data-title="Ocean Rhythms" 
+                                             data-img="https://images.unsplash.com/photo-1484291470158-b8f8d608850d?q=80&w=300&auto=format&fit=crop" 
+                                             data-dur="42 min" 
+                                             data-cat="ASMR"
+                                             onclick="event.stopPropagation(); toggleLike('rec1', 'Ocean Rhythms', this.dataset.img, '42 min', 'ASMR', this.querySelector('i'))">
+                                            <i class="far fa-heart"></i>
                                         </div>
                                     </div>
                                     <div style="padding: 10px 12px 12px;">
@@ -220,11 +294,17 @@
                                     </div>
                                 </div>
                                 <!-- Card 2 -->
-                                <div style="border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #F3F4F6;" onclick="window.location.href='audio-player.html?title=Violet%20Twilight'">
+                                <div class="meditation-card" onclick="window.location.href='audio-player.html?title=Violet%20Twilight'">
                                     <div style="position: relative;">
                                         <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=300&auto=format&fit=crop" style="width: 100%; height: 110px; object-fit: cover;">
-                                        <div style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: #D1D5DB; font-size: 12px;">
-                                            <i class="fas fa-heart"></i>
+                                        <div class="like-btn-circle" 
+                                             data-like-id="rec2" 
+                                             data-title="Violet Twilight" 
+                                             data-img="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=300&auto=format&fit=crop" 
+                                             data-dur="55 min" 
+                                             data-cat="Sleep Journey"
+                                             onclick="event.stopPropagation(); toggleLike('rec2', 'Violet Twilight', this.dataset.img, '55 min', 'Sleep Journey', this.querySelector('i'))">
+                                            <i class="far fa-heart"></i>
                                         </div>
                                     </div>
                                     <div style="padding: 10px 12px 12px;">
@@ -233,11 +313,17 @@
                                     </div>
                                 </div>
                                 <!-- Card 3 -->
-                                <div style="border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #F3F4F6;" onclick="window.location.href='audio-player.html?title=Still%20Waters'">
+                                <div class="meditation-card" onclick="window.location.href='audio-player.html?title=Still%20Waters'">
                                     <div style="position: relative;">
                                         <img src="https://images.unsplash.com/photo-1439405326-d03767cedc0f?q=80&w=300&auto=format&fit=crop" style="width: 100%; height: 110px; object-fit: cover;">
-                                        <div style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: #F43F5E; font-size: 12px;">
-                                            <i class="fas fa-heart"></i>
+                                        <div class="like-btn-circle" 
+                                             data-like-id="rec3" 
+                                             data-title="Still Waters" 
+                                             data-img="https://images.unsplash.com/photo-1439405326-d03767cedc0f?q=80&w=300&auto=format&fit=crop" 
+                                             data-dur="30 min" 
+                                             data-cat="Calm"
+                                             onclick="event.stopPropagation(); toggleLike('rec3', 'Still Waters', this.dataset.img, '30 min', 'Calm', this.querySelector('i'))">
+                                            <i class="far fa-heart"></i>
                                         </div>
                                     </div>
                                     <div style="padding: 10px 12px 12px;">
@@ -246,11 +332,17 @@
                                     </div>
                                 </div>
                                 <!-- Card 4 -->
-                                <div style="border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #F3F4F6;" onclick="window.location.href='audio-player.html?title=Ember%20Nights'">
+                                <div class="meditation-card" onclick="window.location.href='audio-player.html?title=Ember%20Nights'">
                                     <div style="position: relative;">
                                         <img src="https://images.unsplash.com/photo-1481833761820-0509d3217039?q=80&w=300&auto=format&fit=crop" style="width: 100%; height: 110px; object-fit: cover;">
-                                        <div style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: #D1D5DB; font-size: 12px;">
-                                            <i class="fas fa-heart"></i>
+                                        <div class="like-btn-circle" 
+                                             data-like-id="rec4" 
+                                             data-title="Ember Nights" 
+                                             data-img="https://images.unsplash.com/photo-1481833761820-0509d3217039?q=80&w=300&auto=format&fit=crop" 
+                                             data-dur="38 min" 
+                                             data-cat="Fireplace"
+                                             onclick="event.stopPropagation(); toggleLike('rec4', 'Ember Nights', this.dataset.img, '38 min', 'Fireplace', this.querySelector('i'))">
+                                            <i class="far fa-heart"></i>
                                         </div>
                                     </div>
                                     <div style="padding: 10px 12px 12px;">
@@ -259,11 +351,17 @@
                                     </div>
                                 </div>
                                 <!-- Card 5 -->
-                                <div style="border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #F3F4F6;" onclick="window.location.href='audio-player.html?title=Morning%20Mist'">
+                                <div class="meditation-card" onclick="window.location.href='audio-player.html?title=Morning%20Mist'">
                                     <div style="position: relative;">
                                         <img src="https://images.unsplash.com/photo-1470252649358-46fb029ef3f2?q=80&w=300&auto=format&fit=crop" style="width: 100%; height: 110px; object-fit: cover;">
-                                        <div style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: #F43F5E; font-size: 12px;">
-                                            <i class="fas fa-heart"></i>
+                                        <div class="like-btn-circle" 
+                                             data-like-id="rec5" 
+                                             data-title="Morning Mist" 
+                                             data-img="https://images.unsplash.com/photo-1470252649358-46fb029ef3f2?q=80&w=300&auto=format&fit=crop" 
+                                             data-dur="25 min" 
+                                             data-cat="Nature"
+                                             onclick="event.stopPropagation(); toggleLike('rec5', 'Morning Mist', this.dataset.img, '25 min', 'Nature', this.querySelector('i'))">
+                                            <i class="far fa-heart"></i>
                                         </div>
                                     </div>
                                     <div style="padding: 10px 12px 12px;">
@@ -272,11 +370,17 @@
                                     </div>
                                 </div>
                                 <!-- Card 6 -->
-                                <div style="border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #F3F4F6;" onclick="window.location.href='audio-player.html?title=Desert%20Winds'">
+                                <div class="meditation-card" onclick="window.location.href='audio-player.html?title=Desert%20Winds'">
                                     <div style="position: relative;">
                                         <img src="https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?q=80&w=300&auto=format&fit=crop" style="width: 100%; height: 110px; object-fit: cover;">
-                                        <div style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: #D1D5DB; font-size: 12px;">
-                                            <i class="fas fa-heart"></i>
+                                        <div class="like-btn-circle" 
+                                             data-like-id="rec6" 
+                                             data-title="Desert Winds" 
+                                             data-img="https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?q=80&w=300&auto=format&fit=crop" 
+                                             data-dur="40 min" 
+                                             data-cat="Ambient"
+                                             onclick="event.stopPropagation(); toggleLike('rec6', 'Desert Winds', this.dataset.img, '40 min', 'Ambient', this.querySelector('i'))">
+                                            <i class="far fa-heart"></i>
                                         </div>
                                     </div>
                                     <div style="padding: 10px 12px 12px;">
@@ -285,11 +389,17 @@
                                     </div>
                                 </div>
                                 <!-- Card 7 -->
-                                <div style="border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #F3F4F6;" onclick="window.location.href='audio-player.html?title=Rain%20Forest'">
+                                <div class="meditation-card" onclick="window.location.href='audio-player.html?title=Rain%20Forest'">
                                     <div style="position: relative;">
                                         <img src="https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=300&auto=format&fit=crop" style="width: 100%; height: 110px; object-fit: cover;">
-                                        <div style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: #F43F5E; font-size: 12px;">
-                                            <i class="fas fa-heart"></i>
+                                        <div class="like-btn-circle" 
+                                             data-like-id="rec7" 
+                                             data-title="Rain Forest" 
+                                             data-img="https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=300&auto=format&fit=crop" 
+                                             data-dur="45 min" 
+                                             data-cat="White Noise"
+                                             onclick="event.stopPropagation(); toggleLike('rec7', 'Rain Forest', this.dataset.img, '45 min', 'White Noise', this.querySelector('i'))">
+                                            <i class="far fa-heart"></i>
                                         </div>
                                     </div>
                                     <div style="padding: 10px 12px 12px;">
@@ -298,11 +408,17 @@
                                     </div>
                                 </div>
                                 <!-- Card 8 -->
-                                <div style="border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #F3F4F6;" onclick="window.location.href='audio-player.html?title=Galactic%20Calm'">
+                                <div class="meditation-card" onclick="window.location.href='audio-player.html?title=Galactic%20Calm'">
                                     <div style="position: relative;">
                                         <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=300&auto=format&fit=crop" style="width: 100%; height: 110px; object-fit: cover;">
-                                        <div style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; color: #D1D5DB; font-size: 12px;">
-                                            <i class="fas fa-heart"></i>
+                                        <div class="like-btn-circle" 
+                                             data-like-id="rec8" 
+                                             data-title="Galactic Calm" 
+                                             data-img="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=300&auto=format&fit=crop" 
+                                             data-dur="60 min" 
+                                             data-cat="Space Voyage"
+                                             onclick="event.stopPropagation(); toggleLike('rec8', 'Galactic Calm', this.dataset.img, '60 min', 'Space Voyage', this.querySelector('i'))">
+                                            <i class="far fa-heart"></i>
                                         </div>
                                     </div>
                                     <div style="padding: 10px 12px 12px;">
@@ -415,6 +531,26 @@
                             </div>
                         </div>
 
+                        <!-- Support Directory CTA (Redesigned - White Version) -->
+                        <div style="padding: 20px 24px 40px;">
+                            <div class="support-cta" style="padding: 24px; border-radius: 20px; position: relative; box-shadow: 0 12px 25px rgba(0,0,0,0.04); overflow: hidden; cursor: pointer;" onclick="window.location.href='directory.html'">
+                                <div style="display: flex; gap: 20px; align-items: center; position: relative; z-index: 2;">
+                                    <div style="width: 56px; height: 56px; border-radius: 18px; background: #FFF1F2; color: #F43F5E; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                                        <i class="fas fa-hand-holding-heart"></i>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h4 style="font-size: 16px; font-weight: 850; color: #1F2937; margin: 0 0 4px; letter-spacing: -0.3px;">Need immediate help?</h4>
+                                        <p style="font-size: 13px; color: #6B7280; margin: 0; line-height: 1.4;">Find 24/7 hotlines and clinics in your region.</p>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 20px; display: flex; justify-content: flex-end; position: relative; z-index: 2;">
+                                    <div style="background: #F43F5E; color: white; padding: 12px 24px; border-radius: 15px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25);">
+                                        Find Help <i class="fas fa-arrow-right" style="font-size: 12px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -426,6 +562,10 @@
                     <div class="nav-item" onclick="window.location.href='insights.html'">
                         <i class="fa-solid fa-chart-pie"></i>
                         <span>Insights</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='workbook.html'">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <span>Workbook</span>
                     </div>
                     <div class="nav-item" onclick="window.location.href='library.html'">
                         <i class="fa-solid fa-book"></i>
@@ -456,7 +596,135 @@
 
         // Auto slide every 5 seconds
         setInterval(() => slideHighlights(1), 5000);
+
+        // Typing Animation Logic
+        const text = "Hello, Elena!";
+        const speed = 100;
+        let i = 0;
+
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typing-greeting").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            } else {
+                // Keep the cursor blinking after typing finishes
+                document.querySelector('.typing-cursor').style.animation = 'blink 1s step-end infinite';
+            }
+        }
+
+        // Mood Tracking Logic
+        function trackMood(type, el) {
+            // UI Feedback
+            const feedback = document.getElementById('mood-feedback');
+            const emojis = document.querySelectorAll('.mood-emoji');
+            
+            emojis.forEach(e => {
+                e.style.transform = 'scale(1)';
+                e.style.opacity = '0.5';
+            });
+            
+            el.style.transform = 'scale(1.2)';
+            el.style.opacity = '1';
+            
+            feedback.style.display = 'block';
+            
+            const messages = {
+                'Amazing': '✨ Glad you\'re having a great day!',
+                'Good': '🌟 Peace and joy to you.',
+                'Neutral': '🧘 Stay centered and mindful.',
+                'Sad': '🫂 It\'s okay not to be okay. We\'re here.',
+                'Stressed': '🌬️ Take a deep breath. You got this.'
+            };
+            
+            feedback.innerHTML = messages[type];
+            
+            // Save to LocalStorage (optional but good for MindNation comparison)
+            localStorage.setItem('daily_mood', type);
+            localStorage.setItem('last_mood_date', new Date().toDateString());
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(typeWriter, 500); // Small delay for smoothness
+            
+            // Daily Mood Modal Trigger
+            const lastMoodDate = localStorage.getItem('last_mood_prompt_date');
+            const today = new Date().toDateString();
+            
+            if (lastMoodDate !== today) {
+                setTimeout(() => {
+                    document.getElementById('dailyMoodModal').style.display = 'flex';
+                }, 1500); // Show after greeting animation
+            }
+        });
+
+        // Updated Mood Tracking Logic for Modal
+        function trackMood(type, el) {
+            const emojis = document.querySelectorAll('.mood-emoji');
+            emojis.forEach(e => {
+                e.style.transform = 'scale(1)';
+                e.style.opacity = '0.5';
+            });
+            el.style.transform = 'scale(1.2)';
+            el.style.opacity = '1';
+            
+            // Save state
+            localStorage.setItem('daily_mood', type);
+            localStorage.setItem('last_mood_prompt_date', new Date().toDateString());
+            
+            // Close modal with slight delay for feedback effect
+            setTimeout(() => {
+                document.getElementById('dailyMoodModal').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('dailyMoodModal').style.display = 'none';
+                }, 300);
+            }, 800);
+        }
     </script>
+
+    <!-- Daily Mood Modal -->
+    <div id="dailyMoodModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); transition: opacity 0.3s;">
+        <div style="background: white; width: 85%; max-width: 340px; border-radius: 25px; padding: 32px 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+            <h3 style="font-size: 20px; font-weight: 850; color: var(--text-main); margin: 0 0 8px;">How's your mood today?</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin: 0 0 32px;">Taking a moment to check in helps your mindfulness.</p>
+            
+            <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
+                <div class="mood-emoji" onclick="trackMood('Amazing', this)" style="cursor: pointer; flex: 1;">
+                    <div style="font-size: 32px; margin-bottom: 6px;">🤩</div>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Great</span>
+                </div>
+                <div class="mood-emoji" onclick="trackMood('Good', this)" style="cursor: pointer; flex: 1;">
+                    <div style="font-size: 32px; margin-bottom: 6px;">😊</div>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Good</span>
+                </div>
+                <div class="mood-emoji" onclick="trackMood('Neutral', this)" style="cursor: pointer; flex: 1;">
+                    <div style="font-size: 32px; margin-bottom: 6px;">😐</div>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Okay</span>
+                </div>
+                <div class="mood-emoji" onclick="trackMood('Sad', this)" style="cursor: pointer; flex: 1;">
+                    <div style="font-size: 32px; margin-bottom: 6px;">😔</div>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Low</span>
+                </div>
+                <div class="mood-emoji" onclick="trackMood('Stressed', this)" style="cursor: pointer; flex: 1;">
+                    <div style="font-size: 32px; margin-bottom: 6px;">😫</div>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Stress</span>
+                </div>
+            </div>
+            
+            <button onclick="document.getElementById('dailyMoodModal').style.display='none'" style="background: none; border: none; font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; margin-top: 10px;">Skip for now</button>
+        </div>
+    </div>
+
+    <style>
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .mood-emoji { transition: all 0.3s ease; }
+        .typing-cursor { color: var(--primary-purple); font-weight: 300; margin-left: 2px; }
+        @keyframes blink { from, to { opacity: 1; } 50% { opacity: 0; } }
+    </style>
+    <script src="app.js"></script>
 </body>
 
 </html>

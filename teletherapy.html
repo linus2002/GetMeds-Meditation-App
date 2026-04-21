@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Teletherapy - Getmeds Meditation App</title>
+    <meta name="description" content="Book secure sessions with licensed Filipino psychologists.">
+    <link rel="stylesheet" href="style.css?v=55">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .therapy-container {
+            padding: 60px 24px 100px;
+        }
+
+        .promo-card {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            border-radius: 20px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 32px;
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coach-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .coach-card:active {
+            transform: scale(0.98);
+            background: #F8FAFC;
+        }
+
+        .coach-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #EEF2FF;
+        }
+
+        .coach-info h4 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0 0 4px;
+        }
+
+        .coach-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 0 0 8px;
+        }
+
+        .specialty-tag {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: #F5F3FF;
+            color: var(--primary-purple);
+            display: inline-block;
+        }
+
+        /* Booking Modal */
+        .booking-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            display: none;
+            align-items: flex-end;
+            backdrop-filter: blur(4px);
+            border-radius: var(--screen-radius);
+            overflow: hidden;
+        }
+
+        .booking-sheet {
+            background: var(--bg-light);
+            width: 100%;
+            border-radius: 30px 30px 0 0;
+            padding: 32px 24px;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 1px solid var(--border-color);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .btn-confirm {
+            width: 100%;
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 32px;
+            box-shadow: 0 8px 20px rgba(29, 159, 218, 0.2);
+        }
+
+        .btn-confirm:active {
+            transform: scale(0.98);
+        }
+
+        .btn-cancel {
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 16px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .time-pill {
+            padding: 10px;
+            border-radius: 12px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .time-pill.selected {
+            background: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+
+        .booking-success {
+            text-align: center;
+            padding: 40px 0;
+            display: none;
+        }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light);">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Header -->
+                <div class="main-top-navbar border">
+                    <div class="top-nav-left" style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-arrow-left" onclick="window.history.back()" style="cursor: pointer;"></i>
+                        <h2 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin: 0;">Teletherapy</h2>
+                    </div>
+                    <div class="top-nav-right"><i class="fas fa-info-circle" style="color: var(--text-muted);"></i></div>
+                </div>
+
+                <div class="app-container-scroller">
+                    <div class="therapy-container">
+                        <div class="promo-card">
+                            <h3 style="font-size: 20px; font-weight: 850; margin: 0 0 8px;">24/7 Expert Support</h3>
+                            <p style="font-size: 13px; opacity: 0.9; margin: 0; line-height: 1.5;">Connect with licensed Filipino psychologists within 15 minutes.</p>
+                            <div style="position: absolute; right: -20px; bottom: -20px; font-size: 80px; opacity: 0.1;"><i class="fas fa-video"></i></div>
+                        </div>
+
+                        <span style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: block;">Available Licensed Coaches</span>
+
+                        <div id="coachList">
+                            <div class="coach-card" onclick="openBooking('Dr. Maria Santos')">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80" alt="Doctor" class="coach-avatar">
+                                <div class="coach-info">
+                                    <h4>Dr. Maria Santos</h4>
+                                    <p>Licensed Psychologist • 8yrs Exp.</p>
+                                    <div class="specialty-tag">Anxiety & Depression</div>
+                                </div>
+                                <i class="fas fa-chevron-right" style="margin-left: auto; color: #CBD5E1; font-size: 12px;"></i>
+                            </div>
+
+                            <div class="coach-card" onclick="openBooking('Coach Jomar D.')">
+                                <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=150&q=80" alt="Doctor" class="coach-avatar">
+                                <div class="coach-info">
+                                    <h4>Coach Jomar D.</h4>
+                                    <p>Well-being Coach • 5yrs Exp.</p>
+                                    <div class="specialty-tag">Focus & Career</div>
+                                </div>
+                                <i class="fas fa-chevron-right" style="margin-left: auto; color: #CBD5E1; font-size: 12px;"></i>
+                            </div>
+
+                            <div class="coach-card" onclick="openBooking('Dr. Elena Cruz')">
+                                <img src="https://images.unsplash.com/photo-1559839734-2b71f1536783?auto=format&fit=crop&w=150&q=80" alt="Doctor" class="coach-avatar">
+                                <div class="coach-info">
+                                    <h4>Dr. Elena Cruz</h4>
+                                    <p>Clinical Counselor • 12yrs Exp.</p>
+                                    <div class="specialty-tag">Family & Relationships</div>
+                                </div>
+                                <i class="fas fa-chevron-right" style="margin-left: auto; color: #CBD5E1; font-size: 12px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="bottom-nav">
+                    <div class="nav-item" onclick="window.location.href='home.html'"><i class="fas fa-home"></i><span>Home</span></div>
+                    <div class="nav-item" onclick="window.location.href='insights.html'"><i class="fa-solid fa-chart-pie"></i><span>Insights</span></div>
+                    <div class="nav-item" onclick="window.location.href='workbook.html'"><i class="fa-solid fa-pen-nib"></i><span>Workbook</span></div>
+                    <div class="nav-item" onclick="window.location.href='library.html'"><i class="fa-solid fa-book"></i><span>Library</span></div>
+                    <div class="nav-item" onclick="window.location.href='profile.html'"><i class="fas fa-user"></i><span>Profile</span></div>
+                </nav>
+
+                <!-- Booking Modal Overlay -->
+                <div class="booking-modal" id="bookingModal">
+                    <div class="booking-sheet">
+                        <div id="bookingContent">
+                            <h3 style="font-size: 20px; font-weight: 850; margin-bottom: 8px;">Schedule with <span id="selectedCoach"></span></h3>
+                            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Select an available time slot for today.</p>
+                            
+                            <div class="time-grid">
+                                <div class="time-pill" onclick="selectTime(this)">10:30 AM</div>
+                                <div class="time-pill" onclick="selectTime(this)">01:00 PM</div>
+                                <div class="time-pill" onclick="selectTime(this)">03:30 PM</div>
+                                <div class="time-pill" onclick="selectTime(this)">05:00 PM</div>
+                                <div class="time-pill" onclick="selectTime(this)">07:00 PM</div>
+                                <div class="time-pill" onclick="selectTime(this)">09:30 PM</div>
+                            </div>
+
+                            <button class="btn-confirm" onclick="confirmBooking()">Confirm Appointment</button>
+                            <button class="btn-cancel" onclick="closeBooking()">Cancel</button>
+                        </div>
+
+                        <div class="booking-success" id="successMsg">
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background: #ECFDF5; color: #10B981; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 20px;">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <h3 style="font-size: 22px; font-weight: 850; margin-bottom: 8px;">Session Booked!</h3>
+                            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Dr. Santos has been notified. You will receive a secure link via email.</p>
+                            <button class="btn-confirm" onclick="window.location.href='home.html'">Done</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openBooking(name) {
+            document.getElementById('selectedCoach').innerText = name;
+            document.getElementById('bookingModal').style.display = 'flex';
+        }
+
+        function closeBooking() {
+            document.getElementById('bookingModal').style.display = 'none';
+            document.getElementById('bookingContent').style.display = 'block';
+            document.getElementById('successMsg').style.display = 'none';
+        }
+
+        function selectTime(el) {
+            document.querySelectorAll('.time-pill').forEach(p => p.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function confirmBooking() {
+            const selected = document.querySelector('.time-pill.selected');
+            if (selected) {
+                document.getElementById('bookingContent').style.display = 'none';
+                document.getElementById('successMsg').style.display = 'block';
+            } else {
+                alert("Please select a time slot first.");
+            }
+        }
+    </script>
+</body>
+
+</html>

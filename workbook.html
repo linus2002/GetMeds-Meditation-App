@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindful Workbook - Getmeds Meditation App</title>
+    <meta name="description" content="Interactive mental health exercises and journaling.">
+    <link rel="stylesheet" href="style.css?v=45">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .workbook-container {
+            padding: 60px 24px 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .exercise-card {
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .exercise-card:active {
+            transform: scale(0.98);
+            background: #F8FAFC;
+        }
+
+        .exercise-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .exercise-info {
+            flex: 1;
+        }
+
+        .exercise-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .exercise-tag {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--primary-purple);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal / Detail View */
+        .journal-modal {
+            position: absolute;
+            top: 44px; /* Exactly below status bar */
+            bottom: 75px; /* Exactly above bottom nav */
+            left: 0;
+            right: 0;
+            background: white;
+            z-index: 80; /* Above content (1-20) but below status bar (90) and bottom nav (100) */
+            display: none;
+            flex-direction: column;
+            animation: slideUp 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 60px 24px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #F3F4F6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .journal-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .journal-prompt {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            line-height: 1.3;
+        }
+
+        .journal-input {
+            width: 100%;
+            min-height: 150px;
+            border: 2px solid #F1F5F9;
+            border-radius: 15px;
+            padding: 16px;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            resize: none;
+            margin-bottom: 24px;
+            transition: border-color 0.2s;
+        }
+
+        .journal-input:focus {
+            border-color: var(--primary-purple);
+        }
+
+        .save-btn {
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 10px 20px rgba(29, 159, 218, 0.2);
+        }
+
+        .history-item {
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: var(--text-main);
+            border-left: 4px solid var(--primary-purple);
+        }
+
+        .history-date {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        /* Sensation Map Styles */
+        .body-map-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 10px 0;
+        }
+
+        .body-silhouette {
+            position: relative;
+            width: 140px;
+            height: 240px;
+            background: #F1F5F9;
+            border-radius: 60px 60px 20px 20px;
+            overflow: hidden;
+        }
+
+        .body-part {
+            position: absolute;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: #6D28D9;
+            font-weight: 700;
+        }
+
+        .body-part.selected {
+            background: var(--primary-purple);
+            color: white;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+
+        .head { top: 5%; left: 30%; width: 40%; height: 15%; border-radius: 50%; }
+        .chest { top: 22%; left: 20%; width: 60%; height: 25%; border-radius: 10px; }
+        .stomach { top: 48%; left: 25%; width: 50%; height: 15%; border-radius: 8px; }
+        .arms { top: 25%; left: 0%; width: 100%; height: 10%; z-index: -1; }
+        .legs { top: 65%; left: 20%; width: 60%; height: 35%; border-radius: 0 0 20px 20px; }
+
+        .sensation-pill-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+
+        .sensation-pill {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sensation-pill.active {
+            background: #EDE9FE;
+            border-color: var(--primary-purple);
+            color: var(--primary-purple);
+        }
+
+        /* CBT Wizard Styles */
+        .cbt-step {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeIn 0.3s;
+        }
+
+        .cbt-step.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #E2E8F0;
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: var(--primary-purple);
+        }
+
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .emotion-chip {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .emotion-chip.active {
+            background: #F5F3FF;
+            border-color: var(--primary-purple);
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+
+        .wizard-footer {
+            margin-top: auto;
+            display: flex;
+            gap: 12px;
+            padding-top: 20px;
+        }
+
+        .btn-back {
+            flex: 1;
+            padding: 16px;
+            border-radius: 15px;
+            border: 1px solid #E2E8F0;
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-next {
+            flex: 2;
+            padding: 16px;
+            border-radius: 15px;
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light);">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Header -->
+                <div class="main-top-navbar border">
+                    <div class="top-nav-left" style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-arrow-left" onclick="window.history.back()" style="cursor: pointer;"></i>
+                        <h2 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin: 0;">Mindful Workbook</h2>
+                    </div>
+                    <div class="top-nav-right">
+                        <i class="fas fa-ellipsis-v" style="color: var(--text-muted);"></i>
+                    </div>
+                </div>
+
+                <div class="app-container-scroller" style="padding-bottom: 110px;">
+                    <div class="workbook-container">
+                        <div style="margin-bottom: 8px;">
+                            <h3 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin: 0 0 8px;">Your Mental Gym</h3>
+                            <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Practice resilience and self-awareness daily.</p>
+                        </div>
+
+                        <!-- Cognitive Reappraisal -->
+                        <div class="exercise-card" onclick="openExercise('reappraisal')">
+                            <div class="exercise-icon" style="background: #E0F2FE; color: #0EA5E9;">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="exercise-info">
+                                <span class="exercise-tag">Coping Mechanism</span>
+                                <h4 class="exercise-title">Cognitive Reappraisal</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Challenge and reframe negative thoughts.</p>
+                            </div>
+                            <i class="fas fa-chevron-right" style="color: #CBD5E1; font-size: 12px;"></i>
+                        </div>
+
+                        <!-- Gratitude -->
+                        <div class="exercise-card" onclick="openExercise('gratitude')">
+                            <div class="exercise-icon" style="background: #FEF3C7; color: #D97706;">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="exercise-info">
+                                <span class="exercise-tag">Well-being</span>
+                                <h4 class="exercise-title">Daily Gratitude</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Focus on the positive aspects of your life.</p>
+                            </div>
+                            <i class="fas fa-chevron-right" style="color: #CBD5E1; font-size: 12px;"></i>
+                        </div>
+
+                        <!-- Body Scan Reflection -->
+                        <div class="exercise-card" onclick="openExercise('bodyscan')">
+                            <div class="exercise-icon" style="background: #ECFDF5; color: #10B981;">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="exercise-info">
+                                <span class="exercise-tag">Mindfulness</span>
+                                <h4 class="exercise-title">Body Scan Reflection</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Check in with your physical sensations.</p>
+                            </div>
+                            <i class="fas fa-chevron-right" style="color: #CBD5E1; font-size: 12px;"></i>
+                        </div>
+
+                        <!-- Mood Sensation Map -->
+                        <div class="exercise-card" onclick="openSensationMap()">
+                            <div class="exercise-icon" style="background: #F5F3FF; color: var(--primary-purple);">
+                                <i class="fas fa-street-view"></i>
+                            </div>
+                            <div class="exercise-info">
+                                <span class="exercise-tag">Body Connection</span>
+                                <h4 class="exercise-title">Mood Sensation Map</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Visualize where you feel emotions in your body.</p>
+                            </div>
+                            <i class="fas fa-chevron-right" style="color: #CBD5E1; font-size: 12px;"></i>
+                        </div>
+
+                        <div class="exercise-card" onclick="openExercise('pakikiramay')">
+                            <div class="exercise-icon" style="background: #FFFBEB; color: #D97706;">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <div class="exercise-info">
+                                <span class="exercise-tag">Contextualized Content</span>
+                                <h4 class="exercise-title">Pakikiramay (Empathy)</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Filipino-style communal coping and support.</p>
+                            </div>
+                            <i class="fas fa-chevron-right" style="color: #CBD5E1; font-size: 12px;"></i>
+                        </div>
+
+                        <!-- Guided Thought Record -->
+                        <div class="exercise-card" onclick="openCBT()">
+                            <div class="exercise-icon" style="background: #FFF7ED; color: #EA580C;">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="exercise-info">
+                                <span class="exercise-tag">Cognitive Therapy</span>
+                                <h4 class="exercise-title">Guided Thought Record</h4>
+                                <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Step-by-step cognitive reframing wizard.</p>
+                            </div>
+                            <i class="fas fa-chevron-right" style="color: #CBD5E1; font-size: 12px;"></i>
+                        </div>
+
+                        <div style="margin-top: 10px;">
+                            <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 16px;">Recent Entries</h4>
+                            <div id="entryHistory">
+                                <!-- entries will appear here -->
+                                <p style="font-size: 12px; color: var(--text-muted); text-align: center; padding: 20px;">No entries yet. Start your first exercise!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise Detail Modal -->
+                <div class="journal-modal" id="exerciseModal">
+                    <!-- Internal Header -->
+                    <div style="padding: 20px 24px; border-bottom: 1px solid #F1F5F9; display: flex; align-items: center; gap: 16px;">
+                        <i class="fas fa-arrow-left" onclick="closeExercise()" style="cursor: pointer; color: var(--text-main); font-size: 18px;"></i>
+                        <span style="font-weight: 700; color: var(--primary-purple); font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;" id="modalCategory">EXERCISE</span>
+                    </div>
+                    
+                    <div class="journal-content">
+                        <h2 class="journal-prompt" id="modalPrompt">What's on your mind?</h2>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5;" id="modalSubtext"></p>
+                        
+                        <textarea class="journal-input" id="journalInput" placeholder="Start typing here..."></textarea>
+                        
+                        <button class="save-btn" onclick="saveEntry()">Finish Exercise</button>
+                    </div>
+                </div>
+
+                <!-- Sensation Map Modal -->
+                <div class="journal-modal" id="sensationModal">
+                    <div style="padding: 20px 24px; border-bottom: 1px solid #F1F5F9; display: flex; align-items: center; gap: 16px;">
+                        <i class="fas fa-arrow-left" onclick="closeSensationMap()" style="cursor: pointer; color: var(--text-main); font-size: 18px;"></i>
+                        <span style="font-weight: 700; color: var(--primary-purple); font-size: 14px; text-transform: uppercase;">BODY CONNECTION</span>
+                    </div>
+                    
+                    <div class="journal-content" style="display: flex; flex-direction: column; align-items: center;">
+                        <h2 class="journal-prompt" style="text-align: center;">Where do you feel it?</h2>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px; text-align: center;">Tap the area and select the sensation.</p>
+                        
+                        <div class="body-map-container">
+                            <div class="body-silhouette">
+                                <div class="body-part head" onclick="selectPart('head', this)">HEAD</div>
+                                <div class="body-part chest" onclick="selectPart('chest', this)">CHEST</div>
+                                <div class="body-part stomach" onclick="selectPart('stomach', this)">STOMACH</div>
+                                <div class="body-part arms" onclick="selectPart('arms', this)">ARMS</div>
+                                <div class="body-part legs" onclick="selectPart('legs', this)">LEGS</div>
+                            </div>
+                            
+                            <div class="sensation-pill-grid">
+                                <div class="sensation-pill" onclick="toggleSensation('Tightness', this)">Tightness</div>
+                                <div class="sensation-pill" onclick="toggleSensation('Heat', this)">Heat</div>
+                                <div class="sensation-pill" onclick="toggleSensation('Tingling', this)">Tingling</div>
+                                <div class="sensation-pill" onclick="toggleSensation('Heaviness', this)">Heaviness</div>
+                                <div class="sensation-pill" onclick="toggleSensation('Empty', this)">Empty</div>
+                                <div class="sensation-pill" onclick="toggleSensation('Fluttering', this)">Fluttering</div>
+                            </div>
+                        </div>
+                        
+                        <button class="save-btn" style="margin-top: 20px;" onclick="saveSensationEntry()">Save Mapping</button>
+                    </div>
+                </div>
+
+                <!-- CBT Wizard Modal -->
+                <div class="journal-modal" id="cbtModal">
+                    <div style="padding: 20px 24px; border-bottom: 1px solid #F1F5F9; display: flex; align-items: center; gap: 16px;">
+                        <i class="fas fa-arrow-left" onclick="closeCBT()" style="cursor: pointer; color: var(--text-main); font-size: 18px;"></i>
+                        <span style="font-weight: 700; color: var(--primary-purple); font-size: 14px; text-transform: uppercase;">THOUGHT RECORD</span>
+                    </div>
+
+                    <div class="journal-content">
+                        <div class="step-indicator">
+                            <div class="step-dot active" id="dot1"></div>
+                            <div class="step-dot" id="dot2"></div>
+                            <div class="step-dot" id="dot3"></div>
+                            <div class="step-dot" id="dot4"></div>
+                        </div>
+
+                        <!-- Step 1: Trigger -->
+                        <div class="cbt-step active" id="step1">
+                            <h2 class="journal-prompt">What happened?</h2>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Describe the event or situation that triggered a strong emotion.</p>
+                            <textarea class="journal-input" id="cbtTrigger" placeholder="E.g., I received negative feedback at work..."></textarea>
+                        </div>
+
+                        <!-- Step 2: Emotion -->
+                        <div class="cbt-step" id="step2">
+                            <h2 class="journal-prompt">How did you feel?</h2>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Select the primary emotions you're experiencing.</p>
+                            <div class="emotion-grid">
+                                <div class="emotion-chip" onclick="toggleEmotion('Anxious', this)">Anxious</div>
+                                <div class="emotion-chip" onclick="toggleEmotion('Sad', this)">Sad</div>
+                                <div class="emotion-chip" onclick="toggleEmotion('Angry', this)">Angry</div>
+                                <div class="emotion-chip" onclick="toggleEmotion('Frustrated', this)">Frustrated</div>
+                                <div class="emotion-chip" onclick="toggleEmotion('Overwhelmed', this)">Overwhelmed</div>
+                                <div class="emotion-chip" onclick="toggleEmotion('Lonely', this)">Lonely</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Challenge -->
+                        <div class="cbt-step" id="step3">
+                            <h2 class="journal-prompt">Challenge the thought</h2>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">What negative thing are you telling yourself? Is there evidence that it's not 100% true?</p>
+                            <textarea class="journal-input" id="cbtChallenge" placeholder="E.g., I thought I'm incompetent, but I've succeeded before..."></textarea>
+                        </div>
+
+                        <!-- Step 4: Reframe -->
+                        <div class="cbt-step" id="step4">
+                            <h2 class="journal-prompt">The Balanced View</h2>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Rewrite the thought to be more realistic and compassionate.</p>
+                            <textarea class="journal-input" id="cbtReframe" placeholder="E.g., This feedback is a chance to improve, not a measure of my worth."></textarea>
+                        </div>
+
+                        <div class="wizard-footer">
+                            <button class="btn-back" id="btnPrevCBT" style="display: none;" onclick="prevCBTStep()">Back</button>
+                            <button class="btn-next" id="btnNextCBT" onclick="nextCBTStep()">Continue</button>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="bottom-nav">
+                    <div class="nav-item" onclick="window.location.href='home.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='insights.html'">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Insights</span>
+                    </div>
+                    <div class="nav-item active" onclick="window.location.href='workbook.html'">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <span>Workbook</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='library.html'">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Library</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                </nav>
+
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const exercises = {
+            reappraisal: {
+                title: "Cognitive Reappraisal",
+                prompt: "What is a negative thought you're having, and how can you reframe it more positively?",
+                subtext: "Challenge your perspective. Instead of 'I failed,' try 'I learned what doesn't work.'",
+                category: "COPING MECHANISM"
+            },
+            gratitude: {
+                title: "Daily Gratitude",
+                prompt: "List 3 things you're grateful for today, no matter how small.",
+                subtext: "Focusing on the good helps rewire your brain for happiness.",
+                category: "WELL-BEING"
+            },
+            bodyscan: {
+                title: "Body Scan Reflection",
+                prompt: "Scan your body from head to toe. Where do you feel tension or comfort?",
+                subtext: "Simply notice the sensations without trying to change them.",
+                category: "MINDFULNESS"
+            },
+            pakikiramay: {
+                title: "Pakikiramay (Empathy)",
+                prompt: "Pagnilayan: Sino ang nasalanta o nahihirapan na nais mong damayan ngayon? Paano mo maibabahagi ang iyong oras o suporta?",
+                subtext: "Focusing on community and shared suffering (Damayan) which is a core Filipino coping mechanism.",
+                category: "CULTURAL COPING"
+            }
+        };
+
+        let currentActiveExercise = null;
+
+        function openExercise(key) {
+            const ex = exercises[key];
+            currentActiveExercise = key;
+            document.getElementById('modalPrompt').innerText = ex.prompt;
+            document.getElementById('modalSubtext').innerText = ex.subtext;
+            document.getElementById('modalCategory').innerText = ex.category;
+            document.getElementById('exerciseModal').style.display = 'flex';
+        }
+
+        function closeExercise() {
+            document.getElementById('exerciseModal').style.display = 'none';
+            document.getElementById('journalInput').value = '';
+        }
+
+        function saveEntry() {
+            const text = document.getElementById('journalInput').value;
+            if (!text.trim()) return;
+
+            const entries = JSON.parse(localStorage.getItem('workbook_entries') || '[]');
+            const newEntry = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                type: exercises[currentActiveExercise].title,
+                content: text
+            };
+
+            entries.unshift(newEntry);
+            localStorage.setItem('workbook_entries', JSON.stringify(entries));
+            
+            renderEntries();
+            closeExercise();
+        }
+
+        function renderEntries() {
+            const entries = JSON.parse(localStorage.getItem('workbook_entries') || '[]');
+            const container = document.getElementById('entryHistory');
+            
+            if (entries.length === 0) {
+                container.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; padding: 20px;">No entries yet. Start your first exercise!</p>`;
+                return;
+            }
+
+            container.innerHTML = entries.map(entry => `
+                <div class="history-item">
+                    <div class="history-date">${entry.type} • ${entry.date}</div>
+                    <div style="line-height: 1.4;">${entry.content}</div>
+                </div>
+            `).join('');
+        }
+
+        // Sensation Map Logic
+        let selectedParts = [];
+        let selectedSensations = [];
+
+        function openSensationMap() {
+            document.getElementById('sensationModal').style.display = 'flex';
+        }
+
+        function closeSensationMap() {
+            document.getElementById('sensationModal').style.display = 'none';
+            selectedParts = [];
+            selectedSensations = [];
+            document.querySelectorAll('.body-part, .sensation-pill').forEach(el => el.classList.remove('selected', 'active'));
+        }
+
+        function selectPart(part, el) {
+            el.classList.toggle('selected');
+            if (selectedParts.includes(part)) {
+                selectedParts = selectedParts.filter(p => p !== part);
+            } else {
+                selectedParts.push(part);
+            }
+        }
+
+        function toggleSensation(sensation, el) {
+            el.classList.toggle('active');
+            if (selectedSensations.includes(sensation)) {
+                selectedSensations = selectedSensations.filter(s => s !== sensation);
+            } else {
+                selectedSensations.push(sensation);
+            }
+        }
+
+        function saveSensationEntry() {
+            if (selectedParts.length === 0 || selectedSensations.length === 0) {
+                alert("Please select at least one body part and one sensation.");
+                return;
+            }
+
+            const content = `Felt ${selectedSensations.join(', ')} in the ${selectedParts.join(', ')}.`;
+            const entries = JSON.parse(localStorage.getItem('workbook_entries') || '[]');
+            const newEntry = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                type: "Sensation Map",
+                content: content
+            };
+
+            entries.unshift(newEntry);
+            localStorage.setItem('workbook_entries', JSON.stringify(entries));
+            
+            renderEntries();
+            closeSensationMap();
+        }
+
+        // CBT Wizard Logic
+        let cbtStep = 1;
+        let cbtEmotions = [];
+
+        function openCBT() {
+            document.getElementById('cbtModal').style.display = 'flex';
+            cbtStep = 1;
+            updateCBTUI();
+        }
+
+        function closeCBT() {
+            document.getElementById('cbtModal').style.display = 'none';
+            document.querySelectorAll('.cbt-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
+            // reset fields
+            document.getElementById('cbtTrigger').value = '';
+            document.getElementById('cbtChallenge').value = '';
+            document.getElementById('cbtReframe').value = '';
+            document.querySelectorAll('.emotion-chip').forEach(c => c.classList.remove('active'));
+            cbtEmotions = [];
+        }
+
+        function nextCBTStep() {
+            if (cbtStep === 1 && !document.getElementById('cbtTrigger').value.trim()) return;
+            if (cbtStep === 2 && cbtEmotions.length === 0) return;
+            if (cbtStep === 3 && !document.getElementById('cbtChallenge').value.trim()) return;
+            
+            if (cbtStep < 4) {
+                cbtStep++;
+                updateCBTUI();
+            } else {
+                saveCBTEntry();
+            }
+        }
+
+        function prevCBTStep() {
+            if (cbtStep > 1) {
+                cbtStep--;
+                updateCBTUI();
+            }
+        }
+
+        function updateCBTUI() {
+            document.querySelectorAll('.cbt-step').forEach((s, idx) => {
+                s.classList.toggle('active', (idx + 1) === cbtStep);
+            });
+            document.querySelectorAll('.step-dot').forEach((d, idx) => {
+                d.classList.toggle('active', (idx + 1) === cbtStep);
+            });
+            
+            document.getElementById('btnPrevCBT').style.display = cbtStep === 1 ? 'none' : 'block';
+            document.getElementById('btnNextCBT').innerText = cbtStep === 4 ? 'Finish' : 'Continue';
+        }
+
+        function toggleEmotion(emo, el) {
+            el.classList.toggle('active');
+            if (cbtEmotions.includes(emo)) {
+                cbtEmotions = cbtEmotions.filter(e => e !== emo);
+            } else {
+                cbtEmotions.push(emo);
+            }
+        }
+
+        function saveCBTEntry() {
+            const reframe = document.getElementById('cbtReframe').value;
+            if (!reframe.trim()) return;
+
+            const summary = `Reframed: ${reframe}`;
+            const entries = JSON.parse(localStorage.getItem('workbook_entries') || '[]');
+            const newEntry = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                type: "Thought Record",
+                content: summary
+            };
+
+            entries.unshift(newEntry);
+            localStorage.setItem('workbook_entries', JSON.stringify(entries));
+            
+            renderEntries();
+            closeCBT();
+        }
+
+        window.onload = renderEntries;
+    </script>
+    <script src="app.js"></script>
+</body>
+
+</html>

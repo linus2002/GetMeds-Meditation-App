@@ -1,3 +1,5 @@
+// Global App Logic for Getmeds Meditation App
+
 document.addEventListener('DOMContentLoaded', () => {
     // Navigation interaction
     const navItems = document.querySelectorAll('.nav-item');
@@ -48,13 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Navigation functions
+    // Color indicators for status bar
     const updateStatusBar = (forceLight) => {
         const bar = document.querySelector('.status-bar');
         if (bar) {
             const isDarkMode = document.body.classList.contains('dark-theme');
-            // If app is dark mode, status bar is ALWAYS white
-            // If light mode, use forceLight (true for dark bg like login, false for light bg)
             let color = isDarkMode ? 'var(--white)' : (forceLight ? 'var(--white)' : 'var(--text-main)');
             bar.style.setProperty('--status-color', color);
         }
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (screens[index]) {
             screens[index].classList.add('active');
         }
-        updateStatusBar(false); // Onboarding has a white bg
+        updateStatusBar(false);
     };
 
     // Initialize per page dynamically
@@ -77,46 +77,45 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStatusBar(true);
     } else if (page === 'home') {
         setTimeout(window.animateProgress, 300);
+        initTypingGreeting();
     }
 
-    // Remove background from illustration images dynamically
-    const removeImageBackground = (imgEl) => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        canvas.width = imgEl.naturalWidth;
-        canvas.height = imgEl.naturalHeight;
-        ctx.drawImage(imgEl, 0, 0);
-        
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-        
-        // Get bg color from top-left pixel
-        const bgR = data[0], bgG = data[1], bgB = data[2];
-        const tolerance = 45; // High tolerance for slightly varying AI backgrounds
-        
-        for (let i = 0; i < data.length; i += 4) {
-            // If pixel is close to bg color, make transparent
-            if (Math.abs(data[i] - bgR) < tolerance && 
-                Math.abs(data[i+1] - bgG) < tolerance && 
-                Math.abs(data[i+2] - bgB) < tolerance) {
-                data[i+3] = 0; // Alpha to 0
-            }
-        }
-        ctx.putImageData(imageData, 0, 0);
-        imgEl.src = canvas.toDataURL();
-    };
+    // Themes & Local Storage load
+    if (localStorage.getItem('darkMode') === 'enabled' && page !== 'login' && page !== 'onboarding') {
+        document.body.classList.add('dark-theme');
+        updateStatusBar(true);
+    }
 
-    document.querySelectorAll('.ob-image-wrap img.ob-img').forEach(img => {
-        if (img.complete) {
-            removeImageBackground(img);
-        } else {
-            img.addEventListener('load', () => removeImageBackground(img));
-        }
-    });
-
-    // Load user profile data on all pages
+    // Update Profile UI
     loadProfileData();
+
+    // Global Search database items logic
+    initSearch();
+
+    // Synchronize Likes across UI
+    syncLikesUI();
+
+    // Profile page specifics
+    if (page === 'profile' || document.getElementById('likes-count-badge')) {
+        updateLikedCount();
+    }
 });
+
+function initTypingGreeting() {
+    const el = document.getElementById('typing-greeting');
+    if (!el) return;
+    const text = `Hello, ${JSON.parse(localStorage.getItem('meditationUserProfile'))?.firstName || 'Elena'}!`;
+    let i = 0;
+    const speed = 100;
+    function type() {
+        if (i < text.length) {
+            el.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
 
 // Profile Management Logic
 function handleImageUpload(event) {
@@ -148,82 +147,135 @@ function loadProfileData() {
     const saved = localStorage.getItem('meditationUserProfile');
     if (saved) {
         const { firstName, lastName, email, avatar } = JSON.parse(saved);
-        
-        // Update all avatars (navbars and main profile card)
         document.querySelectorAll('.small-avatar, .profile-card-img').forEach(img => {
             if (avatar) img.src = avatar;
         });
-
-        // Update profile card details
         const cardTitle = document.querySelector('.user-card-details h2');
         if (cardTitle) cardTitle.textContent = `${firstName} ${lastName}`;
-        
         const cardEmail = document.querySelector('.user-card-details p');
         if (cardEmail) cardEmail.textContent = email;
-
-        // Populate edit form if on subpage
-        const editF = document.getElementById('edit-first-name');
-        if (editF) {
-            editF.value = firstName;
-            document.getElementById('edit-last-name').value = lastName;
-            document.getElementById('edit-email').value = email;
-            if (avatar) document.getElementById('edit-profile-preview').src = avatar;
-        }
     }
 }
 
-// Dark mode toggle functionality
 function toggleDarkMode(element) {
     const isActive = document.body.classList.toggle('dark-theme');
     localStorage.setItem('darkMode', isActive ? 'enabled' : 'disabled');
-    
-    // Update all theme icons in the app
-    const icons = document.querySelectorAll('.theme-icon');
-    icons.forEach(ic => {
-        if (isActive) {
-            ic.classList.remove('fas', 'fa-moon');
-            ic.classList.add('far', 'fa-sun');
-        } else {
-            ic.classList.remove('far', 'fa-sun');
-            ic.classList.add('fas', 'fa-moon');
-        }
-    });
-
-    // Update all sliding toggles in the app
-    const toggles = document.querySelectorAll('.toggle-switch');
-    toggles.forEach(t => {
-        if (isActive) t.classList.add('active');
-        else t.classList.remove('active');
-    });
-
-    // Update status bar immediately
     const bar = document.querySelector('.status-bar');
-    if (bar) {
-        const color = isActive ? 'var(--white)' : 'var(--text-main)';
-        bar.style.setProperty('--status-color', color);
-    }
+    if (bar) bar.style.setProperty('--status-color', isActive ? 'var(--white)' : 'var(--text-main)');
 }
 
-// Check dark mode on load
-document.addEventListener('DOMContentLoaded', () => {
-    const pageId = document.body.getAttribute('data-page');
-    const isLoggedOutPage = pageId === 'login' || pageId === 'onboarding';
-
-    if (!isLoggedOutPage && localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-theme');
-        
-        // Ensure icons and toggles are correctly set on load
-        const icons = document.querySelectorAll('.theme-icon');
-        icons.forEach(ic => {
-            ic.classList.remove('fas', 'fa-moon');
-            ic.classList.add('far', 'fa-sun');
-        });
-
-        const toggles = document.querySelectorAll('.toggle-switch');
-        toggles.forEach(t => t.classList.add('active'));
-        
-        // Ensure status bar starts white
-        const bar = document.querySelector('.status-bar');
-        if (bar) bar.style.setProperty('--status-color', 'var(--white)');
+// Like Management Logic
+function toggleLike(id, title, img, dur, cat, element) {
+    let likes = JSON.parse(localStorage.getItem('liked_items')) || [];
+    const index = likes.findIndex(item => item.id === id);
+    
+    if (index === -1) {
+        // Add Like
+        likes.push({ id, title, img, dur, cat });
+        if (element) {
+            element.classList.replace('far', 'fas');
+            element.style.color = '#F43F5E';
+        }
+    } else {
+        // Remove Like
+        likes.splice(index, 1);
+        if (element) {
+            element.classList.replace('fas', 'far');
+            element.style.color = '#94A3B8';
+        }
     }
-});
+    localStorage.setItem('liked_items', JSON.stringify(likes));
+    updateLikedCount();
+}
+
+function updateLikedCount() {
+    const likes = JSON.parse(localStorage.getItem('liked_items')) || [];
+    const countEl = document.getElementById('likes-count-badge');
+    if (countEl) countEl.textContent = `${likes.length} Items`;
+}
+
+function syncLikesUI() {
+    const likes = JSON.parse(localStorage.getItem('liked_items')) || [];
+    const likeButtons = document.querySelectorAll('[data-like-id]');
+    likeButtons.forEach(btn => {
+        const id = btn.getAttribute('data-like-id');
+        const icon = btn.querySelector('i');
+        if (likes.some(item => item.id === id)) {
+            if (icon) {
+                icon.classList.replace('far', 'fas');
+                icon.style.color = '#F43F5E';
+            }
+        } else {
+            if (icon) {
+                icon.classList.replace('fas', 'far');
+                icon.style.color = '#94A3B8';
+            }
+        }
+    });
+}
+
+// Global Search Logic
+const searchContent = [
+    { id: 'b1', title: 'Basics 1: Mindfulness', cat: 'Course', dur: '10m', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=400' },
+    { id: 'b2', title: 'Basics 2: Focus', cat: 'Course', dur: '12m', img: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=400' },
+    { id: 'dr', title: 'Deep Release', cat: 'Calm', dur: '5m', img: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=400' },
+    { id: 'fe', title: 'Forest Echoes', cat: 'Soundscape', dur: '∞', img: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=400' },
+    { id: 'tr', title: 'Thunder Ridge', cat: 'Soundscape', dur: '∞', img: 'https://images.unsplash.com/photo-1530508777964-5c929ec5aa3e?auto=format&fit=crop&w=400' },
+    { id: 'ow', title: 'The Ocean Whisper', cat: 'Sleep Story', dur: '45m', img: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400' }
+];
+
+function initSearch() {
+    const searchInputs = document.querySelectorAll('.input-group input');
+    searchInputs.forEach(input => {
+        input.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const targetId = input.id || 'default-search';
+            let resultsContainer = document.getElementById('global-search-results-' + targetId);
+            
+            if (!resultsContainer) {
+                resultsContainer = document.createElement('div');
+                resultsContainer.id = 'global-search-results-' + targetId;
+                resultsContainer.className = 'search-results-overlay';
+                const inputGroup = input.parentElement;
+                inputGroup.appendChild(resultsContainer);
+            }
+
+            if (query.length < 2) {
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            const results = searchContent.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.cat.toLowerCase().includes(query)
+            );
+
+            renderResults(results, resultsContainer);
+        });
+    });
+}
+
+function renderResults(results, container) {
+    if (results.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 20px;">No results found</p>';
+    } else {
+        container.innerHTML = results.map(item => `
+            <div class="search-result-item" onclick="window.location.href='audio-player.html?title=${encodeURIComponent(item.title)}&type=${item.cat}'">
+                <img src="${item.img}">
+                <div>
+                    <p class="search-res-title">${item.title}</p>
+                    <p class="search-res-meta">${item.cat} • ${item.dur}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+    container.style.display = 'block';
+
+    const closeListener = (e) => {
+        if (!container.contains(e.target) && !e.target.closest('.input-group')) {
+            container.style.display = 'none';
+            document.removeEventListener('click', closeListener);
+        }
+    };
+    document.addEventListener('click', closeListener);
+}

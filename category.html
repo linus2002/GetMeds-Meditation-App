@@ -33,33 +33,29 @@
 
         .track-card {
             background: white;
-            border-radius: 20px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s;
+            gap: 14px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: all 0.2s ease;
             cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.01);
         }
 
         .track-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
             border-color: var(--primary-purple);
         }
 
-        .track-card:active {
-            transform: scale(0.98);
-        }
-
         .track-thumb {
-            width: 64px;
-            height: 64px;
-            border-radius: 14px;
-            background: #F3F4F6;
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #F8FAFC;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -69,48 +65,85 @@
 
         .track-info {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
         }
 
         .track-title {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 800;
             color: var(--text-main);
             margin-bottom: 2px;
-            display: block;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .track-desc {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
-            display: block;
+            line-height: 1.4;
             margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .track-meta {
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 10px;
+            font-weight: 700;
             color: var(--primary-purple);
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
+        .track-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .track-like-btn {
+            background: transparent;
+            border: none;
+            color: #CBD5E1;
+            font-size: 16px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .track-like-btn i.fas.fa-heart {
+            color: #F43F5E;
+        }
+
         .play-ring {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            border: 2px solid #F3F4F6;
+            background: #F8FAFC;
+            border: 1.5px solid #F1F5F9;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-purple);
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
 
         .track-card:hover .play-ring {
             background: var(--primary-purple);
             color: white;
             border-color: var(--primary-purple);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
         }
     </style>
 </head>
@@ -119,7 +152,7 @@
     <div class="device-frame">
         <div class="device-bezel">
             <div class="dynamic-island"></div>
-            <div class="device-screen" style="background-color: #F9FAFB;">
+            <div class="device-screen" style="background-color: #FFFFFF;">
                 <!-- Status Bar -->
                 <div class="status-bar" style="--status-color: #1F2937; position: absolute; z-index: 100;">
                     <div class="time">9:41</div>
@@ -222,7 +255,14 @@
         current.items.forEach(item => {
             const div = document.createElement('div');
             div.className = 'track-card';
-            div.onclick = () => window.location.href = `audio-player.html?title=${encodeURIComponent(item.title)}`;
+            div.onclick = () => {
+                if (type === 'inhale') {
+                    window.location.href = `breathing.html?title=${encodeURIComponent(item.title)}`;
+                } else {
+                    window.location.href = `audio-player.html?title=${encodeURIComponent(item.title)}`;
+                }
+            };
+            const trackId = `cat-${type}-${item.title.replace(/\s+/g, '-').toLowerCase()}`;
             div.innerHTML = `
                 <div class="track-thumb" style="background: ${item.color}10; color: ${item.color};">
                     <i class="fas fa-${item.icon}"></i>
@@ -237,12 +277,22 @@
                         <span style="margin-left: 4px;">Premium</span>
                     </div>
                 </div>
-                <div class="play-ring">
-                    <i class="fas fa-play" style="margin-left: 2px; font-size: 14px;"></i>
+                <div class="track-actions">
+                    <button class="track-like-btn" 
+                            data-like-id="${trackId}"
+                            onclick="event.stopPropagation(); toggleLike('${trackId}', '${item.title}', '', '${item.time}', '${current.title}', this.querySelector('i'))">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <div class="play-ring">
+                        <i class="fas fa-play" style="margin-left: 2px; font-size: 14px;"></i>
+                    </div>
                 </div>
             `;
             listEl.appendChild(div);
         });
+
+        // Sync likes after injection
+        setTimeout(syncLikesUI, 50);
     </script>
 </body>
 

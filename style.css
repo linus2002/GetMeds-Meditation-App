@@ -5,21 +5,24 @@
     --accent-green: #10B981;
     --accent-blue: #60A5FA;
     --bg-light: #FFFFFF;
+    --card-bg: #FFFFFF;
     --text-main: #1F2937;
     --text-muted: #6B7280;
     --white: #FFFFFF;
+    --border-color: #F1F5F9;
     --bezel-color: #000000;
     --bezel-thickness: 12px;
     --device-radius: 44px;
     --screen-radius: 32px;
 }
 
-body.dark-theme {
+.dark-theme, body.dark-theme {
     --bg-light: #0A0F1D;
+    --bg-navbar: #111827;
+    --card-bg: #161B2C;
     --text-main: #F9FAFB;
     --text-muted: #9BA3AF;
     --border-color: #1F2937;
-    --card-bg: #161B2C;
 }
 
 * {
@@ -212,7 +215,7 @@ body {
 
 .badge {
     padding: 4px 12px;
-    border-radius: 20px;
+    border-radius: 15px;
     font-size: 12px;
     font-weight: 500;
     text-transform: lowercase;
@@ -260,7 +263,7 @@ body {
     color: var(--text-muted);
     background: #F3F4F6;
     padding: 4px 12px;
-    border-radius: 12px;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -281,14 +284,25 @@ body {
     display: none;
 }
 
+.achievement-badge {
+    flex: 0 0 140px;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid var(--border-color);
+}
+
 .practice-card {
     min-width: 220px;
-    background: white;
+    background: var(--card-bg);
     padding: 12px;
-    border-radius: 16px;
+    border-radius: 15px;
     display: flex;
     gap: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
 }
 
 .practice-img {
@@ -375,7 +389,7 @@ body {
     content: "";
     width: 65px;
     height: 65px;
-    background: white;
+    background: var(--card-bg);
     border-radius: 50%;
     position: absolute;
 }
@@ -425,7 +439,7 @@ body {
     min-width: 160px;
     background: white;
     padding: 16px;
-    border-radius: 16px;
+    border-radius: 15px;
     border: 1px solid #F3F4F6;
 }
 
@@ -468,20 +482,7 @@ body {
 }
 
 /* Bottom Nav */
-.bottom-nav {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 75px;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0 10px 15px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    z-index: 100;
-}
+
 
 .nav-item {
     display: flex;
@@ -493,7 +494,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     padding: 8px 16px;
-    border-radius: 16px;
+    border-radius: 15px;
 }
 
 .nav-item i {
@@ -674,7 +675,7 @@ body {
     color: white;
     border: none;
     padding: 14px;
-    border-radius: 14px;
+    border-radius: 15px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -706,7 +707,7 @@ body {
 .login-content {
     background: white;
     padding: 32px 24px;
-    border-radius: 24px;
+    border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     text-align: center;
 }
@@ -724,6 +725,17 @@ body {
     margin-bottom: 32px;
 }
 
+.lib-list-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 16px; 
+    background: var(--card-bg); 
+    padding: 12px; 
+    border-radius: 16px; 
+    border: 1px solid var(--border-color); 
+    margin-bottom: 12px; 
+}
+
 .input-group {
     display: flex;
     align-items: center;
@@ -733,6 +745,7 @@ body {
     margin-bottom: 16px;
     transition: box-shadow 0.3s;
     border: 1px solid var(--border-color, transparent);
+    position: relative;
 }
 
 .input-group:focus-within {
@@ -919,15 +932,15 @@ body {
     font-size: 18px;
 }
 
-.user-card-horizontal {
-    background: var(--card-bg, var(--white));
-    border-radius: 15px;
-    padding: 20px;
+.lib-cat-card {
+    background: var(--card-bg);
+    padding: 16px;
+    border-radius: 20px;
     display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
 }
 
 .logout-card {
@@ -982,6 +995,7 @@ body {
     justify-content: space-between;
     align-items: center;
     transition: background 0.3s;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .main-top-navbar.border {
@@ -1099,9 +1113,57 @@ body {
     background-color: #000000;
 }
 
-.light {
 
-    lighting-color: #FFFFFF;
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.nav-item.active {
+    color: var(--primary-purple);
+}
+
+.growth-card, .exercise-card, .category-list-item, .settings-card, .lib-list-item, .story-card-item, .history-item, .sensation-pill, .meditation-card, .support-cta, .achievement-badge, .lib-cat-card, .practice-card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main);
+    transition: background 0.3s, transform 0.2s;
+}
+
+.bottom-nav {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 72px;
+    background: var(--bg-light) !important;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-bottom: 12px;
+    z-index: 100;
+    transition: background 0.3s;
+}
+
+body.dark-theme .bottom-nav {
+    background: var(--bg-navbar, #111827) !important;
+}
+
+.growth-card:active, .exercise-card:active, .category-list-item:active {
+    transform: scale(0.98);
+}
+
+.main-top-navbar {
+    background: var(--bg-light) !important;
+    transition: background 0.3s;
 }
 
 .stats-ribbon {
@@ -1115,4 +1177,101 @@ body {
 
 .courses-scroll::-webkit-scrollbar {
     display: none;
+}
+
+/* Search Results Overlay */
+.search-results-overlay {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 8px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    z-index: 1000;
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-result-item:hover {
+    background: var(--bg-light);
+}
+
+.search-result-item img {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.search-res-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.search-res-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Like Button Styles */
+.like-btn-circle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
+    color: #94A3B8;
+}
+
+.like-btn-circle:hover {
+    transform: scale(1.1);
+    background: white;
+}
+
+.like-btn-circle i.fas.fa-heart {
+    color: #F43F5E;
+}
+
+.track-like-btn {
+    background: transparent;
+    border: none;
+    color: #CBD5E1;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px;
+    transition: all 0.2s;
+}
+
+.track-like-btn:hover {
+    color: #F43F5E;
+    transform: scale(1.1);
+}
+
+.track-like-btn i.fas.fa-heart {
+    color: #F43F5E;
 }

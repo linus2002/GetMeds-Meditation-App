@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Help - Getmeds Meditation App</title>
+    <meta name="description" content="Mental health hotlines and regional clinic directory.">
+    <link rel="stylesheet" href="style.css?v=50">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .directory-container {
+            padding: 60px 24px 100px;
+        }
+
+        .emergency-banner {
+            background: #FEF2F2;
+            border: 1px solid #FEE2E2;
+            border-radius: 15px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .emergency-banner i {
+            color: #EF4444;
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        .emergency-banner p {
+            font-size: 13px;
+            color: #991B1B;
+            line-height: 1.5;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .resource-section {
+            margin-bottom: 32px;
+        }
+
+        .section-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .hotline-card {
+            background: white;
+            border-radius: 15px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #F1F5F9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hotline-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 4px;
+        }
+
+        .hotline-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .call-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #F0FDF4;
+            color: #16A34A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #DCFCE7;
+        }
+
+        .call-btn:active {
+            transform: scale(0.9);
+            background: #16A34A;
+            color: white;
+        }
+
+        .region-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            scrollbar-width: none;
+            margin-bottom: 16px;
+        }
+
+        .region-tabs::-webkit-scrollbar { display: none; }
+
+        .region-pill {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: white;
+            border: 1px solid #E2E8F0;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .region-pill.active {
+            background: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+
+        .clinic-card {
+            background: white;
+            border-radius: 15px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #F1F5F9;
+        }
+
+        .clinic-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 6px;
+        }
+
+        .clinic-card p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 0 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .clinic-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .clinic-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-map { background: #EEF2FF; color: #4F46E5; }
+        .btn-web { background: #F8FAFC; color: #64748B; }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light);">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Header -->
+                <div class="main-top-navbar border">
+                    <div class="top-nav-left" style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-arrow-left" onclick="window.history.back()" style="cursor: pointer;"></i>
+                        <h2 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin: 0;">Find Help</h2>
+                    </div>
+                    <div class="top-nav-right">
+                        <i class="fas fa-search" style="color: var(--text-muted);"></i>
+                    </div>
+                </div>
+
+                <div class="app-container-scroller">
+                    <div class="directory-container">
+                        <!-- Emergency Disclaimer -->
+                        <div class="emergency-banner">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p>If you or someone you know is in immediate danger, please call local emergency services or visit the nearest hospital.</p>
+                        </div>
+
+                        <!-- 24/7 Hotlines -->
+                        <div class="resource-section">
+                            <span class="section-label">24/7 Emergency Hotlines</span>
+                            
+                            <div class="hotline-card">
+                                <div class="hotline-info">
+                                    <h4>NCMH Crisis Hotline</h4>
+                                    <p>Nationwide Support (Luzon)</p>
+                                    <p style="font-weight: 700; color: var(--primary-purple); margin-top: 4px;">1553</p>
+                                </div>
+                                <div class="call-btn" onclick="window.location.href='tel:1553'"><i class="fas fa-phone"></i></div>
+                            </div>
+
+                            <div class="hotline-card">
+                                <div class="hotline-info">
+                                    <h4>Hopeline Philippines</h4>
+                                    <p>Mental Health Support</p>
+                                    <p style="font-size: 11px; margin-top: 4px;">0917-558-4673</p>
+                                </div>
+                                <div class="call-btn" onclick="window.location.href='tel:09175584673'"><i class="fas fa-phone"></i></div>
+                            </div>
+
+                            <div class="hotline-card">
+                                <div class="hotline-info">
+                                    <h4>In Touch Community</h4>
+                                    <p>Crisis Line</p>
+                                    <p style="font-size: 11px; margin-top: 4px;">(02) 8804-4673</p>
+                                </div>
+                                <div class="call-btn" onclick="window.location.href='tel:0288044673'"><i class="fas fa-phone"></i></div>
+                            </div>
+                        </div>
+
+                        <!-- Regional Clinics -->
+                        <div class="resource-section">
+                            <span class="section-label">Regional Mental Health Centers</span>
+                            
+                            <div class="region-tabs">
+                                <div class="region-pill active" onclick="filterRegion('ncr', this)">NCR</div>
+                                <div class="region-pill" onclick="filterRegion('luzon', this)">Luzon</div>
+                                <div class="region-pill" onclick="filterRegion('visayas', this)">Visayas</div>
+                                <div class="region-pill" onclick="filterRegion('mindanao', this)">Mindanao</div>
+                            </div>
+
+                            <div id="clinicList">
+                                <!-- NCR Clinics (Default) -->
+                                <div class="clinic-card">
+                                    <h4>Philippine General Hospital (PGH)</h4>
+                                    <p><i class="fas fa-map-marker-alt"></i> Taft Ave, Ermita, Manila</p>
+                                    <div class="clinic-actions">
+                                        <button class="clinic-btn btn-map">View Map</button>
+                                        <button class="clinic-btn btn-web">Website</button>
+                                    </div>
+                                </div>
+
+                                <div class="clinic-card">
+                                    <h4>Ateneo Bulatao Center</h4>
+                                    <p><i class="fas fa-map-marker-alt"></i> Loyola Heights, Quezon City</p>
+                                    <div class="clinic-actions">
+                                        <button class="clinic-btn btn-map">View Map</button>
+                                        <button class="clinic-btn btn-web">Website</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <nav class="bottom-nav">
+                    <div class="nav-item" onclick="window.location.href='home.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='insights.html'">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Insights</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='workbook.html'">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <span>Workbook</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='library.html'">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Library</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                </nav>
+
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const clinics = {
+            ncr: [
+                { name: "Philippine General Hospital (PGH)", address: "Taft Ave, Ermita, Manila", map: "https://www.google.com/maps/search/?api=1&query=Philippine+General+Hospital", web: "https://pgh.gov.ph" },
+                { name: "Ateneo Bulatao Center", address: "Loyola Heights, Quezon City", map: "https://www.google.com/maps/search/?api=1&query=Ateneo+Bulatao+Center", web: "https://ateneobulataocenter.com" },
+                { name: "UST Psychotrauma Clinic", address: "España Blvd, Manila", map: "https://www.google.com/maps/search/?api=1&query=UST+Psychotrauma+Clinic", web: "https://www.ust.edu.ph" }
+            ],
+            luzon: [
+                { name: "Bicol Regional Teaching & Training Hospital", address: "Legazpi City, Albay", map: "https://www.google.com/maps/search/?api=1&query=Bicol+Regional+Medical+Center", web: "https://brmc.doh.gov.ph" },
+                { name: "Batangas Medical Center", address: "Batangas City", map: "https://www.google.com/maps/search/?api=1&query=Batangas+Medical+Center", web: "https://batmc.doh.gov.ph" },
+                { name: "Baguio General Hospital", address: "Baguio City", map: "https://www.google.com/maps/search/?api=1&query=Baguio+General+Hospital", web: "https://bghmc.doh.gov.ph" }
+            ],
+            visayas: [
+                { name: "Vicente Sotto Memorial Medical Center", address: "Cebu City", map: "https://www.google.com/maps/search/?api=1&query=Vicente+Sotto+Memorial+Medical+Center", web: "https://vsmmc.doh.gov.ph" },
+                { name: "Corazon Locsin Montelibano Regional Hospital", address: "Bacolod City", map: "https://www.google.com/maps/search/?api=1&query=Corazon+Locsin+Montelibano+Memorial+Regional+Hospital", web: "https://clmmrh.doh.gov.ph" },
+                { name: "Western Visayas Medical Center", address: "Iloilo City", map: "https://www.google.com/maps/search/?api=1&query=Western+Visayas+Medical+Center", web: "https://wvmc.doh.gov.ph" }
+            ],
+            mindanao: [
+                { name: "Southern Philippines Medical Center", address: "Davao City", map: "https://www.google.com/maps/search/?api=1&query=Southern+Philippines+Medical+Center", web: "https://spmc.doh.gov.ph" },
+                { name: "Zamboanga City Medical Center", address: "Zamboanga City", map: "https://www.google.com/maps/search/?api=1&query=Zamboanga+City+Medical+Center", web: "https://zcmc.doh.gov.ph" },
+                { name: "Northern Mindanao Medical Center", address: "Cagayan de Oro City", map: "https://www.google.com/maps/search/?api=1&query=Northern+Mindanao+Medical+Center", web: "https://nmmc.doh.gov.ph" }
+            ]
+        };
+
+        function filterRegion(region, el) {
+            // Update UI
+            document.querySelectorAll('.region-pill').forEach(p => p.classList.remove('active'));
+            if(el) el.classList.add('active');
+
+            // Render Clinics
+            const container = document.getElementById('clinicList');
+            const regionClinics = clinics[region];
+            
+            container.innerHTML = regionClinics.map(c => `
+                <div class="clinic-card">
+                    <h4>${c.name}</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> ${c.address}</p>
+                    <div class="clinic-actions">
+                        <button class="clinic-btn btn-map" onclick="window.open('${c.map}', '_blank')">View Map</button>
+                        <button class="clinic-btn btn-web" onclick="window.open('${c.web}', '_blank')">Website</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize with NCR
+        window.onload = () => filterRegion('ncr');
+    </script>
+</body>
+
+</html>
