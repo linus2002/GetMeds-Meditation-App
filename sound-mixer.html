@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getmeds Meditation App - Soundscape Mixer</title>
+    <meta name="description" content="Mix your own ambient soundscape.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Immersive Mixer Background */
+        .mixer-screen {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Top Nav Overrides for Dark Screen */
+        .mixer-nav {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .mixer-nav i, .mixer-nav h2 {
+            color: white !important;
+        }
+
+        /* Master Controls */
+        .master-controls {
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .visualizer-ring {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 24px;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .visualizer-ring::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border-radius: 50%;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+            opacity: 0;
+        }
+
+        .visualizer-ring.playing::before {
+            opacity: 1;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        .master-play-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(109, 40, 217, 0.4);
+            transition: transform 0.2s;
+            z-index: 2;
+        }
+
+        .master-play-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Mixer Tracks */
+        .tracks-container {
+            padding: 0 24px 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        
+        .tracks-container::-webkit-scrollbar { display: none; }
+
+        .sound-track {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            backdrop-filter: blur(10px);
+            transition: background 0.3s;
+        }
+
+        .sound-track.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .track-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .track-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .track-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .sound-track.active .track-icon {
+            background: rgba(139, 92, 246, 0.2);
+            color: #A78BFA;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .track-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.6);
+            transition: color 0.3s;
+        }
+
+        .sound-track.active .track-title {
+            color: white;
+        }
+
+        /* Custom Toggle */
+        .track-toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .track-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .sound-track.active .track-toggle {
+            background: #8B5CF6;
+        }
+
+        .sound-track.active .track-toggle::after {
+            transform: translateX(20px);
+        }
+
+        /* Custom Volume Slider */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0.4;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .sound-track.active .volume-control {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .volume-control i {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        /* WebKit Slider */
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .bottom-action-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px 24px 32px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+
+        .primary-action-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .primary-action-btn:active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island" style="background: black;"></div>
+            <div class="device-screen mixer-screen">
+                
+                <!-- Status Bar -->
+                <div class="status-bar" style="color: white; position: absolute; width: 100%; z-index: 10;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Main Top Navbar -->
+                <div class="main-top-navbar border mixer-nav" style="padding-top: 40px; position: relative; z-index: 10;">
+                    <div class="top-nav-left" style="flex: 1;">
+                        <i class="fas fa-chevron-down" onclick="window.history.back()" style="font-size: 20px; cursor: pointer;"></i>
+                    </div>
+                    <div class="top-nav-center" style="flex: 2; text-align: center;">
+                        <h2 style="font-size: 16px; font-weight: 600; margin: 0;">Soundscape Mixer</h2>
+                    </div>
+                    <div class="top-nav-right" style="flex: 1; text-align: right;">
+                        <i class="fas fa-sliders-h" style="font-size: 18px; cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <!-- Master Controls -->
+                <div class="master-controls">
+                    <div class="visualizer-ring" id="visualizer">
+                        <button class="master-play-btn" id="masterPlayBtn" onclick="toggleMasterPlay()">
+                            <i class="fas fa-play" style="margin-left: 4px;"></i>
+                        </button>
+                    </div>
+                    <p style="margin: 0; font-size: 14px; font-weight: 500; opacity: 0.8;" id="mixStatus">Mix is paused</p>
+                </div>
+
+                <!-- Tracks -->
+                <div class="tracks-container">
+                    
+                    <!-- Track 1: Rain -->
+                    <div class="sound-track active" id="track-rain">
+                        <div class="track-header">
+                            <div class="track-info">
+                                <div class="track-icon"><i class="fas fa-cloud-rain"></i></div>
+                                <h4 class="track-title">Heavy Rain</h4>
+                            </div>
+                            <div class="track-toggle" onclick="toggleTrack('track-rain')"></div>
+                        </div>
+                        <div class="volume-control">
+                            <i class="fas fa-volume-down"></i>
+                            <input type="range" min="0" max="100" value="70" class="vol-slider" oninput="updateSliderFill(this)">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+
+                    <!-- Track 2: Fireplace -->
+                    <div class="sound-track active" id="track-fire">
+                        <div class="track-header">
+                            <div class="track-info">
+                                <div class="track-icon"><i class="fas fa-fire"></i></div>
+                                <h4 class="track-title">Crackling Fire</h4>
+                            </div>
+                            <div class="track-toggle" onclick="toggleTrack('track-fire')"></div>
+                        </div>
+                        <div class="volume-control">
+                            <i class="fas fa-volume-down"></i>
+                            <input type="range" min="0" max="100" value="40" class="vol-slider" oninput="updateSliderFill(this)">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+
+                    <!-- Track 3: Ocean Waves -->
+                    <div class="sound-track" id="track-ocean">
+                        <div class="track-header">
+                            <div class="track-info">
+                                <div class="track-icon"><i class="fas fa-water"></i></div>
+                                <h4 class="track-title">Ocean Waves</h4>
+                            </div>
+                            <div class="track-toggle" onclick="toggleTrack('track-ocean')"></div>
+                        </div>
+                        <div class="volume-control">
+                            <i class="fas fa-volume-down"></i>
+                            <input type="range" min="0" max="100" value="50" class="vol-slider" oninput="updateSliderFill(this)">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+
+                    <!-- Track 4: Singing Bowls -->
+                    <div class="sound-track" id="track-bowls">
+                        <div class="track-header">
+                            <div class="track-info">
+                                <div class="track-icon"><i class="fas fa-bell"></i></div>
+                                <h4 class="track-title">Singing Bowls</h4>
+                            </div>
+                            <div class="track-toggle" onclick="toggleTrack('track-bowls')"></div>
+                        </div>
+                        <div class="volume-control">
+                            <i class="fas fa-volume-down"></i>
+                            <input type="range" min="0" max="100" value="50" class="vol-slider" oninput="updateSliderFill(this)">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+
+                    <!-- Track 5: Forest Birds -->
+                    <div class="sound-track" id="track-birds">
+                        <div class="track-header">
+                            <div class="track-info">
+                                <div class="track-icon"><i class="fas fa-leaf"></i></div>
+                                <h4 class="track-title">Forest Birds</h4>
+                            </div>
+                            <div class="track-toggle" onclick="toggleTrack('track-birds')"></div>
+                        </div>
+                        <div class="volume-control">
+                            <i class="fas fa-volume-down"></i>
+                            <input type="range" min="0" max="100" value="50" class="vol-slider" oninput="updateSliderFill(this)">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom Action Bar -->
+                <div class="bottom-action-bar">
+                    <button class="primary-action-btn" onclick="saveMix()">
+                        <i class="fas fa-heart" style="margin-right: 8px;"></i> Save as Preset
+                    </button>
+                    <div class="home-indicator" style="bottom: 8px; background: rgba(255,255,255,0.5);"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let isPlaying = false;
+
+        function toggleMasterPlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('masterPlayBtn');
+            const icon = btn.querySelector('i');
+            const visualizer = document.getElementById('visualizer');
+            const status = document.getElementById('mixStatus');
+
+            if (isPlaying) {
+                icon.className = 'fas fa-pause';
+                icon.style.marginLeft = '0'; // pause icon is centered naturally
+                visualizer.classList.add('playing');
+                status.innerText = 'Mix is playing';
+            } else {
+                icon.className = 'fas fa-play';
+                icon.style.marginLeft = '4px'; // play icon needs slight offset
+                visualizer.classList.remove('playing');
+                status.innerText = 'Mix is paused';
+            }
+        }
+
+        function toggleTrack(trackId) {
+            const track = document.getElementById(trackId);
+            track.classList.toggle('active');
+            
+            // If turning on a track while master is paused, auto-play master
+            if (track.classList.contains('active') && !isPlaying) {
+                toggleMasterPlay();
+            }
+        }
+
+        function updateSliderFill(slider) {
+            const val = slider.value;
+            // Dynamic gradient fill for the slider track
+            slider.style.background = `linear-gradient(to right, #A78BFA ${val}%, rgba(255, 255, 255, 0.1) ${val}%)`;
+        }
+
+        function saveMix() {
+            const btn = document.querySelector('.primary-action-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check" style="margin-right: 8px;"></i> Saved to Library';
+            btn.style.background = 'rgba(34, 197, 94, 0.2)';
+            btn.style.borderColor = '#22C55E';
+            btn.style.color = '#4ADE80';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = 'rgba(255, 255, 255, 0.1)';
+                btn.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                btn.style.color = 'white';
+            }, 2000);
+        }
+
+        // Initialize slider backgrounds
+        document.addEventListener('DOMContentLoaded', () => {
+            const sliders = document.querySelectorAll('.vol-slider');
+            sliders.forEach(slider => updateSliderFill(slider));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Schedule Your Zen - Getmeds Meditation App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --ui-blue: #3B82F6;
+            --ui-text-main: #1F2937;
+            --ui-text-muted: #6B7280;
+            --ui-bg-light: #F9FAFB;
+            --ui-card-bg: #FFFFFF;
+            --ui-border: #F3F4F6;
+            --ui-input-bg: #F8FAFC;
+        }
+
+        .dark-theme {
+            --ui-text-main: #F9FAFB;
+            --ui-text-muted: #9BA3AF;
+            --ui-bg-light: #0A0F1D;
+            --ui-card-bg: #161B2C;
+            --ui-border: #1F2937;
+            --ui-input-bg: #1F2937;
+        }
+
+        body {
+            background-color: #f0f2f5 !important;
+            font-family: 'Outfit', sans-serif;
+            color: var(--ui-text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .schedule-inner {
+            padding: 20px 24px 100px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 24px;
+            margin-top: 20px;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: #EFF6FF;
+            color: var(--ui-blue);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin: 0 auto 12px;
+        }
+
+        .header-section h1 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+
+        .header-section p {
+            font-size: 12px;
+            color: var(--ui-text-muted);
+            font-weight: 400;
+        }
+
+        .card {
+            background: var(--ui-card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--ui-border);
+            margin-bottom: 16px;
+        }
+
+        .section-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--ui-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .time-input-wrap {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #sessionTime {
+            width: 100%;
+            border: none;
+            background: var(--ui-input-bg);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            font-family: inherit;
+            color: var(--ui-text-main);
+            text-align: center;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .day-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
+        .day-item {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--ui-text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--ui-input-bg);
+        }
+
+        .day-item.active {
+            background: var(--ui-blue);
+            color: white;
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .type-option {
+            padding: 12px 6px;
+            border-radius: 12px;
+            border: 1px solid var(--ui-border);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .type-option i {
+            font-size: 16px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .type-option span {
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .type-option.active {
+            border-color: var(--ui-blue);
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--ui-blue);
+        }
+
+        .confirm-button {
+            width: 100%;
+            background: var(--ui-blue);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
+            cursor: pointer;
+        }
+
+        .bottom-action-bar {
+            padding: 12px 24px;
+            background: var(--ui-bg-light);
+            border-top: 1px solid var(--ui-border);
+        }
+
+        .reminder-list h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .reminder-card {
+            background: var(--ui-card-bg);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--ui-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .reminder-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--ui-input-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--ui-blue);
+        }
+
+        .reminder-info h4 {
+            font-size: 13px;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .reminder-info p {
+            font-size: 10px;
+            color: var(--ui-text-muted);
+            margin: 2px 0 0;
+        }
+
+        /* Schedule page layout */
+        .app-container-scroller {
+            flex: 1 1 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            min-height: 0;
+        }
+
+        .app-container-scroller::-webkit-scrollbar {
+            display: none;
+        }
+
+        .bottom-action-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 12px 24px;
+            padding-bottom: 24px; /* extra space for home indicator */
+            background: var(--ui-bg-light);
+            border-top: 1px solid var(--ui-border);
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Header -->
+                <div class="main-top-navbar border">
+                    <div class="top-nav-left" style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-arrow-left" onclick="window.history.back()" style="cursor: pointer; color: var(--ui-text-main);"></i>
+                        <h2 style="font-size: 18px; font-weight: 700; color: var(--ui-text-main); margin: 0;">Schedule</h2>
+                    </div>
+                    <div class="top-nav-right">
+                        <i class="fas fa-ellipsis-v" style="color: var(--ui-text-muted);"></i>
+                    </div>
+                </div>
+
+                <div class="app-container-scroller" style="padding-bottom: 100px;">
+                    <div class="schedule-inner" style="padding: 20px 24px 20px;">
+                    <!-- Header -->
+                    <div class="header-section">
+                        <div class="icon-box">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h1>Book your session</h1>
+                        <p>Commit to your daily wellness journey</p>
+                    </div>
+
+                    <!-- Main Card -->
+                    <div class="card">
+                        <p class="section-label">Select Time</p>
+                        <div class="time-input-wrap">
+                            <input type="time" id="sessionTime" value="08:00">
+                        </div>
+
+                        <div class="day-grid">
+                            <div class="day-item" onclick="this.classList.toggle('active')">S</div>
+                            <div class="day-item active" onclick="this.classList.toggle('active')">M</div>
+                            <div class="day-item active" onclick="this.classList.toggle('active')">T</div>
+                            <div class="day-item active" onclick="this.classList.toggle('active')">W</div>
+                            <div class="day-item active" onclick="this.classList.toggle('active')">T</div>
+                            <div class="day-item active" onclick="this.classList.toggle('active')">F</div>
+                            <div class="day-item" onclick="this.classList.toggle('active')">S</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <p class="section-label">Session Type</p>
+                        <div class="type-grid">
+                            <div class="type-option active" onclick="selectType(this, 'Meditation')">
+                                <i class="fas fa-spa"></i>
+                                <span>Meditation</span>
+                            </div>
+                            <div class="type-option" onclick="selectType(this, 'Breathing')">
+                                <i class="fas fa-wind"></i>
+                                <span>Breathing</span>
+                            </div>
+                            <div class="type-option" onclick="selectType(this, 'Sleep')">
+                                <i class="fas fa-moon"></i>
+                                <span>Sleep</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reminders List -->
+                    <div class="reminder-list">
+                        <h3>Active Reminders</h3>
+                        <div id="reminderContainer">
+                            <div class="reminder-card">
+                                <div class="reminder-icon"><i class="fas fa-spa"></i></div>
+                                <div class="reminder-info">
+                                    <h4>08:00 AM</h4>
+                                    <p>Meditation • M, T, W, T, F</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- Closes schedule-inner -->
+                </div> <!-- Closes app-container-scroller -->
+
+                <div class="bottom-action-bar">
+                    <button class="confirm-button" onclick="saveReminder()">
+                        Confirm Schedule
+                    </button>
+                    <div class="home-indicator" style="margin-top: 8px;"></div>
+                </div>
+            </div> <!-- Closes device-screen -->
+        </div> <!-- Closes device-bezel -->
+    </div> <!-- Closes device-frame -->
+
+    <script src="app.js"></script>
+    <script>
+        let currentType = 'Meditation';
+
+        function getIconForType(type) {
+            if (type === 'Breathing') return 'fa-wind';
+            if (type === 'Sleep') return 'fa-moon';
+            return 'fa-spa';
+        }
+
+        function formatTime12(time24) {
+            let [h, m] = time24.split(':');
+            h = parseInt(h, 10);
+            let ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            return `${h.toString().padStart(2, '0')}:${m} ${ampm}`;
+        }
+
+        function renderReminders() {
+            const container = document.getElementById('reminderContainer');
+            const reminders = JSON.parse(localStorage.getItem('zen_reminders') || '[]');
+            
+            if (reminders.length === 0) {
+                container.innerHTML = '<p style="font-size:12px; color:var(--ui-text-muted); text-align:center; padding: 10px;">No active reminders.</p>';
+                return;
+            }
+
+            container.innerHTML = reminders.map((r, index) => `
+                <div class="reminder-card">
+                    <div class="reminder-icon"><i class="fas ${getIconForType(r.type)}"></i></div>
+                    <div class="reminder-info" style="flex:1;">
+                        <h4>${formatTime12(r.time)}</h4>
+                        <p>${r.type} • ${r.days.join(', ')}</p>
+                    </div>
+                    <i class="fas fa-trash" style="color: #FCA5A5; font-size: 14px; cursor: pointer; padding: 4px;" onclick="deleteReminder(${index})"></i>
+                </div>
+            `).join('');
+        }
+
+        function deleteReminder(index) {
+            let reminders = JSON.parse(localStorage.getItem('zen_reminders') || '[]');
+            reminders.splice(index, 1);
+            localStorage.setItem('zen_reminders', JSON.stringify(reminders));
+            renderReminders();
+        }
+
+        function selectType(el, type) {
+            document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+            currentType = type;
+        }
+
+        function saveReminder() {
+            const time = document.getElementById('sessionTime').value;
+            const days = Array.from(document.querySelectorAll('.day-item.active')).map(d => d.innerText);
+            
+            if (days.length === 0) {
+                alert("Please select at least one day!");
+                return;
+            }
+
+            let reminders = JSON.parse(localStorage.getItem('zen_reminders') || '[]');
+            reminders.push({ time, days, type: currentType });
+            localStorage.setItem('zen_reminders', JSON.stringify(reminders));
+
+            const btn = document.querySelector('.confirm-button');
+            btn.innerText = "Schedule Confirmed!";
+            btn.style.background = "#10B981";
+            
+            renderReminders();
+            
+            const scroller = document.querySelector('.app-container-scroller');
+            scroller.scrollTo({ top: scroller.scrollHeight, behavior: 'smooth' });
+
+            setTimeout(() => {
+                btn.innerText = "Confirm Schedule";
+                btn.style.background = "#3B82F6";
+            }, 1500);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Clear old duplicates and set a clean default if empty
+            const stored = JSON.parse(localStorage.getItem('zen_reminders') || '[]');
+            if (stored.length === 0) {
+                localStorage.setItem('zen_reminders', JSON.stringify([
+                    { time: '08:00', days: ['M', 'T', 'W', 'T', 'F'], type: 'Meditation' }
+                ]));
+            }
+            renderReminders();
+        });
+    </script>
+</body>
+
+</html>

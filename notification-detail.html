@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getmeds Meditation App - Notification Detail</title>
+    <meta name="description" content="Notification details.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .detail-hero {
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-icon-wrap {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.1);
+            color: #8B5CF6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+        }
+
+        .detail-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0 0 8px 0;
+            line-height: 1.2;
+        }
+
+        .detail-meta {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-meta i {
+            font-size: 11px;
+        }
+
+        .detail-body {
+            padding: 32px 24px;
+            font-size: 15px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .detail-body p {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .highlight-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .highlight-box img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .highlight-info h5 {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            color: var(--text-main);
+        }
+
+        .highlight-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .bottom-action-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px 24px 32px; /* Extra padding for home indicator */
+            background: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .primary-action-btn {
+            width: 100%;
+            background: #8B5CF6;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.25);
+            transition: transform 0.2s;
+        }
+
+        .primary-action-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light); display: flex; flex-direction: column;">
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: #1F2937; position: absolute; z-index: 10;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Main Top Navbar -->
+                <div class="main-top-navbar border" style="padding-top: 40px; position: relative; z-index: 10;">
+                    <div class="top-nav-left" style="flex: 1;">
+                        <i class="fas fa-arrow-left" onclick="window.history.back()" style="font-size: 20px; color: var(--text-main); cursor: pointer;"></i>
+                    </div>
+                    <div class="top-nav-center" style="flex: 2; text-align: center;">
+                        <h2 style="font-size: 16px; font-weight: 600; color: var(--text-main); margin: 0;">Details</h2>
+                    </div>
+                    <div class="top-nav-right" style="flex: 1; text-align: right;">
+                        <i class="fas fa-ellipsis-v" style="font-size: 18px; color: var(--text-main); cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <div class="app-container-scroller" style="flex: 1; overflow-y: auto; padding-bottom: 100px;">
+                    
+                    <div class="detail-hero">
+                        <div class="detail-icon-wrap" id="detailIconWrap">
+                            <i class="fa-solid fa-spa" id="detailIcon"></i>
+                        </div>
+                        <h1 class="detail-title" id="detailTitle">Upcoming Session</h1>
+                        <p class="detail-meta">
+                            <i class="fa-regular fa-clock"></i>
+                            <span id="detailTime">Today • 07:45 AM</span>
+                        </p>
+                    </div>
+
+                    <div class="detail-body">
+                        <p id="detailMessage">
+                            Your Morning Breathing session is scheduled to start in 15 minutes. Take a moment to find a quiet, comfortable place to sit or lie down. 
+                        </p>
+                        <p>
+                            Consistency is key to mindfulness. Preparing your physical space ahead of time can significantly improve the quality of your meditation.
+                        </p>
+
+                        <div class="highlight-box" id="highlightBox">
+                            <img src="https://images.unsplash.com/photo-1528319725582-ddc096101511?auto=format&fit=crop&w=200&q=80" alt="Breathing Exercise">
+                            <div class="highlight-info">
+                                <h5>Morning Breathing</h5>
+                                <p>10 Min • Guided • Beginner</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Fixed Bottom Action Bar -->
+                <div class="bottom-action-bar">
+                    <button class="primary-action-btn" id="actionBtn" onclick="window.location.href='breathing.html'">
+                        Start Session Now
+                    </button>
+                    <div class="home-indicator" style="bottom: 8px;"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        // Simple script to make the page dynamic based on URL parameters (if used in a real app)
+        // For demonstration, we'll just read from URL params if they exist, otherwise use defaults
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+            
+            if (type === 'streak') {
+                document.getElementById('detailIconWrap').style.background = 'rgba(249, 115, 22, 0.1)';
+                document.getElementById('detailIconWrap').style.color = '#F97316';
+                document.getElementById('detailIcon').className = 'fa-solid fa-fire';
+                document.getElementById('detailTitle').innerText = '3-Day Streak! 🔥';
+                document.getElementById('detailTime').innerText = 'Yesterday • 08:30 PM';
+                document.getElementById('detailMessage').innerHTML = 'Congratulations! You have meditated for 3 consecutive days. Building a habit takes time, and you are well on your way.<br><br>Keep up the great work and aim for a 7-day streak to unlock a special mindfulness badge.';
+                document.getElementById('highlightBox').style.display = 'none';
+                document.getElementById('actionBtn').innerText = 'View Your Progress';
+                document.getElementById('actionBtn').onclick = () => window.location.href = 'insights.html';
+            } else if (type === 'new-content') {
+                document.getElementById('detailIconWrap').style.background = 'rgba(34, 197, 94, 0.1)';
+                document.getElementById('detailIconWrap').style.color = '#22C55E';
+                document.getElementById('detailIcon').className = 'fa-solid fa-book-open';
+                document.getElementById('detailTitle').innerText = 'New Content Added';
+                document.getElementById('detailTime').innerText = 'Today • 09:00 AM';
+                document.getElementById('detailMessage').innerText = 'We just added a brand new Sleep Story to the library: "Whispering Pines". Drift off to sleep with the calming sounds of a gentle breeze through an ancient pine forest.';
+                document.getElementById('highlightBox').style.display = 'flex';
+                document.getElementById('highlightBox').querySelector('img').src = 'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=200&q=80';
+                document.getElementById('highlightBox').querySelector('h5').innerText = 'Whispering Pines';
+                document.getElementById('highlightBox').querySelector('p').innerText = '45 Min • Narration • Nature';
+                document.getElementById('actionBtn').innerText = 'Listen Now';
+                document.getElementById('actionBtn').onclick = () => window.location.href = 'audio-player.html';
+            } else if (type === 'upcoming') {
+                document.getElementById('detailIconWrap').style.background = 'rgba(139, 92, 246, 0.1)';
+                document.getElementById('detailIconWrap').style.color = '#8B5CF6';
+                document.getElementById('detailIcon').className = 'fa-solid fa-spa';
+                document.getElementById('detailTitle').innerText = 'Upcoming Session';
+                document.getElementById('detailTime').innerText = 'Today • 07:45 AM';
+                document.getElementById('detailMessage').innerText = 'Your Morning Breathing session is scheduled to start in 15 minutes. Take a moment to find a quiet, comfortable place to sit or lie down.\n\nConsistency is key to mindfulness. Preparing your physical space ahead of time can significantly improve the quality of your meditation.';
+                document.getElementById('highlightBox').style.display = 'flex';
+                document.getElementById('highlightBox').querySelector('img').src = 'https://images.unsplash.com/photo-1528319725582-ddc096101511?auto=format&fit=crop&w=200&q=80';
+                document.getElementById('highlightBox').querySelector('h5').innerText = 'Morning Breathing';
+                document.getElementById('highlightBox').querySelector('p').innerText = '10 Min • Guided • Beginner';
+                document.getElementById('actionBtn').innerText = 'Start Session Now';
+                document.getElementById('actionBtn').onclick = () => window.location.href = 'breathing.html';
+            } else if (type === 'welcome') {
+                document.getElementById('detailIconWrap').style.background = 'rgba(16, 185, 129, 0.1)';
+                document.getElementById('detailIconWrap').style.color = '#10B981';
+                document.getElementById('detailIcon').className = 'fa-solid fa-leaf';
+                document.getElementById('detailTitle').innerText = 'Welcome Onboard Maria! 🎉';
+                document.getElementById('detailTime').innerText = '26 Nov • 01:30 PM';
+                document.getElementById('detailMessage').innerHTML = 'We are so glad you are here. GetMeds Meditation is designed to help you find peace in your busy schedule.<br><br>Let us show you around the app so you can get the most out of your mindfulness journey.';
+                document.getElementById('highlightBox').style.display = 'none';
+                document.getElementById('actionBtn').innerText = 'Take a tour';
+                document.getElementById('actionBtn').onclick = () => window.location.href = 'directory.html';
+            } else {
+                // Default fallback (e.g. 'completed', 'checkin')
+                document.getElementById('detailIconWrap').style.background = 'rgba(139, 92, 246, 0.1)';
+                document.getElementById('detailIconWrap').style.color = '#8B5CF6';
+                document.getElementById('detailIcon').className = 'fa-regular fa-bell';
+                document.getElementById('detailTitle').innerText = 'Notification';
+                document.getElementById('detailTime').innerText = 'Recently';
+                document.getElementById('detailMessage').innerText = 'You have a new alert regarding your account or meditation activity. Please check your dashboard for more details.';
+                document.getElementById('highlightBox').style.display = 'none';
+                document.getElementById('actionBtn').innerText = 'Go to Home';
+                document.getElementById('actionBtn').onclick = () => window.location.href = 'home.html';
+            }
+        });
+    </script>
+</body>
+</html>

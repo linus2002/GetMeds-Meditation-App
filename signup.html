@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getmeds Meditation App - Sign Up</title>
+    <meta name="description" content="Join our premium meditation experience designed for mindfulness and peace.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .avatar-grid {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 12px;
+            row-gap: 25px;
+            margin-bottom: 10px;
+            padding: 10px 4px;
+            height: 220px;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .avatar-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .avatar-option {
+            width: calc(25% - 12px);
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: var(--bg-light);
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-image: url('assets/avatars_new.png');
+            background-size: 500% 500%;
+            background-repeat: no-repeat;
+        }
+
+        .avatar-option.selected {
+            border-color: var(--primary-purple);
+            transform: scale(1.15);
+            box-shadow: 0 8px 20px rgba(29, 159, 218, 0.3);
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body data-page="signup">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen">
+                <!-- Status Bar -->
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Signup View -->
+                <div id="signup-view" class="view-container active"
+                    style="background: var(--primary-purple); position: relative; overflow: hidden; padding-top: 0;">
+
+                    <!-- Top section with logo -->
+                    <div class="login-top"
+                        style="height: 25%; display: flex; justify-content: center; align-items: center; position: relative;">
+                        <img src="assets/getmedslogowhite.png" style="width: 180px;" alt="Logo">
+                    </div>
+
+                    <!-- Bottom white card -->
+                    <div class="login-card"
+                        style="height: 80%; background: var(--card-bg, #FFFFFF); border-top-left-radius: 40px; border-top-right-radius: 40px; position: absolute; bottom: 0; width: 100%; box-sizing: border-box; padding: 30px 24px 40px 24px; display: flex; flex-direction: column;">
+
+                        <h2
+                            style="font-size: 22px; font-weight: 700; color: var(--text-main); margin-top: 0; margin-bottom: 24px;">
+                            Create Account</h2>
+
+                        <div style="flex: 1; overflow-y: auto; scrollbar-width: none; margin-bottom: 20px;" class="signup-scroll-area">
+                            <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                                <div style="flex: 1;">
+                                    <label
+                                        style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">First
+                                        Name</label>
+                                    <input type="text" id="signup-firstname" placeholder="Jane"
+                                        style="width: 100%; padding: 14px 16px; background: var(--bg-light, #F4F5F7); border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; color: var(--text-main); font-family: 'Outfit', sans-serif; outline: none; transition: box-shadow 0.3s; box-sizing: border-box;"
+                                        onfocus="this.style.boxShadow='0 0 0 2px var(--primary-purple)'"
+                                        onblur="this.style.boxShadow='none'">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label
+                                        style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">Last
+                                        Name</label>
+                                    <input type="text" id="signup-lastname" placeholder="Doe"
+                                        style="width: 100%; padding: 14px 16px; background: var(--bg-light, #F4F5F7); border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; color: var(--text-main); font-family: 'Outfit', sans-serif; outline: none; transition: box-shadow 0.3s; box-sizing: border-box;"
+                                        onfocus="this.style.boxShadow='0 0 0 2px var(--primary-purple)'"
+                                        onblur="this.style.boxShadow='none'">
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 16px;">
+                                <label
+                                    style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">Email
+                                    Address</label>
+                                <input type="email" id="signup-email" placeholder="name@example.com"
+                                    style="width: 100%; padding: 14px 16px; background: var(--bg-light, #F4F5F7); border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; color: var(--text-main); font-family: 'Outfit', sans-serif; outline: none; transition: box-shadow 0.3s; box-sizing: border-box;"
+                                    onfocus="this.style.boxShadow='0 0 0 2px var(--primary-purple)'"
+                                    onblur="this.style.boxShadow='none'">
+                            </div>
+
+                            <div>
+                                <label
+                                    style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">Choose
+                                    Your Avatar</label>
+                                <div class="avatar-grid" id="avatarGrid">
+                                    <!-- Dynamic Avatars -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="primary-btn" onclick="completeSignup()"
+                            style="background: var(--primary-purple); color: white; width: 100%; padding: 16px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; outline: none;">Complete
+                            Sign Up</button>
+
+                        <div style="text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 20px;">
+                            Already have an account? <a href="login.html"
+                                style="color: var(--primary-purple); font-weight: 600; text-decoration: none;">Log
+                                In</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate Avatar Grid
+        const avatarGrid = document.getElementById('avatarGrid');
+        const offsets = [0, 25, 50, 75, 100];
+        let selectedIndex = 0;
+
+        for (let i = 0; i < 24; i++) {
+            const div = document.createElement('div');
+            div.className = 'avatar-option';
+            if (i === selectedIndex) {
+                div.classList.add('selected');
+            }
+
+            const col = i % 5;
+            const row = Math.floor(i / 5);
+            div.style.backgroundPosition = `${offsets[col]}% ${offsets[row]}%`;
+
+            div.onclick = function () {
+                document.querySelectorAll('.avatar-option').forEach(el => el.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedIndex = i;
+            };
+
+            avatarGrid.appendChild(div);
+        }
+
+        // Handle Signup
+        function completeSignup() {
+            const firstName = document.getElementById('signup-firstname').value || 'Elena';
+            const lastName = document.getElementById('signup-lastname').value || 'Rodriguez';
+            const email = document.getElementById('signup-email').value || 'elena.r@example.com';
+
+            // Save Profile Info
+            const profile = { firstName, lastName, email, avatarIndex: selectedIndex };
+            localStorage.setItem('meditationUserProfile', JSON.stringify(profile));
+
+            // Save Avatar Global Index
+            localStorage.setItem('selectedAvatarIndex', selectedIndex);
+
+            // Redirect to Home
+            window.location.href = 'home.html';
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+
+</html>

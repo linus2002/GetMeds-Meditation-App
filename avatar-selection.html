@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getmeds Meditation App - Choose Avatar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            column-gap: 20px;
+            padding: 24px;
+        }
+
+        .avatar-option {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: var(--bg-light);
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-image: url('assets/avatars_new.png');
+            background-size: 500% 500%;
+            background-repeat: no-repeat;
+            margin-bottom: 25px;
+        }
+
+        .avatar-option:active {
+            transform: scale(0.95);
+        }
+
+        .avatar-option.selected {
+            border-color: #1D9FDA;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(29, 159, 218, 0.3);
+            z-index: 2;
+        }
+
+        .save-avatar-btn {
+            background: #1D9FDA;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(29, 159, 218, 0.3);
+            transition: background 0.2s;
+        }
+
+        .save-avatar-btn:active {
+            background: #0ea5e9;
+        }
+
+        .bottom-action-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 24px;
+            background: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body data-page="subpage">
+    <div class="device-frame">
+        <div class="device-bezel">
+            <div class="dynamic-island"></div>
+            <div class="device-screen" style="background-color: var(--bg-light);">
+                
+                <!-- Status Bar -->
+                <div class="status-bar" style="--status-color: var(--text-main); position: absolute; z-index: 100;">
+                    <div class="time">9:41</div>
+                    <div class="indicators">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Main Top Navbar -->
+                <div class="main-top-navbar border" style="padding-top: 50px;">
+                    <div class="top-nav-left" style="flex: 1;">
+                        <div class="back-btn" onclick="window.history.back()">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    </div>
+                    <div class="top-nav-center" style="flex: 2; text-align: center;">
+                        <h2 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin: 0;">Choose Avatar</h2>
+                    </div>
+                    <div class="top-nav-right" style="flex: 1;"></div>
+                </div>
+
+                <!-- Subtitle -->
+                <div style="padding: 24px 24px 0;">
+                    <p style="font-size: 14px; color: var(--text-muted); margin: 0; text-align: center;">Select a 3D character to represent you in your mindfulness journey.</p>
+                </div>
+
+                <!-- Avatar Grid -->
+                <div class="app-container-scroller" style="padding: 0 0 100px;">
+                    <div class="avatar-grid" id="avatarGrid">
+                        <!-- JavaScript will generate the 24 avatars here -->
+                    </div>
+                </div>
+
+                <!-- Save Action -->
+                <div class="bottom-action-container">
+                    <button class="save-avatar-btn" id="saveAvatarBtn" onclick="saveAvatar()">Save Selection</button>
+                    <div class="home-indicator" style="bottom: 8px;"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        const avatarGrid = document.getElementById('avatarGrid');
+        
+        // Exact mathematical CSS percentages for a perfect 5x5 grid
+        const offsets = [0, 25, 50, 75, 100];
+        
+        let selectedIndex = parseInt(localStorage.getItem('selectedAvatarIndex')) || 0;
+
+        for(let i = 0; i < 24; i++) {
+            const div = document.createElement('div');
+            div.className = 'avatar-option';
+            if (i === selectedIndex) {
+                div.classList.add('selected');
+            }
+            
+            const col = i % 5;
+            const row = Math.floor(i / 5);
+            div.style.backgroundPosition = `${offsets[col]}% ${offsets[row]}%`;
+            
+            div.onclick = function() {
+                // Remove selection from all
+                document.querySelectorAll('.avatar-option').forEach(el => el.classList.remove('selected'));
+                // Add selection to clicked
+                this.classList.add('selected');
+                selectedIndex = i;
+            };
+            
+            avatarGrid.appendChild(div);
+        }
+
+        function saveAvatar() {
+            const btn = document.getElementById('saveAvatarBtn');
+            btn.innerHTML = '<i class="fas fa-check"></i> Saved successfully';
+            btn.style.background = '#10B981';
+            
+            // Save the selected index
+            localStorage.setItem('selectedAvatarIndex', selectedIndex);
+            
+            // Clear URL to trigger sprite logic in app.js
+            localStorage.removeItem('selectedAvatarUrl');
+            
+            // Sync with profile object
+            let profile = JSON.parse(localStorage.getItem('meditationUserProfile')) || { firstName: 'Elena', lastName: 'Rodriguez', email: 'elena.r@example.com' };
+            profile.avatarIndex = selectedIndex;
+            localStorage.setItem('meditationUserProfile', JSON.stringify(profile));
+
+            setTimeout(() => {
+                const prev = document.referrer;
+                if (prev && prev.includes('.html')) {
+                    window.location.href = prev;
+                } else {
+                    window.location.href = 'profile.html';
+                }
+            }, 800);
+        }
+
+        // Setup Dark Mode correctly
+        function initTheme() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+        }
+        initTheme();
+    </script>
+</body>
+</html>

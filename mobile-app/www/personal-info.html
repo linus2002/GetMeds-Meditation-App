@@ -42,14 +42,15 @@
                         <div class="subpage-content" style="padding: 0 24px 40px; flex: 1; overflow-y: auto;">
                             
                             <!-- Profile Image Edit -->
-                            <div style="display: flex; flex-direction: column; align-items: center; margin-top: 24px; margin-bottom: 32px; cursor: pointer;" onclick="window.location.href='avatar-selection.html'">
+                            <div style="display: flex; flex-direction: column; align-items: center; margin-top: 24px; margin-bottom: 32px;">
                                 <div style="position: relative;">
-                                    <div id="edit-profile-preview" style="width: 100px; height: 100px; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80'); background-size: cover; background-position: center; border: 4px solid var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
-                                    <div style="position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: var(--primary-purple); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid var(--white);">
+                                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Avatar" id="edit-profile-preview" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <label for="avatar-input" style="position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: var(--primary-purple); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid var(--white);">
                                         <i class="fas fa-camera" style="font-size: 14px;"></i>
-                                    </div>
+                                    </label>
+                                    <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
                                 </div>
-                                <p style="font-size: 12px; color: var(--primary-purple); font-weight: 600; margin-top: 12px;">Choose Avatar</p>
+                                <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px;">Change Profile Photo</p>
                             </div>
 
                             <form class="profile-form" style="display: flex; flex-direction: column; gap: 16px;">
