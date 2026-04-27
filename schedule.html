@@ -55,14 +55,15 @@
         .icon-box {
             width: 48px;
             height: 48px;
-            background: #EFF6FF;
-            color: var(--ui-blue);
+            background: var(--brand-gradient);
+            color: white;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             margin: 0 auto 12px;
+            box-shadow: 0 8px 16px rgba(109, 179, 63, 0.2);
         }
 
         .header-section h1 {
@@ -89,8 +90,11 @@
 
         .section-label {
             font-size: 10px;
-            font-weight: 700;
-            color: var(--ui-blue);
+            font-weight: 850;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 12px;
@@ -139,9 +143,9 @@
         }
 
         .day-item.active {
-            background: var(--ui-blue);
+            background: var(--brand-gradient);
             color: white;
-            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 8px rgba(109, 179, 63, 0.2);
         }
 
         .type-grid {
@@ -171,22 +175,35 @@
         }
 
         .type-option.active {
-            border-color: var(--ui-blue);
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--ui-blue);
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box, var(--brand-gradient) border-box;
+            color: #1D9FDA;
+            font-weight: 700;
+        }
+
+        .type-option.active i {
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .confirm-button {
             width: 100%;
-            background: var(--ui-blue);
+            background: var(--brand-gradient);
             color: white;
             border: none;
             padding: 14px;
             border-radius: 14px;
             font-size: 14px;
-            font-weight: 700;
-            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
+            font-weight: 800;
+            box-shadow: 0 8px 16px rgba(109, 179, 63, 0.25);
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .confirm-button:active {
+            transform: scale(0.98);
         }
 
         .bottom-action-bar {
@@ -215,13 +232,14 @@
         .reminder-icon {
             width: 32px;
             height: 32px;
-            background: var(--ui-input-bg);
+            background: var(--brand-gradient);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            color: var(--ui-blue);
+            color: white;
+            box-shadow: 0 4px 10px rgba(109, 179, 63, 0.15);
         }
 
         .reminder-info h4 {
@@ -439,7 +457,7 @@
 
             setTimeout(() => {
                 btn.innerText = "Confirm Schedule";
-                btn.style.background = "#3B82F6";
+                btn.style.background = "var(--brand-gradient)";
             }, 1500);
         }
 

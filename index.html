@@ -19,6 +19,14 @@
         <div class="device-bezel">
             <div class="dynamic-island"></div>
             <div class="device-screen">
+                <!-- Splash Screen -->
+                <div id="splash-screen" class="splash-screen">
+                    <div class="splash-content">
+                        <img src="assets/getmedslogo.png" alt="Getmeds Logo" class="splash-logo">
+                        <div class="splash-loader"></div>
+                    </div>
+                </div>
+
                 <!-- Status Bar -->
                 <div class="status-bar">
                     <div class="time">9:41</div>
@@ -89,6 +97,23 @@
         </div>
     </div>
     <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var splash = document.getElementById('splash-screen');
+            setTimeout(function() {
+                splash.classList.add('hidden');
+                setTimeout(function() {
+                    splash.style.display = 'none';
+                }, 800);
+            }, 2500);
+        });
+
+        function nextOnboarding(current) {
+            var screens = document.querySelectorAll('.onboarding-screen');
+            screens[current - 1].classList.remove('active');
+            screens[current].classList.add('active');
+        }
+    </script>
 </body>
 
 </html>

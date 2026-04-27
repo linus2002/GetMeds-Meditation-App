@@ -510,8 +510,15 @@ body {
 }
 
 .nav-item.active {
-    color: var(--primary-purple);
     background: transparent;
+}
+
+.nav-item.active i,
+.nav-item.active span {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .home-indicator {
@@ -668,13 +675,13 @@ body {
 
 .ob-dots .dot.active {
     width: 24px;
-    background: var(--primary-purple);
+    background: var(--brand-gradient);
 }
 
 .primary-btn {
     width: 80%;
     margin: 0 auto;
-    background: var(--primary-purple);
+    background: var(--brand-gradient);
     color: white;
     border: none;
     padding: 14px;
@@ -682,7 +689,7 @@ body {
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 10px 20px rgba(29, 159, 218, 0.3);
+    box-shadow: none;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1149,7 +1156,15 @@ body {
 }
 
 .nav-item.active {
-    color: var(--primary-purple);
+    color: transparent;
+}
+
+.nav-item.active i,
+.nav-item.active span {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .growth-card, .exercise-card, .category-list-item, .settings-card, .lib-list-item, .story-card-item, .history-item, .sensation-pill, .meditation-card, .support-cta, .achievement-badge, .lib-cat-card, .practice-card {
@@ -1295,4 +1310,55 @@ body.dark-theme .bottom-nav {
 
 .track-like-btn i.fas.fa-heart {
     color: #F43F5E;
+}
+
+/* =====================
+   Splash Screen
+   ===================== */
+.splash-screen {
+    position: absolute;
+    inset: 0;
+    background: var(--brand-gradient);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s;
+}
+
+.splash-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.splash-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+.splash-logo {
+    width: 140px;
+    height: auto;
+    filter: brightness(0) invert(1);
+    animation: splashPulse 2.5s infinite ease-in-out;
+}
+
+@keyframes splashPulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.08); opacity: 1; }
+}
+
+.splash-loader {
+    width: 44px;
+    height: 44px;
+    border: 3.5px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: splashSpin 1s infinite cubic-bezier(0.5, 0.1, 0.4, 0.9);
+}
+
+@keyframes splashSpin {
+    to { transform: rotate(360deg); }
 }

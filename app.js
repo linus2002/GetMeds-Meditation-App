@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const page = document.body.getAttribute('data-page');
     if (page === 'onboarding') {
         updateStatusBar(false);
-    } else if (page === 'login') {
+    } else if (page === 'login' || page === 'signup') {
         updateStatusBar(true);
     } else if (page === 'home') {
         setTimeout(window.animateProgress, 300);

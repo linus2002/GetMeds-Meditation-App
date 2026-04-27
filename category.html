@@ -97,8 +97,11 @@
 
         .track-meta {
             font-size: 10px;
-            font-weight: 700;
-            color: var(--primary-purple);
+            font-weight: 800;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -138,15 +141,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary-purple);
+            color: #10B981;
             transition: all 0.3s;
         }
 
         .track-card:hover .play-ring {
-            background: var(--primary-purple);
+            background: var(--brand-gradient);
             color: white;
-            border-color: var(--primary-purple);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(109, 179, 63, 0.2);
         }
     </style>
 </head>

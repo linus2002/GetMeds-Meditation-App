@@ -31,9 +31,10 @@
 
         .progress-bar-fill {
             height: 100%;
-            background: var(--primary-purple);
+            background: var(--brand-gradient);
             width: 25%;
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(109, 179, 63, 0.3);
         }
 
         .question-card {
@@ -90,14 +91,14 @@
         }
 
         .option-item:hover {
-            border-color: var(--primary-purple);
-            background: #F5F3FF;
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box, var(--brand-gradient) border-box;
         }
 
         .option-item.selected {
-            border-color: var(--primary-purple);
-            background: #F5F3FF;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box, var(--brand-gradient) border-box;
+            box-shadow: 0 4px 15px rgba(109, 179, 63, 0.1);
         }
 
         .option-icon {
@@ -147,14 +148,14 @@
             min-width: 200px;
             height: 56px;
             border-radius: 10px;
-            background: var(--primary-purple);
+            background: var(--brand-gradient);
             color: white;
             border: none;
             padding: 0 32px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 10px 20px rgba(109, 179, 63, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;

@@ -58,7 +58,7 @@
             justify-content: center;
             position: relative;
             margin-bottom: 24px;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 40px rgba(109, 179, 63, 0.2);
         }
 
         .visualizer-ring::before {
@@ -66,7 +66,7 @@
             position: absolute;
             top: -10px; left: -10px; right: -10px; bottom: -10px;
             border-radius: 50%;
-            border: 2px solid rgba(139, 92, 246, 0.3);
+            border: 2px solid rgba(109, 179, 63, 0.3);
             animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
             opacity: 0;
         }
@@ -84,7 +84,7 @@
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+            background: var(--brand-gradient);
             color: white;
             border: none;
             display: flex;
@@ -92,7 +92,7 @@
             justify-content: center;
             font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(109, 40, 217, 0.4);
+            box-shadow: 0 10px 25px rgba(29, 159, 218, 0.4);
             transition: transform 0.2s;
             z-index: 2;
         }
@@ -125,7 +125,7 @@
 
         .sound-track.active {
             background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(139, 92, 246, 0.5);
+            border-color: rgba(109, 179, 63, 0.5);
         }
 
         .track-header {
@@ -155,9 +155,9 @@
         }
 
         .sound-track.active .track-icon {
-            background: rgba(139, 92, 246, 0.2);
-            color: #A78BFA;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+            background: rgba(109, 179, 63, 0.2);
+            color: #1D9FDA;
+            box-shadow: 0 0 15px rgba(109, 179, 63, 0.3);
         }
 
         .track-title {
@@ -196,7 +196,7 @@
         }
 
         .sound-track.active .track-toggle {
-            background: #8B5CF6;
+            background: var(--brand-gradient);
         }
 
         .sound-track.active .track-toggle::after {
@@ -456,7 +456,7 @@
         function updateSliderFill(slider) {
             const val = slider.value;
             // Dynamic gradient fill for the slider track
-            slider.style.background = `linear-gradient(to right, #A78BFA ${val}%, rgba(255, 255, 255, 0.1) ${val}%)`;
+            slider.style.background = `linear-gradient(to right, #6DB33F 0%, #1D9FDA ${val}%, rgba(255, 255, 255, 0.1) ${val}%)`;
         }
 
         function saveMix() {

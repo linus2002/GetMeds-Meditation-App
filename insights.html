@@ -86,9 +86,9 @@
         }
 
         .day-dot.completed {
-            background: var(--primary-purple);
+            background: var(--brand-gradient);
             color: white;
-            box-shadow: 0 4px 12px rgba(29, 159, 218, 0.2);
+            box-shadow: 0 4px 12px rgba(109, 179, 63, 0.2);
         }
 
         .achievement-slider {
@@ -151,9 +151,9 @@
         }
 
         .cal-date.today {
-            background: var(--primary-purple);
+            background: var(--brand-gradient);
             color: white;
-            box-shadow: 0 4px 10px rgba(29, 159, 218, 0.3);
+            box-shadow: 0 4px 10px rgba(109, 179, 63, 0.3);
         }
 
         .cal-date.selected {
@@ -218,7 +218,7 @@
 
         .chart-line {
             fill: none;
-            stroke: var(--primary-purple);
+            stroke: #1D9FDA;
             stroke-width: 3;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -232,7 +232,7 @@
         }
 
         .chart-dot {
-            fill: var(--primary-purple);
+            fill: #1D9FDA;
             stroke: var(--card-bg);
             stroke-width: 2;
         }
@@ -273,7 +273,7 @@
                     <div class="level-card" style="padding: 24px 24px 10px; text-align: left;">
                         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
                             <div>
-                                <span id="user-level-tag" style="font-size: 11px; font-weight: 800; color: var(--primary-purple); letter-spacing: 0.5px;">Level 15 • Zen Lord</span>
+                                <span id="user-level-tag" style="font-size: 11px; font-weight: 850; background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.5px;">Level 15 • Zen Lord</span>
                                 <h1 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin: 2px 0 0;"><span id="total-points">7,420</span> <span style="font-size: 14px; color: var(--text-muted); font-weight: 600;">XP</span></h1>
                             </div>
                             <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
@@ -286,49 +286,71 @@
                     </div>
 
                     <!-- Getmeds Mind-Body Wellness Score -->
-                    <div class="insights-hero" style="padding-top: 10px; position: relative; text-align: center;">
-                        <p style="font-size: 11px; font-weight: 800; color: var(--primary-purple); letter-spacing: 0.5px; margin-bottom: 20px;">Mind-Body Wellness Score</p>
-                        
-                        <div class="score-gauge-wrap" style="position: relative; width: 180px; height: 180px; margin: 0 auto 24px;">
-                            <svg viewBox="0 0 100 100" style="transform: rotate(-90deg); width: 100%; height: 100%;">
-                                <circle cx="50" cy="50" r="45" fill="none" stroke="#E5E7EB" stroke-width="8" />
-                                <circle id="score-circle" cx="50" cy="50" r="45" fill="none" stroke="var(--primary-purple)" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="70" stroke-linecap="round" style="transition: stroke-dashoffset 1.5s ease-out;" />
-                            </svg>
-                            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                <h1 id="total-score" style="font-size: 48px; font-weight: 900; color: var(--text-main); margin: 0; line-height: 1;">78</h1>
-                                <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Overall</span>
+                    <div style="padding: 0 24px 24px;">
+                        <div style="background: var(--brand-gradient); border-radius: 24px; padding: 28px 24px 24px; text-align: center; position: relative; overflow: hidden;">
+                            <!-- Decorative background orbs -->
+                            <div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.08);pointer-events:none;"></div>
+                            <div style="position:absolute;bottom:-30px;left:-20px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none;"></div>
+
+                            <!-- Label -->
+                            <p style="font-size:11px;font-weight:800;color:rgba(255,255,255,0.8);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px;position:relative;z-index:1;">Mind-Body Wellness Score</p>
+
+                            <!-- Thin Circle Gauge -->
+                            <div class="score-gauge-wrap" style="position:relative;width:170px;height:170px;margin:0 auto 24px;z-index:1;">
+                                <svg viewBox="0 0 100 100" style="transform:rotate(-90deg);width:100%;height:100%;">
+                                    <defs>
+                                        <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="rgba(255,255,255,0.55)" />
+                                            <stop offset="100%" stop-color="rgba(255,255,255,1)" />
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Track -->
+                                    <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="4" />
+                                    <!-- Arc -->
+                                    <circle id="score-circle" cx="50" cy="50" r="44" fill="none" stroke="url(#scoreGradient)" stroke-width="4" stroke-dasharray="276" stroke-dashoffset="69" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease-out;" />
+                                </svg>
+                                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                                    <h1 id="total-score" style="font-size:48px;font-weight:900;color:white;margin:0;line-height:1;">78</h1>
+                                    <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.75);">Overall</span>
+                                </div>
+                            </div>
+
+                            <!-- Stats Row -->
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px;position:relative;z-index:1;">
+                                <div style="text-align:center;flex:1;">
+                                    <div style="font-size:17px;font-weight:800;color:white;" id="mood-stat">70%</div>
+                                    <div style="font-size:9px;color:rgba(255,255,255,0.7);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Mood</div>
+                                </div>
+                                <div style="width:1px;height:32px;background:rgba(255,255,255,0.25);"></div>
+                                <div style="text-align:center;flex:1;">
+                                    <div style="font-size:17px;font-weight:800;color:white;" id="sleep-stat">7.5h</div>
+                                    <div style="font-size:9px;color:rgba(255,255,255,0.7);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Sleep</div>
+                                </div>
+                                <div style="width:1px;height:32px;background:rgba(255,255,255,0.25);"></div>
+                                <div style="text-align:center;flex:1;">
+                                    <div style="font-size:17px;font-weight:800;color:white;" id="mind-stat">22m</div>
+                                    <div style="font-size:9px;color:rgba(255,255,255,0.7);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Mindful</div>
+                                </div>
                             </div>
                         </div>
 
-                        <div style="display: flex; justify-content: space-between; padding: 0 10px; margin-bottom: 24px;">
-                            <div style="text-align: center;">
-                                <div style="font-size: 16px; font-weight: 800; color: var(--text-main);" id="mood-stat">70%</div>
-                                <div style="font-size: 9px; color: var(--text-muted); font-weight: 700;">Mood</div>
-                            </div>
-                            <div style="text-align: center; border-left: 1px solid #E5E7EB; border-right: 1px solid #E5E7EB; padding: 0 24px;">
-                                <div style="font-size: 16px; font-weight: 800; color: var(--text-main);" id="sleep-stat">7.5h</div>
-                                <div style="font-size: 9px; color: var(--text-muted); font-weight: 700;">Sleep</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 16px; font-weight: 800; color: var(--text-main);" id="mind-stat">22m</div>
-                                <div style="font-size: 9px; color: var(--text-muted); font-weight: 700;">Mindful</div>
-                            </div>
-                        </div>
-
-                        <!-- Contextual Consultation CTA (mWell Unified Booking Style) -->
-                        <div id="low-score-cta" style="background: var(--card-bg); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.03); cursor: pointer;" onclick="window.location.href='teletherapy.html'">
-                            <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
-                                <div style="width: 36px; height: 36px; border-radius: 50%; background: #FFF1F2; color: #F43F5E; display: flex; align-items: center; justify-content: center; font-size: 14px;">
+                        <!-- Contextual Consultation CTA -->
+                        <div id="low-score-cta" style="background:var(--card-bg);border-radius:16px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border-color);cursor:pointer;margin-top:16px;" onclick="window.location.href='teletherapy.html'">
+                            <div style="display:flex;align-items:center;gap:12px;text-align:left;">
+                                <div style="width:38px;height:38px;border-radius:50%;background:#FFF1F2;color:#F43F5E;display:flex;align-items:center;justify-content:center;font-size:15px;">
                                     <i class="fas fa-video"></i>
                                 </div>
                                 <div>
-                                    <p style="font-size: 13px; font-weight: 700; color: var(--text-main); margin: 0;">Talk to a Specialist</p>
-                                    <p style="font-size: 10px; color: var(--text-muted); margin: 0;">Improve your score with expert help</p>
+                                    <p style="font-size:13px;font-weight:700;color:var(--text-main);margin:0;">Talk to a Specialist</p>
+                                    <p style="font-size:10px;color:var(--text-muted);margin:0;">Improve your score with expert help</p>
                                 </div>
                             </div>
-                            <i class="fas fa-chevron-right" style="font-size: 12px; color: #F43F5E;"></i>
+                            <i class="fas fa-chevron-right" style="font-size:12px;color:#F43F5E;"></i>
                         </div>
                     </div>
+
+
+
 
                     <!-- Wellness Trends Graph -->
                     <div style="padding: 0 24px;">
@@ -346,7 +368,7 @@
                             <svg class="chart-svg" viewBox="0 0 300 60">
                                 <defs>
                                     <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stop-color="var(--primary-purple)" />
+                                        <stop offset="0%" stop-color="#6DB33F" />
                                         <stop offset="100%" stop-color="transparent" />
                                     </linearGradient>
                                 </defs>
@@ -544,15 +566,10 @@
             document.getElementById('mood-stat').innerText = moodScore + "%";
             
             // Update Gauge Circle
-            // Circumference is ~283. Offset = 283 - (283 * total / 100)
-            const offset = 283 - (283 * total / 100);
+            // New circumference = 2 * π * 44 ≈ 276
+            const circumference = 276;
+            const offset = circumference - (circumference * total / 100);
             document.getElementById('score-circle').style.strokeDashoffset = offset;
-
-            // Change color based on score
-            const circle = document.getElementById('score-circle');
-            if (total < 60) circle.style.stroke = "#EF4444";
-            else if (total < 80) circle.style.stroke = "#F59E0B";
-            else circle.style.stroke = "#10B981";
         }
 
         function updateLevels() {

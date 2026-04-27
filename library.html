@@ -119,8 +119,27 @@
         .lib-list-title { font-size: 14px; font-weight: 700; color: var(--text-main); }
         .lib-list-desc { font-size: 11px; color: var(--text-muted); }
         .lib-list-time { font-size: 10px; font-weight: 700; color: var(--primary-purple); background: var(--bg-light); padding: 4px 8px; border-radius: 8px; width: max-content; }
-        .lib-play-btn { width: 40px; height: 40px; border-radius: 50%; background: #EAF6FC; color: var(--primary-purple); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s; cursor: pointer; }
-        .lib-play-btn:hover { background: var(--primary-purple); color: white; }
+        .lib-play-btn { width: 40px; height: 40px; border-radius: 50%; background: #ECFDF5; color: #10B981; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s; cursor: pointer; }
+        .lib-play-btn i {
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+        .lib-play-btn:hover { background: var(--brand-gradient); color: white; }
+        .lib-play-btn:hover i { -webkit-text-fill-color: white; }
+
+        .view-all-link {
+            font-size: 12px;
+            font-weight: 800;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            letter-spacing: -0.2px;
+        }
 
         /* Path Progression Styles */
         .path-container {
@@ -157,16 +176,22 @@
         }
 
         .path-node.completed {
-            background: var(--primary-purple);
-            border-color: var(--primary-purple);
+            background: var(--brand-gradient);
+            border-color: transparent;
             color: white;
-            box-shadow: 0 4px 12px rgba(29, 159, 218, 0.3);
+            box-shadow: 0 4px 12px rgba(109, 179, 63, 0.3);
         }
 
         .path-node.unlocked {
-            border-color: var(--primary-purple);
-            color: var(--primary-purple);
+            border-color: #1D9FDA;
+            color: #1D9FDA;
             animation: pulse-border 2s infinite;
+        }
+        .path-node.unlocked i {
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         @keyframes pulse-border {
@@ -190,7 +215,7 @@
             left: 0;
             top: 0;
             width: 100%;
-            background: var(--primary-purple);
+            background: var(--brand-gradient);
             transition: height 1s ease;
         }
 
@@ -440,7 +465,7 @@
                         <!-- Sleep Stories Section -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; margin-bottom: 20px;">
                             <h3 class="settings-header" style="margin: 0; padding: 0;">Sleep Stories</h3>
-                            <button onclick="window.location.href='sleep-stories.html'" style="background: transparent; border: none; padding: 6px 0; border-radius: 10px; font-size: 13px; font-weight: 700; color: var(--primary-purple); cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">View All</button>
+                            <div class="view-all-link" onclick="window.location.href='sleep-stories.html'">View All</div>
                         </div>
 
                         <div class="stories-scroll" id="sleepStoriesScroll" style="display: flex; gap: 20px; overflow-x: scroll; padding: 10px 0 20px; scrollbar-width: none; min-height: 280px; scroll-snap-type: x mandatory; cursor: grab; user-select: none;">
@@ -598,7 +623,7 @@
                                 <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 4px 0;">Forest Echoes</h4>
                                 <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 12px 0;">Deep woodland sounds with birds and gentle wind.</p>
                                 <div style="display: flex; gap: 8px;">
-                                    <button onclick="window.location.href='audio-player.html?title=Forest%20Echoes'" style="flex: 1; background: var(--primary-purple); color: white; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                    <button onclick="window.location.href='audio-player.html?title=Forest%20Echoes'" style="flex: 1; background: var(--brand-gradient); color: white; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(109, 179, 63, 0.2);">
                                         <i class="fas fa-play" style="font-size: 10px;"></i> Play
                                     </button>
                                     <button onclick="window.location.href='audio-player.html?title=Forest%20Echoes'" style="flex: 1; background: #F3F4F6; color: #4B5563; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Details</button>
@@ -617,7 +642,7 @@
                                 <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 4px 0;">Thunder Ridge</h4>
                                 <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 12px 0;">Powerful storm ambience with rolling thunder.</p>
                                 <div style="display: flex; gap: 8px;">
-                                    <button onclick="window.location.href='audio-player.html?title=Thunder%20Ridge'" style="flex: 1; background: var(--primary-purple); color: white; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                    <button onclick="window.location.href='audio-player.html?title=Thunder%20Ridge'" style="flex: 1; background: var(--brand-gradient); color: white; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(109, 179, 63, 0.2);">
                                         <i class="fas fa-play" style="font-size: 10px;"></i> Play
                                     </button>
                                     <button onclick="window.location.href='audio-player.html?title=Thunder%20Ridge'" style="flex: 1; background: #F3F4F6; color: #4B5563; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Details</button>
@@ -636,7 +661,7 @@
                                 <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 4px 0;">Zen Garden</h4>
                                 <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 12px 0;">Soothing bamboo water features and light chimes.</p>
                                 <div style="display: flex; gap: 8px;">
-                                    <button onclick="window.location.href='audio-player.html?title=Zen%20Garden'" style="flex: 1; background: var(--primary-purple); color: white; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                    <button onclick="window.location.href='audio-player.html?title=Zen%20Garden'" style="flex: 1; background: var(--brand-gradient); color: white; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(109, 179, 63, 0.2);">
                                         <i class="fas fa-play" style="font-size: 10px;"></i> Play
                                     </button>
                                     <button onclick="window.location.href='audio-player.html?title=Zen%20Garden'" style="flex: 1; background: #F3F4F6; color: #4B5563; border: none; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Details</button>
